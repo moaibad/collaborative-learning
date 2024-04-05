@@ -1,5 +1,6 @@
 import React, {useState, useEffect } from "react"
 import axios from "axios";
+import Cookies from 'js-cookie';
 import { Link } from 'react-router-dom';
 import { AiOutlineMenu } from 'react-icons/ai';
 import { FiShoppingCart } from 'react-icons/fi';
@@ -8,12 +9,8 @@ import { RiNotification3Line } from 'react-icons/ri';
 import { MdKeyboardArrowDown } from 'react-icons/md';
 import { SearchOutlined, BellOutlined } from '@ant-design/icons';
 import { Input, Progress, Dropdown, Space } from 'antd';
-import {
-  KnockFeedProvider,
-  NotificationIconButton,
-  NotificationFeedPopover,
-} from "@knocklabs/react-notification-feed";
-// https://www.npmjs.com/package/@knocklabs/react-notification-feed?activeTab=readme
+import { getDataDashboard } from "../lib/fetchData";
+import NotificationDropdown from '../components/navbar/NotificationDropdown'; // Import the NotificationDropdown component
 
 // Required CSS import, unless you're overriding the styling
 import "@knocklabs/react-notification-feed/dist/index.css";
@@ -41,49 +38,76 @@ import avatar from '../data/avatar.jpg';
 //   {/* </TooltipComponent> */}
 // );
 
-const items = [
+const notifications = [
   {
-    label: <p>Notification</p>,
-  },
-
-  {
-    label: <p>Notification</p>,
-    type: 'divider',
-  },
-  {
-    label: <a href="https://www.aliyun.com">2nd menu item 2nd menu itemv 2nd menu item 2nd menu item</a>,
-    key: '1',
+    username: 'John Doe',
+    message: 'sent you a friend request',
+    time: '10:30 AM',
+    type: 'friendRequest',
+    link: '/profile/john_doe'
   },
   {
-    label: '2nd menu item',
-    key: '2',
+    username: 'Alice Smith',
+    message: 'answered your question',
+    time: 'Yesterday',
+    type: 'questionAnswered',
+    link: '/question/123'
   },
+  {
+    username: 'Quiz Results',
+    message: 'Your quiz result is available',
+    time: '2 days ago',
+    type: 'quizResult',
+    link: '/quiz/123/result'
+  },
+  {
+    username: 'New Message',
+    message: 'You have a new message',
+    time: '3 days ago',
+    type: 'newMessage',
+    link: '/messages'
+  }
 ];
 
 const Navbar = () => {
   // const [isVisible, setIsVisible] = useState(false);
   // const notifButtonRef = useRef(null);
-
+  const [showDropdown, setShowDropdown] = useState(true);
+  const [profile, setProfile] = useState([]);
   const [mahasiswa, setMahasiswa] = useState("");
+  const UserId = Cookies.get('userId');
+  const token = Cookies.get('user_token');
 
-  const getInfoMahasiswa = async () => {
-      try {
-      const response = await axios.get(`http://localhost:8080/mahasiswa/1`);
-      setMahasiswa(response.data);
-      } catch (error) {
-      console.error('Error fetching mahasiswa data:', error);
-      }
+  const toggleDropdown = () => {
+    setShowDropdown(!showDropdown);
   };
 
-  useEffect(()=>{
-      getInfoMahasiswa();
-  }, []);
+  useEffect(() => {
+    const getInfoMahasiswa = async () => {
+        try {
+            let response;
+            if (token === "null") {
+                response = await axios.get(`http://localhost:8080/mahasiswa/${UserId}`);
+            } else {
+                response = await getDataDashboard("/mahasiswa");
+            }
+            setMahasiswa(response.data || response); // Memperhatikan bahwa ada kasus ketika responsenya langsung object, bukan response.data
+            console.log("mahasiswa : ", JSON.stringify(response));
+        } catch (error) {
+            console.error('Error fetching mahasiswa data:', error);
+        }
+    };
+
+    getInfoMahasiswa();
+  }, [token]); // Perubahan token akan memicu useEffect untuk dijalankan kembali
 
   return (
     <div className="flex justify-between items-center p-2 md:ml-6 md:mr-6 relative">
-        <div className='ml-8'>
+        <div className='ml-8 gap-4 flex'>
           {/* <p className='font-bold'>Monday</p>
           <p className='text-sm font-semibold'>24 February 2024</p> */}
+          <Link to="/dosen"><button className="p-3 bg-orange-400 text-md font-bold text-white rounded-2xl">To Dosen</button></Link>
+          <Link to="/"><button className="p-3 bg-orange-400 text-md font-bold text-white rounded-2xl">To Mahasiswa</button></Link>
         </div>
       {/* <NavButton title="Menu" icon={<AiOutlineMenu />} /> */}
       <div className="flex rounded-xl h-9">
@@ -98,13 +122,21 @@ const Navbar = () => {
         <NavButton title="Notification" dotColor="rgb(254, 201, 15)" icon={<RiNotification3Line />} /> */}
         {/* <TooltipComponent content="Profile" position="BottomCenter"> */}
           <div className='flex gap-2 items-center justify-center'>
-            <Dropdown className='w-30' menu={{ items }} trigger={['click']} placement="bottomRight">
-              <a onClick={(e) => e.preventDefault()}>
+            <div className="relative">
+              <button
+                onClick={toggleDropdown}
+                className="flex items-center text-gray-600 hover:text-gray-800"
+              >
                 <Space>
                   <BellOutlined style={{ fontSize: '22px', color: '#374151' }} />
                 </Space>
-              </a>
-            </Dropdown>
+              </button>
+              <NotificationDropdown
+                notifications={notifications}
+                isOpen={showDropdown}
+                toggleDropdown={toggleDropdown}
+              />
+            </div>
                 {/* <KnockFeedProvider
                   apiKey={process.env.KNOCK_PUBLIC_API_KEY}
                   feedId={process.env.KNOCK_FEED_ID}
@@ -129,14 +161,14 @@ const Navbar = () => {
             >
               <img
                 className="rounded-full w-8 h-8"
-                src={avatar}
+                src={mahasiswa.profileUrl ? mahasiswa.profileUrl : avatar}
                 alt="user-profile"
               />
               <div className='w-40'>
                 <p>
                   <span className="text-gray-400 text-14">Hi,</span>{' '}
                   <span className="text-gray-400 font-bold ml-1 text-14">
-                    {mahasiswa.nama}
+                    {mahasiswa.nama ? mahasiswa.nama : mahasiswa.username}
                   </span>
                 </p>
                 <div className='flex w-full'>

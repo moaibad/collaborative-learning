@@ -1,26 +1,50 @@
 import React, {useState, useEffect } from "react"
 import axios from "axios";
+import Cookies from 'js-cookie';
 import { Link } from 'react-router-dom';
 import { Flex, Progress } from 'antd';
 import cover1 from '../../data/cover2.png'
 import avatar from '../../data/avatar.jpg';
-
+import { getDataDashboard } from "../../lib/fetchData";
 const ProfileHeader = () => {
+    const UserId = Cookies.get('userId');
     const [mahasiswa, setMahasiswa] = useState("");
+    
 
-    const getInfoMahasiswa = async () => {
-        try {
-        const response = await axios.get(`http://localhost:8080/mahasiswa/1`);
-        setMahasiswa(response.data);
-        } catch (error) {
-        console.error('Error fetching mahasiswa data:', error);
-        }
-    };
+    // const getInfoMahasiswa = async () => {
+    //     try {
+    //         const response = await getDataDashboard("/mahasiswa");
+    //         if(response){
+    //             setMahasiswa(response);
+    //         }
+    //         console.log("mahasiswa : ",JSON.stringify(response));
+    //     } catch (error) {
+    //     console.error('Error fetching mahasiswa data:', error);
+    //     }
+    // };
 
-    useEffect(()=>{
-        getInfoMahasiswa();
-    }, []);
+    const token = Cookies.get('user_token');
 
+    useEffect(() => {
+      const getInfoMahasiswa = async () => {
+          try {
+              let response;
+              if (token === "null") {
+                  response = await axios.get(`http://localhost:8080/mahasiswa/${UserId}`);
+              } else {
+                  response = await getDataDashboard("/mahasiswa");
+              }
+              setMahasiswa(response.data || response); // Memperhatikan bahwa ada kasus ketika responsenya langsung object, bukan response.data
+              console.log("mahasiswa : ", JSON.stringify(response));
+          } catch (error) {
+              console.error('Error fetching mahasiswa data:', error);
+          }
+      };
+  
+      getInfoMahasiswa();
+    }, [token]); // Perubahan token akan memicu useEffect untuk dijalankan kembali
+
+    
   return (
     <div>
         <div className='flex justify-center'>
@@ -31,7 +55,7 @@ const ProfileHeader = () => {
                     <Flex className='absolute -right-1.5 -bottom-1.5' gap="small" wrap="wrap">
                         <Progress strokeColor={"#fb923c"} type="circle" percent={40} size={109} format={() => ''}/>
                     </Flex>
-                    <img className='h-24 rounded-full' src={avatar} alt="Avatar" />
+                    <img className='h-24 rounded-full' src={mahasiswa.profileUrl ? mahasiswa.profileUrl : avatar} alt="Avatar" />
                 </div>
             </div>
         </div>
