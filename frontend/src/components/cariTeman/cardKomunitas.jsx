@@ -3,7 +3,7 @@
 import React from 'react';
 
 const CardKomunitas = ({ komunitas }) => {
-  const topikList = komunitas.Topik.split(',');
+  // const topikList = komunitas.Topik.split(',');
   return (
     <div className="card w-64 h-150">
       <ul className="flex flex-wrap -mx-1 overflow-hidden sm:-mx-1 md:justify-center lg:justify-start">
@@ -12,19 +12,28 @@ const CardKomunitas = ({ komunitas }) => {
             <div className="flex flex-col items-center h-full">
               <img
                 className='rounded-lg w-full h-48 object-cover mb-2'
-                src={komunitas.Image}
+                src={komunitas.imageUrl}
                 alt=""
               />
-              <p className='font-bold text-m text-center'>{komunitas.Nama}</p>
-              <p className='text-xs text-center text-gray-500'>{komunitas.Kota}, {komunitas.Provinsi}</p>
+              <div className="tooltip">
+                  <p className='font-bold text-m text-center'>{komunitas.name}</p>
+                <span className="tooltiptext">
+                <a href={`http://localhost:9191/invite/${komunitas.inviteCode}`}>
+                  <button className="bg-blue-500 text-white px-2 py-1 rounded mb-1">Open</button>
+                  </a>
+                  <p className="text-xs">{komunitas.totalMembers} Members</p>
+                  <p className="text-xs">{komunitas.description}</p>
+                </span>
+              </div>
+              <p className='text-xs text-center text-gray-500'>{komunitas.location}</p>
               <hr className="w-2/3 mx-auto border-gray-400 border-solid border-t-2 mt-2"/>
               <div className="bg-blue-500 text-white px-2 py-1 rounded mt-2 w-2/3 mx-auto">
-                <p className='text-xs text-center'>{komunitas.Jurusan}</p>
+                <p className='text-xs text-center'>{komunitas.departement}</p>
               </div>
-              <div className= "text-white px-2 rounded mt-2 flex flex-row">
-                {topikList.map((topik, index) => (
-                  <div key={index} className="bg-pink-400 text-white px-2 py-1 rounded m-1">
-                    <p className='text-xs'>{topik.trim()}</p>
+              <div className="text-white px-2 rounded mt-2 flex flex-row">
+                {komunitas.topics.map((topic) => (
+                  <div key={topic.id} className="bg-pink-400 text-white px-2 py-1 rounded m-1">
+                    <p className='text-xs'>{topic.name}</p>
                   </div>
                 ))}
               </div>
@@ -34,8 +43,8 @@ const CardKomunitas = ({ komunitas }) => {
                 <p className='text-xs'>Anggota</p>
             </div>
             <div className='flex py-1 font-semibold text-gray-500'>
-                <p className='text-xs mr-8 ml-4'>{komunitas.Bergabung}</p>
-                <p className='text-xs'>{komunitas.Anggota}</p>
+                <p className='text-xs mr-8 ml-4'>{new Date(komunitas.createdAt).toLocaleDateString()}</p>
+                <p className='text-xs'>{komunitas.totalMembers}</p>
             </div>
           </div>
         </li>
