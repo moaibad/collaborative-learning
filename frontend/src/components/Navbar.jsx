@@ -82,14 +82,21 @@ const Navbar = () => {
     setShowDropdown(!showDropdown);
   };
 
-  const getInfoMahasiswa = async () => {
-      try {
-      const response = await axios.get(`http://localhost:9090/mahasiswa/${UserId}`);
-      setMahasiswa(response.data);
-      } catch (error) {
-      console.error('Error fetching mahasiswa data:', error);
-      }
-  };
+  useEffect(() => {
+    const getInfoMahasiswa = async () => {
+        try {
+            let response;
+            if (token === "null") {
+                response = await axios.get(`http://localhost:9090/mahasiswa/${UserId}`);
+            } else {
+                response = await getDataDashboard("/mahasiswa");
+            }
+            setMahasiswa(response.data || response); // Memperhatikan bahwa ada kasus ketika responsenya langsung object, bukan response.data
+            console.log("mahasiswa : ", JSON.stringify(response));
+        } catch (error) {
+            console.error('Error fetching mahasiswa data:', error);
+        }
+    };
 
     getInfoMahasiswa();
   }, [token]); // Perubahan token akan memicu useEffect untuk dijalankan kembali
