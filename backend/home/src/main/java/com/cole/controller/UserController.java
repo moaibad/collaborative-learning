@@ -120,7 +120,7 @@ public class UserController {
 				System.out.println(existingUser.getToken());
 			}
 			// Send a message indicating the account is already registered
-			return ResponseEntity.ok().body(new Result(200, "Account already registered"));
+			return ResponseEntity.ok().body(new Result(200, "login successfully"));
 		}
 
 		// register
@@ -131,7 +131,7 @@ public class UserController {
 		int saveResult = userService.saveUser(user);
 
 		if (saveResult == 1) {
-			return ResponseEntity.ok().body(new Result(200, "Success"));
+			return ResponseEntity.ok().body(new Result(201, "Account registered successfully"));
 		} else {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Result(500, "Failed to register"));
 		}
