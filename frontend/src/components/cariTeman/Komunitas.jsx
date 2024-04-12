@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import komunitas from '../../data/dataKomunitas.js';
 import CardKomunitas from './cardKomunitas.jsx';
+import { Link } from 'react-router-dom'
 
 const Komunitas = () => {
   const [index, setIndex] = useState(0);
@@ -25,6 +26,9 @@ const Komunitas = () => {
       onMouseLeave={() => setIsHovered(false)}
     >
       <p className='text-xl font-bold mb-6 text-blue-400'>Komunitas</p>
+      <Link to="/cari-teman/semua-komunitas" className="text-blue-500">
+          Lihat Selengkapnya
+        </Link>
       <div className="flex relative">
         {visibleKomunitasData.map((komunitas) => (
           <CardKomunitas key={komunitas.id} komunitas={komunitas} />

@@ -5,3 +5,7 @@ export {default as Achievement} from './Achievement';
 export {default as TanyaJawab} from './TanyaJawab';
 export {default as CariTeman} from './CariTeman';
 export {default as Quiz} from './Quiz';
+export {default as SemuaMahasiswa} from './SemuaMahasiswa';
+export {default as SemuaDosen} from './SemuaDosen';
+export {default as SemuaPraktisi} from './SemuaPraktisi';
+export {default as SemuaKomunitas} from './SemuaKomunitas';

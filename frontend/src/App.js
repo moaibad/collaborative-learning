@@ -2,7 +2,7 @@ import React, {useEffect} from 'react'
 import { BrowserRouter, Routes, Route } from  "react-router-dom";
 import { FiSettings }  from 'react-icons/fi';
 import {Sidebar, Button, Footer, Header, Navbar, Notification, UserProfile} from './components';
-import {Profile, ProfileEdit, Home, TanyaJawab, Achievement, CariTeman, Quiz} from './pages/';
+import {Profile, ProfileEdit, Home, TanyaJawab, Achievement, CariTeman, Quiz, SemuaMahasiswa, SemuaDosen, SemuaPraktisi, SemuaKomunitas} from './pages/';
 
 import { useStateContext } from './contexts/ContextProvider';
 
@@ -42,6 +42,10 @@ const App = () => {
                                     <Route path='/profile/achievement' element={<Achievement/>}/>
                                 <Route path='/tanya-jawab' element={<TanyaJawab/>}/>
                                 <Route path='/cari-teman' element={<CariTeman/>}/>
+                                    <Route path='/cari-teman/semua-mahasiswa' element={<SemuaMahasiswa/>}/>
+                                    <Route path='/cari-teman/semua-dosen' element={<SemuaDosen/>}/>
+                                    <Route path='/cari-teman/semua-praktisi' element={<SemuaPraktisi/>}/>
+                                    <Route path='/cari-teman/semua-komunitas' element={<SemuaKomunitas/>}/>
                                 <Route path='/quiz' element={<Quiz/>}/>
                             </Routes>
                         </div>
