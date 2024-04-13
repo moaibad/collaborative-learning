@@ -11,6 +11,7 @@ public class UserTokenInfo {
     private String picture;
     private String locale;
 
+    // getters and setters
     public String getId() {
         return id;
     }
@@ -75,5 +76,5 @@ public class UserTokenInfo {
         this.locale = locale;
     }
 
-    // getters and setters
+    
 }
