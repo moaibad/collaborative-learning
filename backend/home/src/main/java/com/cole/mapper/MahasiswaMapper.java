@@ -10,25 +10,25 @@ import com.cole.vo.Mahasiswa;
 
 public class MahasiswaMapper implements RowMapper<Mahasiswa> {
 
-	@Override
-	public Mahasiswa mapRow(@NonNull ResultSet rs, int rowNum) throws SQLException {
-		Mahasiswa mahasiswa = new Mahasiswa();
+    @Override
+    public Mahasiswa mapRow(@NonNull ResultSet rs, int rowNum) throws SQLException {
+        Mahasiswa mahasiswa = new Mahasiswa();
 
-		mahasiswa.setId_mhs(rs.getLong("id_mhs"));
-		mahasiswa.setNama(rs.getString("nama"));
-		mahasiswa.setUsername(rs.getString("username"));
-		mahasiswa.setEmail(rs.getString("email"));
-		mahasiswa.setPassword(rs.getString("password"));
-		mahasiswa.setTanggal_lahir(rs.getDate("tanggal_lahir"));
-		mahasiswa.setLocation(rs.getString("location"));
-		mahasiswa.setAbout(rs.getString("about"));
-		mahasiswa.setKampus(rs.getString("kampus"));
-		mahasiswa.setJurusan(rs.getString("jurusan"));
-		mahasiswa.setSemester(rs.getInt("semester"));
-		mahasiswa.setToken(rs.getString("token"));
-		mahasiswa.setProfileUrl(rs.getString("profile_url"));
+        mahasiswa.setId_mhs(rs.getLong("id_mhs"));
+        mahasiswa.setJurusan(rs.getString("jurusan"));
+        mahasiswa.setAngkatan(rs.getString("angkatan"));
+        mahasiswa.setUniversitas(rs.getString("universitas"));
+        mahasiswa.setUser_id_user(rs.getLong("user_id_user"));
 
-		return mahasiswa;
-
-	}
+        return mahasiswa;
+    }
 }
+
+
+
+        // // User ID from User Table
+        // int user_id_user = rs.getInt("user_id_user");
+        // User user = new User();
+        // user.setId_user((long) user_id_user);
+
+        // mahasiswa.setUser(user);

@@ -3,7 +3,7 @@ package com.cole.vo;
 public class Result {
 	int result;
 	String message;
-	Long userId; // Menambahkan properti userId
+	Long userId; 
 
 	public Result() {
 	}
