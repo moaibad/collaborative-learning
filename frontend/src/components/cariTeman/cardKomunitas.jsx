@@ -43,7 +43,7 @@ const CardKomunitas = ({ komunitas }) => {
                 <p className='text-xs'>Anggota</p>
             </div>
             <div className='flex py-1 font-semibold text-gray-500'>
-                <p className='text-xs mr-8 ml-4'>{new Date(komunitas.createdAt).toLocaleDateString()}</p>
+                <p className='text-xs mr-16 ml-6'>{new Date(komunitas.createdAt).toLocaleDateString()}</p>
                 <p className='text-xs'>{komunitas.totalMembers}</p>
             </div>
           </div>
