@@ -9,6 +9,7 @@ import { Profile, ProfileEdit, Home, TanyaJawab, Achievement, CariTeman, Quiz, L
 import './App.css'
 import {getUserInfo} from './lib/fetchData';
 import Cookies from 'universal-cookie';
+import RegistData from './pages/RegistData';
 
 const App = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -60,6 +61,7 @@ const App = () => {
                             <Route path='/landing' element={<Landing />} />
                             <Route path='/register' element={<Register onLogin={handleLogin} />} />
                             <Route path='/login' element={<Login onLogin={handleLogin} />} />
+                            <Route path='/registData' element={<RegistData />} />
                             <Route path='*' element={<Navigate to='/landing' />} />
                             <Route path='/landing' element={<Landing/>} />
                         </Routes>

@@ -28,6 +28,22 @@ body {
     clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
 }
 
+/* ANIMATION */
+@keyframes fade-up {
+  0% {
+    opacity: 0;
+    transform: translateY(100px) scale(0.6);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.welcome {
+  animation: fade-up 1.0s;
+}
+
 @keyframes show-up {
     0% {
       opacity: 0;
@@ -59,6 +75,16 @@ body {
       opacity: 0;
     }
   }
+  @keyframes slideDown-2 {
+    0% {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
   
   .animate-slide-down {
     animation: slideDown 0.3s ease forwards;
@@ -66,7 +92,7 @@ body {
   .animate-slide-up {
     animation: slideUp 0.3s ease forwards;
   }
-
+  
   @keyframes slideRight {
     0% {
       opacity: 0.5;
@@ -77,8 +103,18 @@ body {
       transform: translateX(0);
     }
   }
+  
   .animate-slide-right {
     animation: slideRight 0.5s ease forwards;
+  }
+  .content-slide-down-1 {
+    animation: slideDown-2 2.0s ease forwards;
+  }
+  .content-slide-down-2 {
+    animation: slideDown-2 3.0s ease forwards;
+  }
+  .content-slide-down-3 {
+    animation: slideDown-2 4.0s ease forwards;
   }
 
 @tailwind base;
