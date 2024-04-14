@@ -10,72 +10,58 @@ import jakarta.persistence.Column;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties; 
 
 @Entity
-@Table(name = "dosen")
+@Table(name = "praktisi")
 @JsonIgnoreProperties({"user"})
-public class Dosen {
+public class Praktisi {
     @Id
-	@Column(name = "id_dosen")
-	private Long id_dosen;
+	@Column(name = "id_praktisi")
+	private Long id_praktisi;
 
-	@Column(name = "jurusan")
-	private String jurusan;
+	@Column(name = "asal_perusahaan")
+	private String asal_perusahaan;
 
-	@Column(name = "universitas")
-	private String universitas;
-
-    @Column(name = "pendidikan_terakhir")
-    private String pendidikan_terakhir;
+	@Column(name = "pendidikan_terakhir")
+	private String pendidikan_terakhir;
 
     @OneToOne
     @JoinColumn(name = "user_id_user", referencedColumnName = "id_user")
     private User user;
 
-
     // NULL Constructor
-    public Dosen(){
+    public Praktisi(){
 
     }
 
-    //Constructor without ID
-    public Dosen(String jurusan, String universitas, String pendidikan_terakhir, User user) {
-        this.jurusan = jurusan;
-        this.universitas = universitas;
+    // Constructor without ID
+    public Praktisi(String asal_perusahaan, String pendidikan_terakhir, User user) {
+        this.asal_perusahaan = asal_perusahaan;
         this.pendidikan_terakhir = pendidikan_terakhir;
         this.user = user;
     }
 
-    //Constructor with ID
-    public Dosen(Long id_dosen, String jurusan, String universitas, String pendidikan_terakhir, User user) {
-        this.id_dosen = id_dosen;
-        this.jurusan = jurusan;
-        this.universitas = universitas;
+    // Constructor with ID
+    public Praktisi(Long id_praktisi, String asal_perusahaan, String pendidikan_terakhir, User user) {
+        this.id_praktisi = id_praktisi;
+        this.asal_perusahaan = asal_perusahaan;
         this.pendidikan_terakhir = pendidikan_terakhir;
         this.user = user;
     }
 
-    //GETTER AND SETTER
-    public Long getId_dosen() {
-        return id_dosen;
+    // GETTER AND SETTER
+    public Long getId_praktisi() {
+        return id_praktisi;
     }
 
-    public void setId_dosen(Long id_dosen) {
-        this.id_dosen = id_dosen;
+    public void setId_praktisi(Long id_praktisi) {
+        this.id_praktisi = id_praktisi;
     }
 
-    public String getJurusan() {
-        return jurusan;
+    public String getAsal_perusahaan() {
+        return asal_perusahaan;
     }
 
-    public void setJurusan(String jurusan) {
-        this.jurusan = jurusan;
-    }
-
-    public String getUniversitas() {
-        return universitas;
-    }
-
-    public void setUniversitas(String universitas) {
-        this.universitas = universitas;
+    public void setAsal_perusahaan(String asal_perusahaan) {
+        this.asal_perusahaan = asal_perusahaan;
     }
 
     public String getPendidikan_terakhir() {

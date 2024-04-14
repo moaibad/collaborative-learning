@@ -12,40 +12,50 @@ import com.cole.vo.Dosen;
 
 @Repository
 public class DosenRepository {
-    
+
     @Autowired
     private JdbcTemplate jdbcTemplate;
-    
+
     public Dosen findOne(Long id) {
         String sql = "SELECT * FROM dosen WHERE id_dosen = ?";
         RowMapper<Dosen> rowMapper = new DosenMapper();
         return this.jdbcTemplate.queryForObject(sql, rowMapper, id);
     }
-    
-    public List<Dosen> findDosens() {
+
+    public Dosen findOneByUserId(Long id) {
+        String sql = "SELECT * FROM dosen WHERE user_id_user = ?";
+        RowMapper<Dosen> rowMapper = new DosenMapper();
+        return this.jdbcTemplate.queryForObject(sql, rowMapper, id);
+    }
+
+    public List<Dosen> findAll() {
         String sql = "SELECT * FROM dosen";
         RowMapper<Dosen> rowMapper = new DosenMapper();
         return this.jdbcTemplate.query(sql, rowMapper);
     }
-    
-    public int saveDosen(Dosen dosen) {
-        String sql = "INSERT INTO dosen(nama, email, password, kampus, jurusan, riwayat_s1, riwayat_s2, riwayat_s3, about) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        return jdbcTemplate.update(sql, dosen.getNama(), dosen.getEmail(), dosen.getPassword(), 
-                dosen.getKampus(), dosen.getJurusan(), dosen.getRiwayat_s1(), dosen.getRiwayat_s2(), 
-                dosen.getRiwayat_s3(), dosen.getAbout());
+
+    public int save(Dosen dosen) {
+        String sql = "INSERT INTO dosen (jurusan, universitas, pendidikan_terakhir, user_id_user) VALUES (?, ?, ?, ?)";
+        return jdbcTemplate.update(sql, dosen.getJurusan(), dosen.getUniversitas(), dosen.getPendidikan_terakhir(), dosen.getUser().getId_user());
     }
-    
-    public int updateDosen(Dosen dosen) {
-        String sql = "UPDATE dosen SET nama = ?, email = ?, password = ?, kampus = ?, jurusan = ?, riwayat_s1 = ?, riwayat_s2 = ?, riwayat_s3 = ?, about = ? WHERE id_dosen = ?";
-        return jdbcTemplate.update(sql, dosen.getNama(), dosen.getEmail(), dosen.getPassword(), 
-                dosen.getKampus(), dosen.getJurusan(), dosen.getRiwayat_s1(), dosen.getRiwayat_s2(), 
-                dosen.getRiwayat_s3(), dosen.getAbout(), dosen.getId_dosen());
+
+    public int update(Dosen dosen) {
+        String sql = "UPDATE dosen SET jurusan = ?, universitas = ?, pendidikan_terakhir = ? WHERE id_dosen = ?";
+        return jdbcTemplate.update(sql, dosen.getJurusan(), dosen.getUniversitas(), dosen.getPendidikan_terakhir(), dosen.getId_dosen());
     }
-    
-    public Dosen findDosenByEmailAndPassword(String email, String password) {
-        String sql = "SELECT * FROM dosen WHERE email = ? AND password = ?";
-        RowMapper<Dosen> rowMapper = new DosenMapper();
-        List<Dosen> dosenList = jdbcTemplate.query(sql, rowMapper, email, password);
-        return dosenList.isEmpty() ? null : dosenList.get(0);
+
+    public int updateByUserId(Dosen dosen) {
+        String sql = "UPDATE dosen SET jurusan = ?, universitas = ?, pendidikan_terakhir = ? WHERE user_id_user = ?";
+        return jdbcTemplate.update(sql, dosen.getJurusan(), dosen.getUniversitas(), dosen.getPendidikan_terakhir(), dosen.getUser_id_user());
+    }
+
+    public int delete(Long id) {
+        String sql = "DELETE FROM dosen WHERE id_dosen = ?";
+        return jdbcTemplate.update(sql, id);
+    }
+
+    public int deleteByUserId(Long id) {
+        String sql = "DELETE FROM dosen WHERE user_id_user = ?";
+        return jdbcTemplate.update(sql, id);
     }
 }
