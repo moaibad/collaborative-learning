@@ -102,4 +102,10 @@ public class MahasiswaService {
 		return true;
 	}
 
+	//get all mahasiswa by keyword
+	public List<Mahasiswa> getMahasiswaByKeyword(String keyword) {
+		List<Mahasiswa> mahasiswaList = mahasiswaRepository.findMahasiswaByKeyword(keyword);
+		return mahasiswaList;
+	}
+
 }

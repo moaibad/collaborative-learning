@@ -158,4 +158,11 @@ public class MahasiswaController {
 		}
 	}
 
+	//Get all mahasiswa by keyword
+	@GetMapping("/mahasiswa/search/{keyword}")
+	public List<Mahasiswa> getMahasiswaByKeyword(@PathVariable("keyword") String keyword) {
+		List<Mahasiswa> mahasiswaList = mahasiswaService.getMahasiswaByKeyword(keyword);
+		return mahasiswaList;
+	}
+
 }

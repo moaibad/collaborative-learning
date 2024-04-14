@@ -89,4 +89,12 @@ public class MahasiswaRepository {
 		List<Mahasiswa> mahasiswaList = jdbcTemplate.query(sql, rowMapper, email, password);
 		return mahasiswaList.isEmpty() ? null : mahasiswaList.get(0);
 	}
+
+	//get all mahasiswa by keyword
+	public List<Mahasiswa> findMahasiswaByKeyword(String keyword) {
+		String sql = "SELECT * FROM mahasiswa WHERE nama LIKE ? ";
+		RowMapper<Mahasiswa> rowMapper = new MahasiswaMapper();
+		return this.jdbcTemplate.query(sql, rowMapper, "%" + keyword + "%");
+	}
+	
 }
