@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import mahasiswa from '../../data/dataMahasiswa.js';
 import CardMahasiswa from './cardMahasiswa.jsx';
+import { Link } from 'react-router-dom';
 
 const Mahasiswa = () => {
   const [index, setIndex] = useState(0);
@@ -25,6 +26,11 @@ const Mahasiswa = () => {
       onMouseLeave={() => setIsHovered(false)}
     >
       <p className='text-xl font-bold mb-6 text-blue-400'>Mahasiswa</p>
+      <div className="flex justify-between items-center mb-4">
+      <Link to="/cari-teman/semua-mahasiswa" className="text-blue-500">
+          Lihat Selengkapnya
+        </Link>
+      </div>
       <div className="flex relative">
         {visibleMahasiswaData.map((mahasiswa) => (
           <CardMahasiswa key={mahasiswa.id} mahasiswa={mahasiswa} />

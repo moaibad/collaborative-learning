@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import CardDosen from './cardDosen.jsx';
 import dosen from '../../data/dataDosen.js';
+import { Link } from 'react-router-dom';
+
 
 const Dosen = () => {
   const [index, setIndex] = useState(0);
@@ -25,6 +27,9 @@ const Dosen = () => {
       onMouseLeave={() => setIsHovered(false)}
     >
       <p className='text-xl font-bold mb-6 text-blue-400 py-2'>Dosen</p>
+      <Link to="/cari-teman/semua-dosen" className="text-blue-500">
+          Lihat Selengkapnya
+        </Link>
       <div className="flex relative">
         {visibleDosenData.map((dosen) => (
           <CardDosen key={dosen.id} dosen={dosen} />

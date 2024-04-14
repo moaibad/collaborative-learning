@@ -42,6 +42,9 @@ const Komunitas = ({ searchKeyword }) => {
   >
     <div className="w-1100 overflow-hidden mx-19">
       <p className='text-xl font-bold mb-6 text-blue-400'>Komunitas</p>
+      <Link to="/cari-teman/semua-komunitas" className="text-blue-500">
+          Lihat Selengkapnya
+        </Link>
       <div className="flex relative">
         {visibleCommunityData.length === 0 ? (
           <p>Tidak ada Komunitas yang sesuai</p>

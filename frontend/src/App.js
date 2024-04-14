@@ -5,7 +5,7 @@ import { Sidebar, Button, Footer, Header, Navbar, Notification, UserProfile } fr
 import Course from "./pages/Course";
 import DetailCourse from "./components/course/detailCourse";
 import MateriCourse from "./components/course/materiCourse";
-import { Profile, ProfileEdit, Home, TanyaJawab, Achievement, CariTeman, Quiz, Login, Register, HomeDosen, Landing} from './pages/';
+import { Profile, ProfileEdit, Home, TanyaJawab, Achievement, CariTeman, Quiz, Login, Register, HomeDosen, Landing,  SemuaMahasiswa, SemuaDosen, SemuaPraktisi, SemuaKomunitas} from './pages/';
 import './App.css'
 import {getUserInfo} from './lib/fetchData';
 import Cookies from 'universal-cookie';
