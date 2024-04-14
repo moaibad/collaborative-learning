@@ -9,8 +9,9 @@ const SearchBar = ({ onSearch }) => {
   return (
     <input
       type="search"
-      placeholder='Cari komunitas berdasarkan kata kunci'
+      placeholder='Keyword [Nama Pengguna/Nama Komunitas] [Perguruan Tinggi] [Jurusan] [Topik]'
       className='w-full p-4 rounded-md bg-slate-200'
+      style={{ fontSize: '0.8rem' }}
       onChange={handleChange}
     />
   );

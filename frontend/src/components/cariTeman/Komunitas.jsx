@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import CardKomunitas from './cardKomunitas.jsx';
 import { getDataCTB } from '../../lib/fetchData';
+import { Link } from 'react-router-dom'
 
 const Komunitas = ({ searchKeyword }) => {
   const [index, setIndex] = useState(0);
@@ -36,15 +37,16 @@ const Komunitas = ({ searchKeyword }) => {
 
   return (
     <div
-    className="w-1100 overflow-hidden mx-19"
+    className="w-1100 overflow-hidden mx-19 my-5"
     onMouseEnter={() => setIsHovered(true)}
     onMouseLeave={() => setIsHovered(false)}
   >
-    <div className="w-1100 overflow-hidden mx-19">
+    <div className="flex justify-between items-center mb-4 mr-4 mt-4">
       <p className='text-xl font-bold mb-6 text-blue-400'>Komunitas</p>
       <Link to="/cari-teman/semua-komunitas" className="text-blue-500">
-          Lihat Selengkapnya
+          Lihat Semua &gt;
         </Link>
+        </div>
       <div className="flex relative">
         {visibleCommunityData.length === 0 ? (
           <p>Tidak ada Komunitas yang sesuai</p>
@@ -61,7 +63,6 @@ const Komunitas = ({ searchKeyword }) => {
         </div>
       </div>
     </div>
-  </div>
   );
 };
 

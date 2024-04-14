@@ -1,6 +1,8 @@
 // cardMahasiswa.js
 
 import React from 'react';
+import { FaUserAlt } from "react-icons/fa";
+import { FaArrowRightFromBracket } from "react-icons/fa6";
 
 const CardKomunitas = ({ komunitas }) => {
   // const topikList = komunitas.Topik.split(',');
@@ -16,17 +18,27 @@ const CardKomunitas = ({ komunitas }) => {
                 alt=""
               />
               <div className="tooltip">
-                  <p className='font-bold text-m text-center'>{komunitas.name}</p>
+                <p className='font-bold text-m text-center'>{komunitas.name}</p>
                 <span className="tooltiptext">
-                <a href={`http://localhost:9191/invite/${komunitas.inviteCode}`}>
-                  <button className="bg-blue-500 text-white px-2 py-1 rounded mb-1">Open</button>
-                  </a>
-                  <p className="text-xs">{komunitas.totalMembers} Members</p>
-                  <p className="text-xs">{komunitas.description}</p>
+                  <div class="grid grid-rows-3 grid-flow-col gap-0">
+                    <div class="row-span-3 "><img class="rounded-full w-9 h-9" src={komunitas.imageUrl} alt="user-profile" /></div>
+                    <div class="col-span-2 flex items-center">
+                      <p className='font-bold text-xs'>{komunitas.name}</p>
+                      <a href={`http://localhost:9191/invite/${komunitas.inviteCode}`}><FaArrowRightFromBracket size={14} className="ml-2" /></a>
+                    </div>
+                    <div class="row-span-2 col-span-3">
+                      <div class="row-span-2 col-span-3 flex items-center">
+                        <FaUserAlt size={10} />
+                        <p className='font-bold text-xs ml-2'>{komunitas.totalMembers}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <hr />
+                  <p className="text-xs mt-2">{komunitas.description}</p>
                 </span>
               </div>
               <p className='text-xs text-center text-gray-500'>{komunitas.location}</p>
-              <hr className="w-2/3 mx-auto border-gray-400 border-solid border-t-2 mt-2"/>
+              <hr className="w-2/3 mx-auto border-gray-400 border-solid border-t-2 mt-2" />
               <div className="bg-blue-500 text-white px-2 py-1 rounded mt-2 w-2/3 mx-auto">
                 <p className='text-xs text-center'>{komunitas.departement}</p>
               </div>
@@ -39,12 +51,12 @@ const CardKomunitas = ({ komunitas }) => {
               </div>
             </div>
             <div className='flex py-1 font-bold'>
-                <p className='text-xs  mr-16 ml-6'>Dibuat</p>
-                <p className='text-xs'>Anggota</p>
+              <p className='text-xs  mr-16 ml-6'>Dibuat</p>
+              <p className='text-xs'>Anggota</p>
             </div>
             <div className='flex py-1 font-semibold text-gray-500'>
-                <p className='text-xs mr-16 ml-6'>{new Date(komunitas.createdAt).toLocaleDateString()}</p>
-                <p className='text-xs'>{komunitas.totalMembers}</p>
+              <p className='text-xs mr-16 ml-6'>{new Date(komunitas.createdAt).toLocaleDateString()}</p>
+              <p className='text-xs'>{komunitas.totalMembers}</p>
             </div>
           </div>
         </li>

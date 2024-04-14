@@ -22,14 +22,16 @@ const Dosen = () => {
 
   return (
     <div
-      className="w-1100 overflow-hidden mx-19"
+      className="w-1100 overflow-hidden mx-19 my-5"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
+      <div className="flex justify-between items-center mb-4 mr-4 mt-4">
       <p className='text-xl font-bold mb-6 text-blue-400 py-2'>Dosen</p>
       <Link to="/cari-teman/semua-dosen" className="text-blue-500">
-          Lihat Selengkapnya
+          Lihat Semua &gt;
         </Link>
+      </div>
       <div className="flex relative">
         {visibleDosenData.map((dosen) => (
           <CardDosen key={dosen.id} dosen={dosen} />

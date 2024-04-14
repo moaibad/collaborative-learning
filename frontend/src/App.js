@@ -83,6 +83,10 @@ const App = () => {
                                     <Route path='/profile/achievement' element={<Achievement />} />
                                     <Route path='/tanya-jawab' element={<TanyaJawab />} />
                                     <Route path='/cari-teman' element={<CariTeman />} />
+                                    <Route path='/cari-teman/semua-mahasiswa' element={<SemuaMahasiswa/>}/>
+                                    <Route path='/cari-teman/semua-dosen' element={<SemuaDosen/>}/>
+                                    <Route path='/cari-teman/semua-praktisi' element={<SemuaPraktisi/>}/>
+                                    <Route path='/cari-teman/semua-komunitas' element={<SemuaKomunitas/>}/>
                                     <Route path='/quiz' element={<Quiz />} />
                                     <Route path="/course" element={<Course />} />
                                     <Route path="/detail-course/:id" element={<DetailCourse />} />
