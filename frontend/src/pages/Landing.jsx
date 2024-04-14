@@ -9,6 +9,7 @@ import { IoMdContacts } from 'react-icons/io';
 import { HiChatBubbleLeftRight } from "react-icons/hi2";
 import { FcGoogle } from "react-icons/fc";
 import gsap from 'gsap';
+import { message  } from 'antd';
 
 import avatar from '../data/landing-profile.png';
 import SplitType from 'split-type';
@@ -45,6 +46,19 @@ const Landing = ({onLogin}) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const loginUser = (result) => {
+    // Handle login result
+    if (result === 200) {
+      // Redirect to dashboard
+      navigate("/");
+    } else if (result === 201) {
+      // Redirect to registration page
+      navigate("/registData");
+    } else {
+      message.error('Error bro.');
+    }
+  };
+
   const login = useGoogleLogin({
     onSuccess: (codeResponse) => {
         cookies.set('user_token', codeResponse["access_token"], { path: '/', maxAge: 3600 });
@@ -62,7 +76,7 @@ const Landing = ({onLogin}) => {
             "jurusan": "Computer Science",
             "semester": 5
         };
-        axios.post("http://localhost:8080/oauth/mahasiswa", dummy_user, {
+        axios.post("http://localhost:8080/oauth/user", dummy_user, {
             headers: {
                 Accept: "*/*",
                 Authorization: `Bearer ${codeResponse["access_token"]}`,
@@ -74,9 +88,10 @@ const Landing = ({onLogin}) => {
             console.log("ga error", JSON.stringify(response.data));
             // Set cookie untuk userId setelah berhasil login
             cookies.set('userId', response.data.id_mhs, { path: '/', maxAge: 3600 });
+            console.log(response.status);
             console.log(response.data.id_mhs);
             onLogin();
-            navigate("/");
+            loginUser(response.status);
         })
         .catch((err) => console.log("error ges", JSON.stringify(err)));
     },
@@ -112,25 +127,12 @@ const Landing = ({onLogin}) => {
               </p>
             </div>
             <div className='gap-4 flex justify-center'>
-              {/* <Link to='/login'>
-                <button className='rounded-full py-4 px-10 font-bold text-white bg-orange-400 text-xl transition ease-in-out delay-150 hover:scale-110 hover:bg-orange-500 duration-300'>Login</button>
-              </Link>
-              <Link to='/register'>
-                <button className='rounded-full py-3 px-6 font-bold text-orange-400 border-4 border-orange-400 bg-white text-xl transition ease-in-out delay-150 hover:scale-110 hover:border-orange-500 hover:text-orange-500 duration-300'>
-                  Register
-                </button>
-              </Link> */}
               <button onClick={login} className='flex items-center justify-center gap-2 rounded-full py-4 px-16 font-bold text-white bg-blue-400 text-lg transition ease-in-out delay-150 hover:scale-110 hover:bg-blue-500 duration-300'>
                 <div className='bg-white rounded-full p-1'>
                   <FcGoogle />
                 </div>
                 Continue with Google
               </button>
-              <Link to='/registData'>
-                <button className='flex items-center justify-center gap-2 rounded-full py-4 px-16 font-bold text-white bg-blue-400 text-lg transition ease-in-out delay-150 hover:scale-110 hover:bg-blue-500 duration-300'>
-                  Test
-                </button>
-              </Link>
             </div>
           </div>
         </div>
