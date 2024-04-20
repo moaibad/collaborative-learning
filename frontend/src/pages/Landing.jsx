@@ -11,6 +11,7 @@ import { loginMahasiswa, setTokenToOther } from '../lib/fetchData';
 import { FcGoogle } from "react-icons/fc";
 import gsap from 'gsap';
 import { message  } from 'antd';
+import { dummy_user } from '../data/dummy';
 
 import avatar from '../data/landing-profile.png';
 import SplitType from 'split-type';
@@ -51,19 +52,6 @@ const Landing = ({onLogin}) => {
     onSuccess: (codeResponse) => {
         cookies.set('user_token', codeResponse["access_token"], { path: '/', maxAge: 3600 });
         setUser(codeResponse);
-        const dummy_user = {
-            "mhs_id": -1,
-            "nama": "John Doe",
-            "username": "john_doe",
-            "email": "john.doe@example.com",
-            "password": "securepassword",
-            "tanggal_lahir": new Date("1990-01-01"),
-            "location": "City, Country",
-            "about": "I am a student.",
-            "kampus": "Example University",
-            "jurusan": "Computer Science",
-            "semester": 5
-        };
         axios.post("http://localhost:8080/oauth/user", dummy_user, {
             headers: {
                 Accept: "*/*",
