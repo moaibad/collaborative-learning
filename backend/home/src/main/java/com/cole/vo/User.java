@@ -44,6 +44,19 @@ public class User {
 	@Column (name = "role")
 	private String role;
 
+	@Column (name = "firstname")
+	private String firstname;
+	
+	@Column (name = "lastname")
+	private String lastname;
+
+	@Column (name = "username_moodle")
+	private String username_moodle;
+
+	@Column (name = "password_moodle")
+	private String password_moodle;
+
+
 	// Constructor
 	public User() {
 	}
@@ -94,6 +107,38 @@ public class User {
 		this.token = token;
 		this.ProfileUrl = ProfileUrl;
 		this.role = role;
+	}
+
+	// Constructor MOODLE without id
+	public User(
+			String nama,
+			String username,
+			String email,
+			String password,
+			Date tanggal_lahir,
+			String location,
+			String about,
+			String token,
+			String ProfileUrl,
+			String role,
+			String firstname,
+			String lastname,
+			String username_moodle,
+			String password_moodle) {
+		this.nama = nama;
+		this.username = username;
+		this.email = email;
+		this.password = password;
+		this.tanggal_lahir = tanggal_lahir;
+		this.location = location;
+		this.about = about;
+		this.token = token;
+		this.ProfileUrl = ProfileUrl;
+		this.role = role;
+		this.firstname = firstname;
+		this.lastname = lastname;
+		this.username_moodle = username_moodle;
+		this.password_moodle = password_moodle;
 	}
 
 	// Getter and Setter
@@ -183,5 +228,37 @@ public class User {
 
 	public void setRole(String role) {
 		this.role = role;
+	}
+
+	public String getFirstname() {
+		return firstname;
+	}
+
+	public void setFirstname(String firstname) {
+		this.firstname = firstname;
+	}
+
+	public String getLastname() {
+		return lastname;
+	}
+
+	public void setLastname(String lastname) {
+		this.lastname = lastname;
+	}
+
+	public String getUsername_moodle() {
+		return username_moodle;
+	}
+
+	public void setUsername_moodle(String username_moodle) {
+		this.username_moodle = username_moodle;
+	}
+
+	public String getPassword_moodle() {
+		return password_moodle;
+	}
+
+	public void setPassword_moodle(String password_moodle) {
+		this.password_moodle = password_moodle;
 	}
 }

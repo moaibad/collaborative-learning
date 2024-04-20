@@ -77,7 +77,7 @@ const LoginPage = ({ onLogin }) => {
     //             "jurusan": "Computer Science",
     //             "semester": 5
     //         };
-    //         axios.post("http://localhost:8080/oauth/mahasiswa", dummy_user, {
+    //         axios.post("http://localhost:8080/oauth/user", dummy_user, {
     //             headers: {
     //                 Accept: "*/*",
     //                 Authorization: `Bearer ${codeResponse["access_token"]}`,

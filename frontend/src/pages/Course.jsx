@@ -5,7 +5,7 @@ import CourseList from "../components/course/courseList";
 import { RiErrorWarningFill } from "react-icons/ri";
 
 const Course = () => {
-  const role = "Teachers";
+  const role = "Teacher";
   const [toggle, setToggle] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [courseData, setCourseData] = useState({

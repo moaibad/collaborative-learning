@@ -26,7 +26,7 @@ const Register = (onLogin) => {
         e.preventDefault();
 
         try {
-            const response = await fetch('http://localhost:8080/mahasiswa/register', {
+            const response = await fetch('http://localhost:8080/user/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -65,12 +65,12 @@ const Register = (onLogin) => {
                 <div className="md:flex">
                     <ul className="flex-column space-y space-y-4 text-sm font-medium text-gray-500 dark:text-gray-400 md:me-4 mb-4 md:mb-0">
                         <li>
-                            <a href="#" className="inline-flex items-center px-4 py-3 text-white bg-orange-400 rounded-tl-xl rounded-br-xl active w-full dark:bg-blue-600" aria-current="page">
+                            <a href="#" className="inline-flex items-center px-4 py-3 text-white bg-orange-400 rounded-tl-xl rounded-br-xl active w-full" aria-current="page">
                                 Student
                             </a>
                         </li>
                         <li>
-                            <a href="#" className="inline-flex items-center px-4 py-3 outline text-orange-400 bg-white rounded-tl-xl rounded-br-xl active w-full dark:bg-blue-600" aria-current="page">
+                            <a href="#" className="inline-flex items-center px-4 py-3 outline text-orange-400 bg-white rounded-tl-xl rounded-br-xl active w-full" aria-current="page">
                                 Lecturer
                             </a>
                         </li>

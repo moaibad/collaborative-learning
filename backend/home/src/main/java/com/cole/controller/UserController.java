@@ -68,7 +68,7 @@ public class UserController {
 		}
 	}
 
-	// Register User API
+	// Register User API (OLD API WITH MANUAL REGISTER)
 	@PostMapping("/user/register")
 	public Object registerUser(HttpServletResponse response, @RequestBody User userParam) {
 		User user = new User(userParam.getNama(), userParam.getUsername(),
@@ -110,8 +110,11 @@ public class UserController {
 					.body(new Result(500, "Failed to fetch user profile"));
 		}
 		System.out.println(userTokenInfo.getEmail());
+		
 		// Check if the email exists
 		User existingUser = userService.getUserByEmail(userTokenInfo.getEmail());
+
+		// Login
 		if (existingUser != null) {
 			existingUser.setToken(userToken);
 			// Email exists, return the data
@@ -119,21 +122,24 @@ public class UserController {
 			if (updateUser) {
 				System.out.println(existingUser.getToken());
 			}
+
+			Long userId = existingUser.getId_user();
 			// Send a message indicating the account is already registered
-			return ResponseEntity.ok().body(new Result(200, "login successfully"));
-		}
+			return ResponseEntity.ok().body(new Result(200, "login successfully", userId));
 
 		// register
-		User user = new User(userTokenInfo.getName(), userTokenInfo.getName(),
-				userTokenInfo.getEmail(), userParam.getPassword(),
-				userParam.getTanggal_lahir(), userParam.getLocation(), userParam.getAbout(),
-				userToken, userTokenInfo.getPicture(), userParam.getRole());
-		int saveResult = userService.saveUser(user);
-
-		if (saveResult == 1) {
-			return ResponseEntity.ok().body(new Result(201, "Account registered successfully"));
-		} else {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Result(500, "Failed to register"));
+		}else {
+			User user = new User(userTokenInfo.getName(), userTokenInfo.getName(),
+					userTokenInfo.getEmail(), userParam.getPassword(),
+					userParam.getTanggal_lahir(), userParam.getLocation(), userParam.getAbout(),
+					userToken, userTokenInfo.getPicture(), userParam.getRole());
+			int saveResult = userService.saveUser(user);
+	
+			if (saveResult == 1) {
+				return ResponseEntity.status(HttpStatus.CREATED).body(new Result(201, "Account registered successfully"));
+			} else {
+				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Result(500, "Failed to register"));
+			}
 		}
 	}
 

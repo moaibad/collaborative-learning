@@ -87,12 +87,12 @@ const Navbar = () => {
         try {
             let response;
             if (token === "null") {
-                response = await axios.get(`http://localhost:8080/mahasiswa/${UserId}`);
+                response = await axios.get(`http://localhost:8080/user/${UserId}`);
             } else {
-                response = await getDataDashboard("/mahasiswa");
+                response = await getDataDashboard("/user");
             }
             setMahasiswa(response.data || response); // Memperhatikan bahwa ada kasus ketika responsenya langsung object, bukan response.data
-            console.log("mahasiswa : ", JSON.stringify(response));
+            console.log("user : ", JSON.stringify(response));
         } catch (error) {
             console.error('Error fetching mahasiswa data:', error);
         }
@@ -168,7 +168,7 @@ const Navbar = () => {
                 <p>
                   <span className="text-gray-400 text-14">Hi,</span>{' '}
                   <span className="text-gray-400 font-bold ml-1 text-14">
-                    {mahasiswa.nama ? mahasiswa.nama : mahasiswa.username}
+                    {mahasiswa.nama ? mahasiswa.nama.split(" ")[0] : mahasiswa.username}
                   </span>
                 </p>
                 <div className='flex w-full'>

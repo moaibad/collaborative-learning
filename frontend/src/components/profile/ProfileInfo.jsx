@@ -12,12 +12,12 @@ const ProfileInfo = () => {
         try {
             let response;
             if (token === "null") {
-                response = await axios.get(`http://localhost:8080/mahasiswa/${UserId}`);
+                response = await axios.get(`http://localhost:8080/user/${UserId}`);
             } else {
-                response = await getDataDashboard("/mahasiswa");
+                response = await getDataDashboard("/user");
             }
             setMahasiswa(response.data || response); // Memperhatikan bahwa ada kasus ketika responsenya langsung object, bukan response.data
-            console.log("mahasiswa : ", JSON.stringify(response));
+            console.log("user : ", JSON.stringify(response));
         } catch (error) {
             console.error('Error fetching mahasiswa data:', error);
         }
