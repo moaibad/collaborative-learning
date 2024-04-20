@@ -47,21 +47,6 @@ const Landing = ({onLogin}) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const loginUser = (result) => {
-    // Handle login result
-    if (result === 200) {
-      // Redirect to dashboard
-      // setTokenToOther(codeResponse["access_token"]);
-      onLogin();
-      navigate('/');
-    } else if (result === 201) {
-      // Redirect to registration page
-      navigate("/registData");
-    } else {
-      message.error('Error bro.');
-    }
-  };
-
   const login = useGoogleLogin({
     onSuccess: (codeResponse) => {
         cookies.set('user_token', codeResponse["access_token"], { path: '/', maxAge: 3600 });
@@ -94,13 +79,15 @@ const Landing = ({onLogin}) => {
             console.log(response.status);
             console.log(response.data.userId);
 
-            // loginUser(response.status);
-            if (response.status === 200) {
-              // Redirect to dashboard
+            if (response.status === 200) { // LOGIN 
               // setTokenToOther(codeResponse["access_token"]);
+
+              // Set cookie untuk userId setelah berhasil login
+              cookies.set('userId', response.data.id_mhs, { path: '/', maxAge: 3600 });
               onLogin();
               navigate('/');
-            } else if (response.status === 201) {
+
+            } else if (response.status === 201) { // REGISTER
               // Redirect to registration page
               navigate("/registData");
             } else {
