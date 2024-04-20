@@ -43,6 +43,7 @@ const CourseAllList = () => {
 
   return (
     <div>
+      {/* search box */}
       <div className="max-w-full mx-4 m-3">
         <div
           className="relative flex items-center w-full h-full rounded-lg focus-within:shadow-l overflow-hidden"
@@ -64,7 +65,6 @@ const CourseAllList = () => {
               />
             </svg>
           </div>
-
           <input
             className="peer h-full w-full outline-none text-sm text-gray-700 py-3 pr-2"
             style={{ backgroundColor: "#F5F6F8" }}
@@ -77,6 +77,7 @@ const CourseAllList = () => {
         </div>
       </div>
 
+      {/* list all course */}
       <div className="grid grid-cols-3 gap-4">
         {filteredCourses.length > 0 ? (
           filteredCourses.map((course) => (

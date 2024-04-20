@@ -36,6 +36,7 @@ const Sidebar = () => {
 
   //LOGIN MOODLE
   const [formData, setFormData] = useState({
+    // user Lecturer
     username: "cinderella",
     password: "Bibbidibobbidiboo123.",
   });

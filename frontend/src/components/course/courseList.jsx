@@ -48,6 +48,7 @@ const CourseList = ({ role }) => {
 
   return (
     <div>
+      {/* search box */}
       <div className="max-w-full mx-1 mb-3">
         <div
           className="relative flex items-center w-full h-full rounded-lg focus-within:shadow-l overflow-hidden"
@@ -80,6 +81,7 @@ const CourseList = ({ role }) => {
           />
         </div>
       </div>
+      {/* list course  */}
       <div className="grid grid-cols-3 gap-4">
         {filteredCourses.length > 0 ? (
           filteredCourses.map((course) => (

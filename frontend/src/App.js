@@ -43,6 +43,7 @@ const App = () => {
   const [user, setUser] = useState(null);
   const navigate = useNavigate(); // Add this line for navigation
   const cookies = new Cookies();
+
   // Function to handle login
   const handleLogin = () => {
     setIsLoggedIn(true);
@@ -53,6 +54,7 @@ const App = () => {
     // Perform logout logic here
     setIsLoggedIn(false);
   };
+
   useEffect(() => {
     // Move the setUser function here
     const updateUserProfile = async () => {

@@ -30,6 +30,7 @@ const Course = () => {
     setIsModalOpen(true);
   };
 
+  // handle OK for public course
   const handleOk = async () => {
     const isValid = validateForm();
     if (!isValid) {
@@ -75,6 +76,7 @@ const Course = () => {
     }
   };
 
+  // handle OK for privte course
   const handleOk2 = async () => {
     const isValid = validateForm2();
     if (!isValid) {
@@ -99,7 +101,7 @@ const Course = () => {
       ) {
         setSuccessMessage(true); // Menampilkan pesan sukses
         setIsModalOpen(false); // Menutup modal setelah berhasil membuat kursus
-        clearForm(); // Mengosongkan formulir setelah berhasil membuat kursus
+        clearForm2(); // Mengosongkan formulir setelah berhasil membuat kursus
         window.location.href = "/course";
         return; // Keluar dari fungsi setelah menampilkan pesan sukses
       }
@@ -127,6 +129,16 @@ const Course = () => {
       summary: "",
     });
     setFormErrors({});
+  };
+
+  const clearForm2 = () => {
+    setCoursePrivateData({
+      fullname: "",
+      shortname: "",
+      summary: "",
+      enrolmentkey: "",
+    });
+    setFormErrors2({});
   };
 
   const handleCancel = () => {
