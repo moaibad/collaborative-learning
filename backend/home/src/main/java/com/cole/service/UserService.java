@@ -93,4 +93,8 @@ public class UserService {
 		return true;
 	}
 
+	public int addPersonalInfo(User user) {
+        return userRepository.addPersonalInfo(user);
+    }
+
 }

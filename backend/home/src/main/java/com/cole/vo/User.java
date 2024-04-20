@@ -109,8 +109,9 @@ public class User {
 		this.role = role;
 	}
 
-	// Constructor MOODLE without id
+	// Constructor MOODLE with id
 	public User(
+			Long id_user,
 			String nama,
 			String username,
 			String email,
@@ -125,6 +126,7 @@ public class User {
 			String lastname,
 			String username_moodle,
 			String password_moodle) {
+		this.id_user = id_user;
 		this.nama = nama;
 		this.username = username;
 		this.email = email;
