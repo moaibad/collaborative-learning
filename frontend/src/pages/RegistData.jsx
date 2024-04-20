@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import axios from 'axios';
+import Cookies from 'js-cookie';
 import { FaCheck } from "react-icons/fa";
 import { AiOutlineSlackSquare } from "react-icons/ai";
 import { BsFillPersonVcardFill } from "react-icons/bs";
@@ -15,6 +17,7 @@ import { classOptions } from '../data/dummy';
 
 const RegistData = () => {
     const [current, setCurrent] = useState(0);
+    const [error, setError] = useState('');
     const [selectedRole, setSelectedRole] = useState('');
     const [formData, setFormData] = useState({
         firstname: '',
@@ -31,7 +34,29 @@ const RegistData = () => {
         role: '',
         roleInCompany: ''
     });
+
+    const id = Cookies.get('userId');
     const navigate = useNavigate();
+
+    const registerUser = async (formData) => {
+        try {
+          const response = await axios.post(`http://localhost:8080/user/PersonalInfo/${id}`, formData);
+
+          const responseData = await response.json();
+          
+          // Handle successful registration
+          if (response.ok) {
+                message.success("Register Successfully!");
+            setTimeout(()=>{navigate('/')},1500);
+        } else {
+            setError(responseData.message || 'Registration failed. Please try again.');
+        }
+        } catch (error) {
+          // Handle registration errors
+          console.error('Error registering:', error);
+          message.error('An error occurred. Please try again later.');
+        }
+      };
 
     const continues = () => {
         setCurrent(current + 1);
@@ -115,6 +140,7 @@ const RegistData = () => {
             // Handle form submission
             message.success('Registration Successful!');
             console.log('Form values:', formData);
+            registerUser(formData);
             navigate('/'); // Redirect to home or any other route
         }
     };
