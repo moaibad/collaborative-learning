@@ -121,19 +121,19 @@ public class UserController {
 			}
 			// Send a message indicating the account is already registered
 			return ResponseEntity.ok().body(new Result(200, "login successfully"));
-		}
-
-		// register
-		User user = new User(userTokenInfo.getName(), userTokenInfo.getName(),
-				userTokenInfo.getEmail(), userParam.getPassword(),
-				userParam.getTanggal_lahir(), userParam.getLocation(), userParam.getAbout(),
-				userToken, userTokenInfo.getPicture(), userParam.getRole());
-		int saveResult = userService.saveUser(user);
-
-		if (saveResult == 1) {
-			return ResponseEntity.ok().body(new Result(201, "Account registered successfully"));
-		} else {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Result(500, "Failed to register"));
+		}else {
+			// register
+			User user = new User(userTokenInfo.getName(), userTokenInfo.getName(),
+					userTokenInfo.getEmail(), userParam.getPassword(),
+					userParam.getTanggal_lahir(), userParam.getLocation(), userParam.getAbout(),
+					userToken, userTokenInfo.getPicture(), userParam.getRole());
+			int saveResult = userService.saveUser(user);
+	
+			if (saveResult == 1) {
+				return ResponseEntity.status(HttpStatus.CREATED).body(new Result(201, "Account registered successfully"));
+			} else {
+				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Result(500, "Failed to register"));
+			}
 		}
 	}
 
