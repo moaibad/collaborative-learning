@@ -1,17 +1,29 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { Button, Modal } from "antd";
 import CourseList from "../components/course/courseList";
 import { RiErrorWarningFill } from "react-icons/ri";
 
 const Course = () => {
-  const role = "Teacher";
+  console.log("role : ", JSON.parse(localStorage.getItem("role")));
+  const role = JSON.parse(localStorage.getItem("role"));
+  const [toggle, setToggle] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [courseData, setCourseData] = useState({
     fullname: "",
     shortname: "",
     summary: "",
+    userid: 4,
+  });
+  const [coursePrivateData, setCoursePrivateData] = useState({
+    fullname: "",
+    shortname: "",
+    summary: "",
+    enrolmentkey: "",
+    userid: 4,
   });
   const [formErrors, setFormErrors] = useState({});
+  const [formErrors2, setFormErrors2] = useState({});
   const [shortnameTaken, setShortnameTaken] = useState(false); // State untuk menangani pesan shortname taken
   const [successMessage, setSuccessMessage] = useState(false); // State untuk menampilkan pesan sukses
 
@@ -19,6 +31,7 @@ const Course = () => {
     setIsModalOpen(true);
   };
 
+  // handle OK for public course
   const handleOk = async () => {
     const isValid = validateForm();
     if (!isValid) {
@@ -26,15 +39,78 @@ const Course = () => {
     }
 
     try {
-      // Tambah categoryid ke courseData
-      const dataToSend = { ...courseData, categoryid: 1 };
-      await createCourse(dataToSend);
-      setSuccessMessage(true); // Menampilkan pesan sukses
-      setIsModalOpen(false); // Menutup modal setelah berhasil membuat kursus
-      clearForm(); // Mengosongkan formulir setelah berhasil membuat kursus
-      window.location.href = "/course";
+      // Tambah userid ke courseData
+      const dataToSend = { ...courseData };
+      const response = await createCourse(dataToSend);
+      console.log("Ini responseee", response);
+
+      // Mengecek apakah respons dari server menunjukkan bahwa kursus berhasil dibuat
+      if (
+        response &&
+        response.firstObject &&
+        response.firstObject.id &&
+        response.firstObject.shortname &&
+        response.secondObject &&
+        response.secondObject.courseid &&
+        response.secondObject.message
+      ) {
+        setSuccessMessage(true); // Menampilkan pesan sukses
+        setIsModalOpen(false); // Menutup modal setelah berhasil membuat kursus
+        clearForm(); // Mengosongkan formulir setelah berhasil membuat kursus
+        window.location.href = "/course";
+        return; // Keluar dari fungsi setelah menampilkan pesan sukses
+      }
+
+      // Jika respons tidak menunjukkan bahwa kursus berhasil dibuat, lanjutkan seperti biasa
+      console.log("Server Response:", response);
     } catch (error) {
-      console.error("Error:", error);
+      console.error("Error:", error.message);
+      if (
+        error.message ===
+        "Failed to create course: Short name is already used for another course"
+      ) {
+        setShortnameTaken(true);
+      } else {
+        setIsModalOpen(false); // Tutup modal hanya jika tidak ada error "shortnametaken"
+      }
+      // Handle error
+    }
+  };
+
+  // handle OK for privte course
+  const handleOk2 = async () => {
+    const isValid = validateForm2();
+    if (!isValid) {
+      return;
+    }
+
+    try {
+      // Tambah userid ke courseData
+      const dataToSend = { ...coursePrivateData };
+      const response = await createPrivateCourse(dataToSend);
+      console.log("Ini responseee", response);
+
+      // Mengecek apakah respons dari server menunjukkan bahwa kursus berhasil dibuat
+      if (
+        response &&
+        response.firstObject &&
+        response.firstObject.id &&
+        response.firstObject.shortname &&
+        response.secondObject &&
+        response.secondObject.courseid &&
+        response.secondObject.message
+      ) {
+        setSuccessMessage(true); // Menampilkan pesan sukses
+        setIsModalOpen(false); // Menutup modal setelah berhasil membuat kursus
+        clearForm2(); // Mengosongkan formulir setelah berhasil membuat kursus
+        window.location.href = "/course";
+        return; // Keluar dari fungsi setelah menampilkan pesan sukses
+      }
+
+      // Jika respons tidak menunjukkan bahwa kursus berhasil dibuat, lanjutkan seperti biasa
+      console.log("Server Response:", response);
+    } catch (error) {
+      console.error("Error:", error.message);
       if (
         error.message ===
         "Failed to create course: Short name is already used for another course"
@@ -56,6 +132,16 @@ const Course = () => {
     setFormErrors({});
   };
 
+  const clearForm2 = () => {
+    setCoursePrivateData({
+      fullname: "",
+      shortname: "",
+      summary: "",
+      enrolmentkey: "",
+    });
+    setFormErrors2({});
+  };
+
   const handleCancel = () => {
     setIsModalOpen(false);
   };
@@ -63,6 +149,14 @@ const Course = () => {
   const handleChange = (e) => {
     const { id, value } = e.target;
     setCourseData((prevData) => ({
+      ...prevData,
+      [id]: value,
+    }));
+  };
+
+  const handleChange2 = (e) => {
+    const { id, value } = e.target;
+    setCoursePrivateData((prevData) => ({
       ...prevData,
       [id]: value,
     }));
@@ -83,19 +177,36 @@ const Course = () => {
     return Object.keys(errors).length === 0;
   };
 
+  const validateForm2 = () => {
+    const errors = {};
+    if (!coursePrivateData.fullname.trim()) {
+      errors.fullname = "Fullname is required";
+    }
+    if (!coursePrivateData.shortname.trim()) {
+      errors.shortname = "Shortname is required";
+    }
+    if (!coursePrivateData.summary.trim()) {
+      errors.summary = "Summary is required";
+    }
+    if (!coursePrivateData.enrolmentkey.trim()) {
+      errors.enrolmentkey = "Enrolment key is required";
+    }
+    setFormErrors2(errors);
+    return Object.keys(errors).length === 0;
+  };
+
   const createCourse = async (courseData) => {
     const apiUrl = `http://moaibad.southeastasia.cloudapp.azure.com/moodle/webservice/rest/server.php`;
-    const token = "24a495bd6288308e975f7ff5a6e92d65";
-    const wsfunction = "core_course_create_courses";
+    const token = "5aa6c5a9f9e54193407b3dcd6ec9ab4b";
+    const wsfunction = "local_colle_create_course";
 
-    // Membuat query string dari courseData
-    const queryString = Object.keys(courseData)
-      .map((key) => {
-        return `courses[0][${key}]=${encodeURIComponent(courseData[key])}`;
-      })
-      .join("&");
-
-    const fullUrl = `${apiUrl}?wstoken=${token}&wsfunction=${wsfunction}&${queryString}`;
+    const fullUrl = `${apiUrl}?moodlewsrestformat=json&wstoken=${token}&wsfunction=${wsfunction}&fullname=${encodeURIComponent(
+      courseData.fullname
+    )}&shortname=${encodeURIComponent(
+      courseData.shortname
+    )}&enrolmentkey&summary=${encodeURIComponent(courseData.summary)}&userid=${
+      courseData.userid
+    }`;
 
     try {
       const response = await fetch(fullUrl, {
@@ -107,62 +218,115 @@ const Course = () => {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      // Membaca respons sebagai teks
-      const textResponse = await response.text();
+      // Mengambil respons sebagai teks
+      const responseDataText = await response.text();
+      console.log("Server Response:", responseDataText);
 
-      // Mengecek apakah respons adalah XML (dengan mengecek apakah dimulai dengan '<')
-      if (textResponse.startsWith("<")) {
-        const parser = new DOMParser();
-        const xmlDoc = parser.parseFromString(textResponse, "text/xml");
-        const exceptionElement = xmlDoc.getElementsByTagName("EXCEPTION")[0];
-        if (exceptionElement) {
-          const errorCode =
-            exceptionElement.getElementsByTagName("ERRORCODE")[0]?.textContent;
-          const message =
-            exceptionElement.getElementsByTagName("MESSAGE")[0]?.textContent;
-          if (errorCode === "shortnametaken") {
-            setShortnameTaken(true); // Update shortnameTaken state
-            throw new Error(`Failed to create course: ${message}`);
-          }
-          // Penanganan lainnya untuk pesan XML yang gagal
+      // Memisahkan objek JSON pertama dan kedua
+      const firstObjectEndIndex = responseDataText.indexOf("}") + 1;
+      const firstObjectText = responseDataText.slice(0, firstObjectEndIndex);
+      const secondObjectText = responseDataText.slice(firstObjectEndIndex);
+
+      // Parsing kedua objek sebagai JSON
+      const firstObject = JSON.parse(firstObjectText);
+      const secondObject = JSON.parse(secondObjectText);
+      console.log(firstObject);
+      console.log(secondObject);
+
+      // Menangani respons sesuai dengan struktur respons yang baru
+      if (firstObject && firstObject.errorcode) {
+        const errorCode = firstObject.errorcode;
+        const message = firstObject.message;
+
+        if (errorCode === "shortnametaken") {
+          setShortnameTaken(true); // Update shortnameTaken state
+          throw new Error(`Failed to create course: ${message}`);
+        } else {
           console.error("Error creating course:", message);
           throw new Error(
             "Error creating course. Please check your data and try again."
           );
         }
       } else {
-        // Jika respons bukan XML, artinya respons adalah JSON
-        const data = await response.json();
+        // Handle sukses disini, jika diperlukan
+        console.log("Course created successfully");
+      }
 
-        // Mengecek jika respons adalah sukses sesuai format yang diberikan
-        if (
-          data &&
-          data.RESPONSE &&
-          data.RESPONSE.MULTIPLE &&
-          data.RESPONSE.MULTIPLE.SINGLE
-        ) {
-          const single = data.RESPONSE.MULTIPLE.SINGLE;
-          if (single.KEY) {
-            const id = single.KEY.find((item) => item["@name"] === "id")?.VALUE;
-            const shortname = single.KEY.find(
-              (item) => item["@name"] === "shortname"
-            )?.VALUE;
-            if (id && shortname) {
-              // Handle sukses disini, misalnya menampilkan pesan sukses atau melakukan operasi lain
-              // Contoh:
-              console.log(
-                `Course created successfully. ID: ${id}, Shortname: ${shortname}`
-              );
-              
-            }
-          }
+      // Mengembalikan objek respons
+      return {
+        firstObject: firstObject,
+        secondObject: secondObject,
+      };
+    } catch (error) {
+      console.error("Error creating course:", error.message);
+      throw error;
+    }
+  };
+
+  const createPrivateCourse = async (coursePrivateData) => {
+    const apiUrl = `http://moaibad.southeastasia.cloudapp.azure.com/moodle/webservice/rest/server.php`;
+    const token = "5aa6c5a9f9e54193407b3dcd6ec9ab4b";
+    const wsfunction = "local_colle_create_course";
+
+    const fullUrl = `${apiUrl}?moodlewsrestformat=json&wstoken=${token}&wsfunction=${wsfunction}&fullname=${encodeURIComponent(
+      coursePrivateData.fullname
+    )}&shortname=${encodeURIComponent(
+      coursePrivateData.shortname
+    )}&enrolmentkey=${encodeURIComponent(
+      coursePrivateData.enrolmentkey
+    )}&summary=${encodeURIComponent(coursePrivateData.summary)}&userid=${
+      coursePrivateData.userid
+    }`;
+
+    try {
+      const response = await fetch(fullUrl, {
+        method: "POST",
+      });
+
+      // Mengecek jika respons tidak berhasil (status code bukan 200)
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      // Mengambil respons sebagai teks
+      const responseDataText = await response.text();
+      console.log("Server Response:", responseDataText);
+
+      // Memisahkan objek JSON pertama dan kedua
+      const firstObjectEndIndex = responseDataText.indexOf("}") + 1;
+      const firstObjectText = responseDataText.slice(0, firstObjectEndIndex);
+      const secondObjectText = responseDataText.slice(firstObjectEndIndex);
+
+      // Parsing kedua objek sebagai JSON
+      const firstObject = JSON.parse(firstObjectText);
+      const secondObject = JSON.parse(secondObjectText);
+      console.log(firstObject);
+      console.log(secondObject);
+
+      // Menangani respons sesuai dengan struktur respons yang baru
+      if (firstObject && firstObject.errorcode) {
+        const errorCode = firstObject.errorcode;
+        const message = firstObject.message;
+
+        if (errorCode === "shortnametaken") {
+          setShortnameTaken(true); // Update shortnameTaken state
+          throw new Error(`Failed to create course: ${message}`);
         } else {
-          console.error("Error creating course:", data.error);
+          console.error("Error creating course:", message);
           throw new Error(
             "Error creating course. Please check your data and try again."
           );
         }
+      } else {
+        // Handle sukses disini, jika diperlukan
+        console.log("Course created successfully");
       }
+
+      // Mengembalikan objek respons
+      return {
+        firstObject: firstObject,
+        secondObject: secondObject,
+      };
     } catch (error) {
       console.error("Error creating course:", error.message);
       throw error;
@@ -187,95 +351,238 @@ const Course = () => {
             >
               Create Course
             </button>
-            <Modal
-              title="Create Course"
-              open={isModalOpen}
-              onOk={handleOk}
-              onCancel={handleCancel}
-              footer={[
-                <Button key="back" onClick={handleCancel}>
-                  Cancel
-                </Button>,
-                <Button
-                  key="submit"
-                  className="bg-blue-500 hover:bg-blue-700 text-white"
-                  onClick={handleOk}
+
+            <Modal title="Create Course" open={isModalOpen} footer={null}>
+              <div className="flex items-start">
+                <button
+                  onClick={() => setToggle(false)}
+                  className={`w-full rounded-none rounded-l-md focus:outline-none p-2 ${
+                    !toggle
+                      ? "bg-primary text-white"
+                      : "bg-gray-200 text-gray-700"
+                  }`}
+                  style={{
+                    backgroundColor: !toggle ? "#FB923C" : "#F5F6F8",
+                    color: !toggle ? "white" : "gray",
+                  }}
                 >
-                  Submit
-                </Button>,
-              ]}
-            >
-              <form className="mt-4">
-                <div className="mb-4">
-                  <label
-                    className="block text-black text-base mb-2"
-                    htmlFor="fullname"
-                  >
-                    Course Fullname
-                  </label>
-                  <input
-                    className={`appearance-none border rounded w-full py-3 px-3 leading-tight focus:shadow-outline focus:outline-gray-400 ${
-                      formErrors.fullname && "border-red-500"
-                    }`}
-                    id="fullname"
-                    type="text"
-                    placeholder="Course Fullname"
-                    value={courseData.fullname}
-                    onChange={handleChange}
-                  />
-                  {formErrors.fullname && (
-                    <p className="text-red-500 text-xs italic">
-                      {formErrors.fullname}
-                    </p>
-                  )}
-                </div>
-                <div className="mb-4">
-                  <label
-                    className="block text-black text-base mb-2"
-                    htmlFor="shortname"
-                  >
-                    Course Shortname
-                  </label>
-                  <input
-                    className={`appearance-none border rounded w-full py-3 px-3 leading-tight focus:shadow-outline focus:outline-gray-400 ${
-                      formErrors.shortname && "border-red-500"
-                    }`}
-                    id="shortname"
-                    type="text"
-                    placeholder="Course Shortname"
-                    value={courseData.shortname}
-                    onChange={handleChange}
-                  />
-                  {formErrors.shortname && (
-                    <p className="text-red-500 text-xs italic">
-                      {formErrors.shortname}
-                    </p>
-                  )}
-                </div>
-                <div className="mb-4">
-                  <label
-                    className="block text-black text-base mb-2"
-                    htmlFor="summary"
-                  >
-                    Summary Course
-                  </label>
-                  <textarea
-                    className={`appearance-none border rounded w-full py-3 px-3 leading-tight focus:shadow-outline focus:outline-gray-400 ${
-                      formErrors.summary && "border-red-500"
-                    }`}
-                    id="summary"
-                    type="text"
-                    placeholder="Summary Course"
-                    value={courseData.summary}
-                    onChange={handleChange}
-                  />
-                  {formErrors.summary && (
-                    <p className="text-red-500 text-xs italic">
-                      {formErrors.summary}
-                    </p>
-                  )}
-                </div>
-              </form>
+                  Public Course
+                </button>
+                <button
+                  onClick={() => setToggle(true)}
+                  className={`w-full rounded-none rounded-r-md focus:outline-none p-2 ${
+                    toggle
+                      ? "bg-primary text-white"
+                      : "bg-gray-200 text-gray-700"
+                  }`}
+                  style={{
+                    backgroundColor: toggle ? "#FB923C" : "#F5F6F8",
+                    color: toggle ? "white" : "gray",
+                  }}
+                >
+                  Private Course
+                </button>
+              </div>
+
+              <div className="mt-2 items-start">
+                {toggle && (
+                  <>
+                    <form className="mt-4">
+                      <div className="mb-4">
+                        <label
+                          className="block text-black text-base mb-2"
+                          htmlFor="fullname"
+                        >
+                          Course Fullname
+                        </label>
+                        <input
+                          className={`appearance-none border rounded w-full py-3 px-3 leading-tight focus:shadow-outline focus:outline-gray-400 ${
+                            formErrors2.fullname && "border-red-500"
+                          }`}
+                          id="fullname"
+                          type="text"
+                          placeholder="Course Fullname"
+                          value={coursePrivateData.fullname}
+                          onChange={handleChange2}
+                        />
+                        {formErrors2.fullname && (
+                          <p className="text-red-500 text-xs italic">
+                            {formErrors2.fullname}
+                          </p>
+                        )}
+                      </div>
+                      <div className="mb-4">
+                        <label
+                          className="block text-black text-base mb-2"
+                          htmlFor="shortname"
+                        >
+                          Course Shortname
+                        </label>
+                        <input
+                          className={`appearance-none border rounded w-full py-3 px-3 leading-tight focus:shadow-outline focus:outline-gray-400 ${
+                            formErrors2.shortname && "border-red-500"
+                          }`}
+                          id="shortname"
+                          type="text"
+                          placeholder="Course Shortname"
+                          value={coursePrivateData.shortname}
+                          onChange={handleChange2}
+                        />
+                        {formErrors2.shortname && (
+                          <p className="text-red-500 text-xs italic">
+                            {formErrors2.shortname}
+                          </p>
+                        )}
+                      </div>
+                      <div className="mb-4">
+                        <label
+                          className="block text-black text-base mb-2"
+                          htmlFor="enrolmentkey"
+                        >
+                          Enrolment Key
+                        </label>
+                        <input
+                          className={`appearance-none border rounded w-full py-3 px-3 leading-tight focus:shadow-outline focus:outline-gray-400 ${
+                            formErrors2.enrolmentkey && "border-red-500"
+                          }`}
+                          id="enrolmentkey"
+                          type="text"
+                          placeholder="Enrolment Key"
+                          value={coursePrivateData.enrolmentkey}
+                          onChange={handleChange2}
+                        />
+                        {formErrors2.enrolmentkey && (
+                          <p className="text-red-500 text-xs italic">
+                            {formErrors2.enrolmentkey}
+                          </p>
+                        )}
+                      </div>
+                      <div className="mb-4">
+                        <label
+                          className="block text-black text-base mb-2"
+                          htmlFor="summary"
+                        >
+                          Summary Course
+                        </label>
+                        <textarea
+                          className={`appearance-none border rounded w-full py-3 px-3 leading-tight focus:shadow-outline focus:outline-gray-400 ${
+                            formErrors2.summary && "border-red-500"
+                          }`}
+                          id="summary"
+                          type="text"
+                          placeholder="Summary Course"
+                          value={coursePrivateData.summary}
+                          onChange={handleChange2}
+                        />
+                        {formErrors2.summary && (
+                          <p className="text-red-500 text-xs italic">
+                            {formErrors2.summary}
+                          </p>
+                        )}
+                      </div>
+                    </form>
+                    <div className="flex justify-between mt-4">
+                      <Button key="cancel" onClick={handleCancel}>
+                        Cancel
+                      </Button>
+                      <Button
+                        className="bg-orange-400 hover:bg-orange-600 text-white"
+                        key="submit"
+                        onClick={handleOk2}
+                      >
+                        Submit
+                      </Button>
+                    </div>
+                  </>
+                )}
+                {!toggle && (
+                  <>
+                    <form className="mt-4">
+                      <div className="mb-4">
+                        <label
+                          className="block text-black text-base mb-2"
+                          htmlFor="fullname"
+                        >
+                          Course Fullname
+                        </label>
+                        <input
+                          className={`appearance-none border rounded w-full py-3 px-3 leading-tight focus:shadow-outline focus:outline-gray-400 ${
+                            formErrors.fullname && "border-red-500"
+                          }`}
+                          id="fullname"
+                          type="text"
+                          placeholder="Course Fullname"
+                          value={courseData.fullname}
+                          onChange={handleChange}
+                        />
+                        {formErrors.fullname && (
+                          <p className="text-red-500 text-xs italic">
+                            {formErrors.fullname}
+                          </p>
+                        )}
+                      </div>
+                      <div className="mb-4">
+                        <label
+                          className="block text-black text-base mb-2"
+                          htmlFor="shortname"
+                        >
+                          Course Shortname
+                        </label>
+                        <input
+                          className={`appearance-none border rounded w-full py-3 px-3 leading-tight focus:shadow-outline focus:outline-gray-400 ${
+                            formErrors.shortname && "border-red-500"
+                          }`}
+                          id="shortname"
+                          type="text"
+                          placeholder="Course Shortname"
+                          value={courseData.shortname}
+                          onChange={handleChange}
+                        />
+                        {formErrors.shortname && (
+                          <p className="text-red-500 text-xs italic">
+                            {formErrors.shortname}
+                          </p>
+                        )}
+                      </div>
+                      <div className="mb-4">
+                        <label
+                          className="block text-black text-base mb-2"
+                          htmlFor="summary"
+                        >
+                          Summary Course
+                        </label>
+                        <textarea
+                          className={`appearance-none border rounded w-full py-3 px-3 leading-tight focus:shadow-outline focus:outline-gray-400 ${
+                            formErrors.summary && "border-red-500"
+                          }`}
+                          id="summary"
+                          type="text"
+                          placeholder="Summary Course"
+                          value={courseData.summary}
+                          onChange={handleChange}
+                        />
+                        {formErrors.summary && (
+                          <p className="text-red-500 text-xs italic">
+                            {formErrors.summary}
+                          </p>
+                        )}
+                      </div>
+                    </form>
+                    <div className="flex justify-between mt-4">
+                      <Button key="cancel" onClick={handleCancel}>
+                        Cancel
+                      </Button>
+                      <Button
+                        className="bg-orange-400 hover:bg-orange-600 text-white"
+                        key="submit"
+                        onClick={handleOk}
+                      >
+                        Submit
+                      </Button>
+                    </div>
+                  </>
+                )}
+              </div>
             </Modal>
           </div>
           {/* Popup modal untuk pesan shortname taken */}
@@ -283,7 +590,7 @@ const Course = () => {
             visible={shortnameTaken}
             footer={[
               <Button
-                className="bg-blue-500 hover:bg-blue-700 text-white"
+                className="bg-orange-400 hover:bg-orange-600 text-white"
                 key="ok"
                 onClick={() => setShortnameTaken(false)}
               >
@@ -334,11 +641,19 @@ const Course = () => {
           </Modal>
         </>
       ) : (
-        <></>
+        <>
+          <div className="flex justify-end mr-7 m-3">
+            <Link to="/all-course">
+              <button className="bg-orange-400 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded">
+                View All Courses
+              </button>
+            </Link>
+          </div>
+        </>
       )}
 
       <div className="m-7 mt-5 grid grid-flow-col justify-stretch ...">
-        <CourseList />
+        <CourseList role={role} />
       </div>
     </div>
   );

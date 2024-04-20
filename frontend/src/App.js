@@ -1,25 +1,53 @@
-import React, { useEffect, useState } from 'react'
-import { BrowserRouter, Routes, Route, Navigate,useNavigate} from "react-router-dom";
-import { FiSettings } from 'react-icons/fi';
-import { Sidebar, Button, Footer, Header, Navbar, Notification, UserProfile } from './components';
+import React, { useEffect, useState } from "react";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Navigate,
+  useNavigate,
+} from "react-router-dom";
+import { FiSettings } from "react-icons/fi";
+import {
+  Sidebar,
+  Button,
+  Footer,
+  Header,
+  Navbar,
+  Notification,
+  UserProfile,
+} from "./components";
 import Course from "./pages/Course";
 import DetailCourse from "./components/course/detailCourse";
 import MateriCourse from "./components/course/materiCourse";
-import { Profile, ProfileEdit, Home, TanyaJawab, Achievement, CariTeman, Quiz, Login, Register, HomeDosen, Landing} from './pages/';
-import './App.css'
-import {getUserInfo} from './lib/fetchData';
-import Cookies from 'universal-cookie';
-import RegistData from './pages/RegistData';
+import {
+  Profile,
+  ProfileEdit,
+  Home,
+  TanyaJawab,
+  Achievement,
+  CariTeman,
+  Quiz,
+  Login,
+  Register,
+  HomeDosen,
+  Landing,
+} from "./pages/";
+import "./App.css";
+import { getUserInfo } from "./lib/fetchData";
+import Cookies from "universal-cookie";
+import CourseAllList from "./components/course/courseAllList";
+import RegistData from "./pages/RegistData";
 
 const App = () => {
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [user, setUser] = useState(null);
-    const navigate = useNavigate(); // Add this line for navigation
-    const cookies = new Cookies();
-    // Function to handle login
-    const handleLogin = () => {
-        setIsLoggedIn(true);
-    };
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [user, setUser] = useState(null);
+  const navigate = useNavigate(); // Add this line for navigation
+  const cookies = new Cookies();
+
+  // Function to handle login
+  const handleLogin = () => {
+    setIsLoggedIn(true);
+  };
 
     // Function to handle logout
     const handleLogout = () => {

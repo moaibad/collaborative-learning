@@ -4,7 +4,7 @@ import { LuPencilLine } from "react-icons/lu";
 import avatar from "../../data/avatar.jpg";
 import coursePage2 from "../../data/online-course.png";
 
-const CourseList = ({ role }) => {
+const CourseAllList = () => {
   const [courses, setCourses] = useState([]);
   const [searchTerm, setSearchTerm] = useState(""); // State untuk menyimpan nilai pencarian
 
@@ -12,14 +12,9 @@ const CourseList = ({ role }) => {
     // Fetch course data from the appropriate endpoint based on role
     const fetchData = async () => {
       try {
-        let endpoint;
-        if (role === "Teacher") {
-          endpoint =
-            "http://moaibad.southeastasia.cloudapp.azure.com/moodle/webservice/rest/server.php?moodlewsrestformat=json&wstoken=5aa6c5a9f9e54193407b3dcd6ec9ab4b&wsfunction=core_enrol_get_users_courses&userid=4";
-        } else {
-          endpoint =
-            "http://moaibad.southeastasia.cloudapp.azure.com/moodle/webservice/rest/server.php?moodlewsrestformat=json&wstoken=5aa6c5a9f9e54193407b3dcd6ec9ab4b&wsfunction=core_enrol_get_users_courses&userid=5";
-        }
+        let endpoint =
+          "http://moaibad.southeastasia.cloudapp.azure.com/moodle/webservice/rest/server.php?moodlewsrestformat=json&wstoken=5aa6c5a9f9e54193407b3dcd6ec9ab4b&wsfunction=core_course_get_courses";
+
         const response = await fetch(endpoint);
         const data = await response.json();
         setCourses(data);
@@ -29,7 +24,7 @@ const CourseList = ({ role }) => {
     };
 
     fetchData();
-  }, [role]); // Fetch data whenever role changes
+  }, []); // Fetch data only once when component mounts
 
   // Fungsi untuk melakukan pencarian berdasarkan displayname
   const searchCourses = (term) => {
@@ -49,7 +44,7 @@ const CourseList = ({ role }) => {
   return (
     <div>
       {/* search box */}
-      <div className="max-w-full mx-1 mb-3">
+      <div className="max-w-full mx-4 m-3">
         <div
           className="relative flex items-center w-full h-full rounded-lg focus-within:shadow-l overflow-hidden"
           style={{ backgroundColor: "#F5F6F8" }}
@@ -63,9 +58,9 @@ const CourseList = ({ role }) => {
               stroke="#B2B5BC"
             >
               <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
                 d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
               />
             </svg>
@@ -81,7 +76,8 @@ const CourseList = ({ role }) => {
           />
         </div>
       </div>
-      {/* list course  */}
+
+      {/* list all course */}
       <div className="grid grid-cols-3 gap-4">
         {filteredCourses.length > 0 ? (
           filteredCourses.map((course) => (
@@ -95,17 +91,8 @@ const CourseList = ({ role }) => {
                   src={coursePage2}
                   alt={coursePage2}
                 />
-                {role === "Teacher" && (
-                  <button
-                    onClick={() =>
-                      (window.location.href = `http://moaibad.southeastasia.cloudapp.azure.com/moodle/course/edit.php?id=${course.id}`)
-                    }
-                    className="absolute top-0 right-0 text-xl font-bold text-orange-500 p-2 rounded bg-transparent hover:bg-orange-600 hover:text-white"
-                  >
-                    <LuPencilLine />
-                  </button>
-                )}
               </div>
+
               <div className="px-6 py-4">
                 <Link
                   key={course.id}
@@ -115,31 +102,27 @@ const CourseList = ({ role }) => {
                     {course.displayname}
                   </div>
                 </Link>
-                {role !== "Teacher" && (
-                  <>
-                    <hr className="border-1 border-gray-600" />
-                    <div className="flex items-center justify-between gap-2 cursor-pointer p-1 hover:bg-light-gray rounded-lg">
-                      <img
-                        className="rounded-full w-8 h-8"
-                        src={avatar}
-                        alt="user-profile"
-                      />
-                      <div className="w-full ">
-                        <div className="flex w-full justify-between mt-1">
-                          <span className="ml-1 text-14">Lecturer</span>
-                          <p className="">
-                            <span className="inline-block truncate bg-orange-400 rounded-full px-3 py-1 text-xs text-white ml-2">
-                              Topic
-                            </span>
-                          </p>
-                        </div>
-                        <div className="-mt-3">
-                          <span className="ml-1  text-14">Position</span>
-                        </div>
-                      </div>
+                <hr className="border-1 border-gray-600" />
+                <div className="flex items-center justify-between gap-2 cursor-pointer p-1 hover:bg-light-gray rounded-lg">
+                  <img
+                    className="rounded-full w-8 h-8"
+                    src={avatar}
+                    alt="user-profile"
+                  />
+                  <div className="w-full ">
+                    <div className="flex w-full justify-between mt-1">
+                      <span className="ml-1 text-14">Lecturer</span>
+                      <p className="">
+                        <span className="inline-block truncate bg-orange-400 rounded-full px-3 py-1 text-xs text-white ml-2">
+                          Topic
+                        </span>
+                      </p>
                     </div>
-                  </>
-                )}
+                    <div className="-mt-3">
+                      <span className="ml-1  text-14">Position</span>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           ))
@@ -153,4 +136,4 @@ const CourseList = ({ role }) => {
   );
 };
 
-export default CourseList;
+export default CourseAllList;
