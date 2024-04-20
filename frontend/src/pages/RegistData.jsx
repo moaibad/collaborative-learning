@@ -44,10 +44,11 @@ const RegistData = () => {
             const response = await axios.post(`http://localhost:8080/user/PersonalInfo/${id}`, formData);
 
             const responseData = await response.json();
+            console.log(response.status)
 
             // Handle successful registration
-            if (response.ok) {
-                message.success("Register Successfully!");
+            if (response.status === 201) {
+                message.success("Register done!");
                 setTimeout(() => { navigate('/') }, 1500);
             } else {
                 setError(responseData.message || 'Registration failed. Please try again.');
