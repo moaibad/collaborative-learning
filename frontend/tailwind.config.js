@@ -1,3 +1,5 @@
+const { left } = require("@popperjs/core");
+
 module.exports = {
   content: ['./src/**/*.{js,jsx,ts,tsx}'],
   darkMode: 'class',
@@ -23,6 +25,10 @@ module.exports = {
       },
       borderColor: {
         color: 'rgba(0, 0, 0, 0.1)',
+      },
+      inset: {
+        '70px': '70px',
+        '78px': '78px',
       },
       width: {
         400: '400px',

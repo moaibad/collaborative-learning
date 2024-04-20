@@ -9,6 +9,7 @@ import { Profile, ProfileEdit, Home, TanyaJawab, Achievement, CariTeman, Quiz, L
 import './App.css'
 import {getUserInfo} from './lib/fetchData';
 import Cookies from 'universal-cookie';
+import RegistData from './pages/RegistData';
 
 const App = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -57,11 +58,11 @@ const App = () => {
                     // Show the main app content if not logged in
                     <div className='bg-main-bg min-h-screen'>
                         <Routes>
-                            <Route path='/landing' element={<Landing />} />
+                            <Route path='/landing' element={<Landing onLogin={handleLogin} />} />
                             <Route path='/register' element={<Register onLogin={handleLogin} />} />
                             <Route path='/login' element={<Login onLogin={handleLogin} />} />
+                            <Route path='/registData' element={<RegistData />} />
                             <Route path='*' element={<Navigate to='/landing' />} />
-                            <Route path='/landing' element={<Landing/>} />
                         </Routes>
                     </div>
                 ) : (
