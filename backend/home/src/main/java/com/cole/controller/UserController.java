@@ -68,7 +68,7 @@ public class UserController {
 		}
 	}
 
-	// Register User API
+	// Register User API (OLD API WITH MANUAL REGISTER)
 	@PostMapping("/user/register")
 	public Object registerUser(HttpServletResponse response, @RequestBody User userParam) {
 		User user = new User(userParam.getNama(), userParam.getUsername(),
@@ -110,8 +110,11 @@ public class UserController {
 					.body(new Result(500, "Failed to fetch user profile"));
 		}
 		System.out.println(userTokenInfo.getEmail());
+		
 		// Check if the email exists
 		User existingUser = userService.getUserByEmail(userTokenInfo.getEmail());
+
+		// Login
 		if (existingUser != null) {
 			existingUser.setToken(userToken);
 			// Email exists, return the data
@@ -120,9 +123,10 @@ public class UserController {
 				System.out.println(existingUser.getToken());
 			}
 			// Send a message indicating the account is already registered
-			return ResponseEntity.ok().body(new Result(200, "login successfully"));
+			return ResponseEntity.ok().body(new Result(200, "login successfully", existingUser.getId_user()));
+
+		// register
 		}else {
-			// register
 			User user = new User(userTokenInfo.getName(), userTokenInfo.getName(),
 					userTokenInfo.getEmail(), userParam.getPassword(),
 					userParam.getTanggal_lahir(), userParam.getLocation(), userParam.getAbout(),

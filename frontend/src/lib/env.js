@@ -4,4 +4,6 @@ export const VITE_BACKEND_URL = "http://localhost:8080"
 export const VITE_BACKEND_CTB_URL = "http://localhost:9191/api"
 export const VITE_BACKEND_TJ_URL = "http://localhost:3001/api"
 
-// TAMBAHIN HOST MOODLE
+// ENV MOODLE
+export const HOST_MOODLE = "http://moaibad.southeastasia.cloudapp.azure.com/moodle/"
+export const TOKEN_MOODLE = "sdaijdioadhas9h2dsauidhoauh0213"
