@@ -26,7 +26,7 @@ const Register = (onLogin) => {
         e.preventDefault();
 
         try {
-            const response = await fetch('http://localhost:8080/mahasiswa/register', {
+            const response = await fetch('http://localhost:8080/user/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -53,7 +53,7 @@ const Register = (onLogin) => {
         <body class='bg-orange-100 min-h-screen'>
             <div className='flex pt-5 px-10 pb-5'>
                 <AiOutlineSlackSquare style={{ fontSize: '40px' }} /><h1 className='font-extrabold text-4xl'>Colle</h1>
-                <Link to="/logindashboard" className="ml-auto">
+                <Link to="/login" className="ml-auto">
                     <button className="bg-orange-400 text-white font-bold py-2 px-6 rounded-lg focus:outline-none focus:shadow-outline">
                     Login
                     </button>
@@ -65,12 +65,12 @@ const Register = (onLogin) => {
                 <div className="md:flex">
                     <ul className="flex-column space-y space-y-4 text-sm font-medium text-gray-500 dark:text-gray-400 md:me-4 mb-4 md:mb-0">
                         <li>
-                            <a href="#" className="inline-flex items-center px-4 py-3 text-white bg-orange-400 rounded-tl-xl rounded-br-xl active w-full dark:bg-blue-600" aria-current="page">
+                            <a href="#" className="inline-flex items-center px-4 py-3 text-white bg-orange-400 rounded-tl-xl rounded-br-xl active w-full" aria-current="page">
                                 Student
                             </a>
                         </li>
                         <li>
-                            <a href="#" className="inline-flex items-center px-4 py-3 outline text-orange-400 bg-white rounded-tl-xl rounded-br-xl active w-full dark:bg-blue-600" aria-current="page">
+                            <a href="#" className="inline-flex items-center px-4 py-3 outline text-orange-400 bg-white rounded-tl-xl rounded-br-xl active w-full" aria-current="page">
                                 Lecturer
                             </a>
                         </li>
@@ -146,4 +146,4 @@ const Register = (onLogin) => {
     );
 }
 
-export default Register;
+export default Register

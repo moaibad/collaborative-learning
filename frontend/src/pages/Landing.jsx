@@ -1,15 +1,24 @@
-import React, { useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import { useGoogleLogin } from '@react-oauth/google';
+import Cookies from 'universal-cookie';
+import axios from 'axios';
 import { GrTask } from "react-icons/gr";
 import { GiOpenBook } from "react-icons/gi";
 import { IoMdContacts } from 'react-icons/io';
 import { HiChatBubbleLeftRight } from "react-icons/hi2";
+import { loginMahasiswa, setTokenToOther } from '../lib/fetchData';
+import { FcGoogle } from "react-icons/fc";
 import gsap from 'gsap';
+import { message  } from 'antd';
 
 import avatar from '../data/landing-profile.png';
 import SplitType from 'split-type';
 
-const Landing = () => {
+const Landing = ({onLogin}) => {
+  const navigate = useNavigate();
+  const [user, setUser] = useState(null);
+  const cookies = new Cookies();
   const bar = useRef(null);
   const card = useRef(null);
 
@@ -38,7 +47,58 @@ const Landing = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const login = useGoogleLogin({
+    onSuccess: (codeResponse) => {
+        cookies.set('user_token', codeResponse["access_token"], { path: '/', maxAge: 3600 });
+        setUser(codeResponse);
+        const dummy_user = {
+            "mhs_id": -1,
+            "nama": "John Doe",
+            "username": "john_doe",
+            "email": "john.doe@example.com",
+            "password": "securepassword",
+            "tanggal_lahir": new Date("1990-01-01"),
+            "location": "City, Country",
+            "about": "I am a student.",
+            "kampus": "Example University",
+            "jurusan": "Computer Science",
+            "semester": 5
+        };
+        axios.post("http://localhost:8080/oauth/user", dummy_user, {
+            headers: {
+                Accept: "*/*",
+                Authorization: `Bearer ${codeResponse["access_token"]}`,
+                "Content-Type": "application/json"
+            },
+            withCredentials: true
+        })
+        .then((response) => {
+            console.log("ga error", JSON.stringify(response.data));
+            // Set cookie untuk userId setelah berhasil login
+            cookies.set('userId', response.data.userId, { path: '/', maxAge: 3600 });
+            console.log(response.status);
+            console.log(response.data.userId);
 
+            if (response.status === 200) { // LOGIN 
+              // setTokenToOther(codeResponse["access_token"]);
+              onLogin();
+              navigate('/');
+
+            } else if (response.status === 201) { // REGISTER
+              // Redirect to registration page
+              navigate("/registData");
+            } else {
+              message.error('Error bro.');
+            }
+        })
+        .catch((err) => console.log("error ges", JSON.stringify(err)));
+    },
+    onError: (error) => console.log('Login Failed:', error)
+  });
+
+  useEffect(() => {
+      console.log(`user : ${JSON.stringify(user)}`);
+  }, [user])
 
   return (
     <div>
@@ -65,14 +125,12 @@ const Landing = () => {
               </p>
             </div>
             <div className='gap-4 flex justify-center'>
-              <Link to='/login'>
-                <button className='rounded-full py-4 px-10 font-bold text-white bg-orange-400 text-xl transition ease-in-out delay-150 hover:scale-110 hover:bg-orange-500 duration-300'>Login</button>
-              </Link>
-              <Link to='/register'>
-                <button className='rounded-full py-3 px-6 font-bold text-orange-400 border-4 border-orange-400 bg-white text-xl transition ease-in-out delay-150 hover:scale-110 hover:border-orange-500 hover:text-orange-500 duration-300'>
-                  Register
-                </button>
-              </Link>
+              <button onClick={login} className='flex items-center justify-center gap-2 rounded-full py-4 px-16 font-bold text-white bg-blue-400 text-lg transition ease-in-out delay-150 hover:scale-110 hover:bg-blue-500 duration-300'>
+                <div className='bg-white rounded-full p-1'>
+                  <FcGoogle />
+                </div>
+                Continue with Google
+              </button>
             </div>
           </div>
         </div>

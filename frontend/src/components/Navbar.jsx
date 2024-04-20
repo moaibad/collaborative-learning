@@ -9,8 +9,12 @@ import { RiNotification3Line } from 'react-icons/ri';
 import { MdKeyboardArrowDown } from 'react-icons/md';
 import { SearchOutlined, BellOutlined } from '@ant-design/icons';
 import { Input, Progress, Dropdown, Space } from 'antd';
-import NotificationDropdown from "./navbar/NotificationDropdown";
 import { getDataDashboard } from "../lib/fetchData";
+import NotificationDropdown from '../components/navbar/NotificationDropdown'; // Import the NotificationDropdown component
+
+// Required CSS import, unless you're overriding the styling
+import "@knocklabs/react-notification-feed/dist/index.css";
+
 // import { TooltipComponent } from '@syncfusion/ej2-react-popups';
 
 import avatar from '../data/avatar.jpg';
@@ -34,71 +38,68 @@ import avatar from '../data/avatar.jpg';
 //   {/* </TooltipComponent> */}
 // );
 
+const notifications = [
+  {
+    username: 'John Doe',
+    message: 'sent you a friend request',
+    time: '10:30 AM',
+    type: 'friendRequest',
+    link: '/profile/john_doe'
+  },
+  {
+    username: 'Alice Smith',
+    message: 'answered your question',
+    time: 'Yesterday',
+    type: 'questionAnswered',
+    link: '/question/123'
+  },
+  {
+    username: 'Quiz Results',
+    message: 'Your quiz result is available',
+    time: '2 days ago',
+    type: 'quizResult',
+    link: '/quiz/123/result'
+  },
+  {
+    username: 'New Message',
+    message: 'You have a new message',
+    time: '3 days ago',
+    type: 'newMessage',
+    link: '/messages'
+  }
+];
+
 const Navbar = () => {
   // const [isVisible, setIsVisible] = useState(false);
   // const notifButtonRef = useRef(null);
-
+  const [showDropdown, setShowDropdown] = useState(true);
   const [profile, setProfile] = useState([]);
   const [mahasiswa, setMahasiswa] = useState("");
   const UserId = Cookies.get('userId');
-  const [showDropdown, setShowDropdown] = useState(true);
+  const token = Cookies.get('user_token');
 
   const toggleDropdown = () => {
     setShowDropdown(!showDropdown);
   };
 
-  const getInfoMahasiswa = async () => {
-      try {
-      const response = await getDataDashboard("mahasiswa");
-      setMahasiswa(response.data);
-      } catch (error) {
-      console.error('Error fetching mahasiswa data:', error);
-      }
-  };
+  useEffect(() => {
+    const getInfoMahasiswa = async () => {
+        try {
+            let response;
+            if (token === "null") {
+                response = await axios.get(`http://localhost:8080/user/${UserId}`);
+            } else {
+                response = await getDataDashboard("/user");
+            }
+            setMahasiswa(response.data || response); // Memperhatikan bahwa ada kasus ketika responsenya langsung object, bukan response.data
+            console.log("user : ", JSON.stringify(response));
+        } catch (error) {
+            console.error('Error fetching mahasiswa data:', error);
+        }
+    };
 
-  useEffect(()=>{
-      getInfoMahasiswa();
-  }, []);
-
-  const notifications = [
-    {
-      avatar: 'url_to_avatar',
-      username: 'John DoeDoe Doe Doe Doe DOe DOeooo DOeooo',
-      message: 'Liked your post',
-      time: '2 minutes ago',
-    },
-    {
-      avatar: 'url_to_avatar',
-      username: 'Jane Smith',
-      message: 'Commented on your photo comment comemtne cmomementmcoemm cmoeme cmoem',
-      time: '1 hour ago',
-    },
-    {
-      avatar: 'url_to_avatar',
-      username: 'Jane Smith',
-      message: 'Commented on your photo',
-      time: '1 hour ago aho sahdo aho ahao haoha hoah aho ',
-    },
-    {
-      avatar: 'url_to_avatar',
-      username: 'John DoeDoe Doe Doe Doe DOe DOeooo DOeooo',
-      message: 'Liked your post',
-      time: '2 minutes ago',
-    },
-    {
-      avatar: 'url_to_avatar',
-      username: 'Jane Smith',
-      message: 'Commented on your photo comment comemtne cmomementmcoemm cmoeme cmoem',
-      time: '1 hour ago',
-    },
-    {
-      avatar: 'url_to_avatar',
-      username: 'Jane Smith',
-      message: 'Commented on your photo',
-      time: '1 hour ago aho sahdo aho ahao haoha hoah aho ',
-    },
-    // Add more notifications as needed
-  ];
+    getInfoMahasiswa();
+  }, [token]); // Perubahan token akan memicu useEffect untuk dijalankan kembali
 
   return (
     <div className="flex justify-between items-center p-2 md:ml-6 md:mr-6 relative">
@@ -167,7 +168,7 @@ const Navbar = () => {
                 <p>
                   <span className="text-gray-400 text-14">Hi,</span>{' '}
                   <span className="text-gray-400 font-bold ml-1 text-14">
-                    {mahasiswa.nama ? mahasiswa.nama : mahasiswa.username}
+                    {mahasiswa.nama ? mahasiswa.nama.split(" ")[0] : mahasiswa.username}
                   </span>
                 </p>
                 <div className='flex w-full'>
