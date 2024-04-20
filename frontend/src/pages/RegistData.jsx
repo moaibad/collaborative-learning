@@ -15,7 +15,7 @@ import practitioners from '../data/practitioners-role.png';
 import welcome from '../data/welcome.jpg'
 import { classOptions } from '../data/dummy';
 
-const RegistData = () => {
+const RegistData = ({onLogin}) => {
     const [current, setCurrent] = useState(0);
     const [error, setError] = useState('');
     const [selectedRole, setSelectedRole] = useState('');
@@ -23,7 +23,7 @@ const RegistData = () => {
         firstname: '',
         lastname: '',
         username: '',
-        birth: '',
+        tanggal_lahir: '',
         location: '',
         about: '',
         major: '',
@@ -43,19 +43,34 @@ const RegistData = () => {
         try {
             const response = await axios.post(`http://localhost:8080/user/PersonalInfo/${id}`, formData);
 
-            const responseData = await response.json();
-            console.log(response.status)
+            console.log(response.status);
+            console.log(response.data); // Mengakses data langsung dari respons
 
-            // Handle successful registration
-            if (response.status === 201) {
-                message.success("Register done!");
-                setTimeout(() => { navigate('/') }, 1500);
-            } else {
-                setError(responseData.message || 'Registration failed. Please try again.');
-            }
         } catch (error) {
             // Handle registration errors
             console.error('Error registering:', error);
+            message.error('An error occurred. Please try again later.');
+        }
+    };
+
+    const academicInfoMHS = async (formData) => {
+        try {
+            console.log(formData.major);
+            console.log(formData.class);
+            console.log(formData.university);
+            const response = await axios.post(`http://localhost:8080/mahasiswa`, {
+                jurusan : formData.major,
+                angkatan : formData.class,
+                universitas : formData.university,
+                user_id_user : id
+            });
+
+            console.log(response.status);
+            console.log(response.data); // Mengakses data langsung dari respons
+
+        } catch (error) {
+            // Handle registration errors
+            console.error('Error Add Academic Data Mahasiswa:', error);
             message.error('An error occurred. Please try again later.');
         }
     };
@@ -78,7 +93,7 @@ const RegistData = () => {
                 break;
             case 2:
                 // Validasi untuk langkah 3
-                if (formData.firstname === '' || formData.lastname === '' || formData.username === '' || formData.birth === '' || formData.location === '' || formData.about === '') {
+                if (formData.firstname === '' || formData.lastname === '' || formData.username === '' || formData.tanggal_lahir === '' || formData.location === '' || formData.about === '') {
                     message.error('Please fill in all fields before continuing.');
                     isFormValid = false;
                 }
@@ -123,6 +138,8 @@ const RegistData = () => {
                 if (formData.major === '' || formData.class === '' || formData.university === '') {
                     message.error('Please fill in all fields before continuing.');
                     isFormValid = false;
+                }else{
+                    academicInfoMHS(formData);
                 }
             } else if (selectedRole === 'teacher') {
                 if (formData.major === '' || formData.university === '' || formData.education === '') {
@@ -143,6 +160,7 @@ const RegistData = () => {
             message.success('Registration Successful!');
             console.log('Form values:', formData);
             registerUser(formData);
+            onLogin();
             navigate('/'); // Redirect to home or any other route
         }
     };
@@ -203,12 +221,12 @@ const RegistData = () => {
                 </div>
                 <div className='flex gap-4 w-full'>
                     <div>
-                        <label>Date of Birth</label>
+                        <label>Date of birth</label>
                         <input
                             className='block w-full rounded-md border-0 p-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 transition duration-300 outline-none'
                             type="date"
-                            name="birth"
-                            value={formData.birth}
+                            name="tanggal_lahir"
+                            value={formData.tanggal_lahir}
                             onChange={handleChange}
                         />
                     </div>

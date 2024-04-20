@@ -103,10 +103,11 @@ public class UserController {
 		// Set data request ke object user
 		existingUser.setFirstname(userParam.getFirstname());
 		existingUser.setLastname(userParam.getLastname());
-		// existingUser.setNama(userParam.getNama());
+		existingUser.setUsername(userParam.getUsername());
 		existingUser.setTanggal_lahir(userParam.getTanggal_lahir());
 		existingUser.setLocation(userParam.getLocation());
 		existingUser.setAbout(userParam.getAbout());
+		existingUser.setRole(userParam.getRole());		
 		existingUser.setUsername_moodle("USERNAMEDUMMY");
 		existingUser.setPassword_moodle("PASSWORDUMMY");
 

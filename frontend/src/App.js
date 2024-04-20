@@ -61,7 +61,7 @@ const App = () => {
                             <Route path='/landing' element={<Landing onLogin={handleLogin} />} />
                             <Route path='/register' element={<Register onLogin={handleLogin} />} />
                             <Route path='/login' element={<Login onLogin={handleLogin} />} />
-                            <Route path='/registData' element={<RegistData />} />
+                            <Route path='/registData' element={<RegistData onLogin={handleLogin}/>} />
                             <Route path='*' element={<Navigate to='/landing' />} />
                         </Routes>
                     </div>

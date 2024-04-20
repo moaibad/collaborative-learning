@@ -85,13 +85,8 @@ const Navbar = () => {
   useEffect(() => {
     const getInfoMahasiswa = async () => {
         try {
-            let response;
-            if (token === "null") {
-                response = await axios.get(`http://localhost:8080/user/${UserId}`);
-            } else {
-                response = await getDataDashboard("/user");
-            }
-            setMahasiswa(response.data || response); // Memperhatikan bahwa ada kasus ketika responsenya langsung object, bukan response.data
+            var response = await axios.get(`http://localhost:8080/user/${UserId}`);
+            setMahasiswa(response.data); // Memperhatikan bahwa ada kasus ketika responsenya langsung object, bukan response.data
             console.log("user : ", JSON.stringify(response));
         } catch (error) {
             console.error('Error fetching mahasiswa data:', error);
@@ -99,7 +94,7 @@ const Navbar = () => {
     };
 
     getInfoMahasiswa();
-  }, [token]); // Perubahan token akan memicu useEffect untuk dijalankan kembali
+  }, []); 
 
   return (
     <div className="flex justify-between items-center p-2 md:ml-6 md:mr-6 relative">
