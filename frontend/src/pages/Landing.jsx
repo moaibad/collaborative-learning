@@ -7,6 +7,7 @@ import { GrTask } from "react-icons/gr";
 import { GiOpenBook } from "react-icons/gi";
 import { IoMdContacts } from 'react-icons/io';
 import { HiChatBubbleLeftRight } from "react-icons/hi2";
+import { loginMahasiswa, setTokenToOther } from '../lib/fetchData';
 import { FcGoogle } from "react-icons/fc";
 import gsap from 'gsap';
 import { message  } from 'antd';
@@ -50,7 +51,9 @@ const Landing = ({onLogin}) => {
     // Handle login result
     if (result === 200) {
       // Redirect to dashboard
-      navigate("/");
+      // setTokenToOther(codeResponse["access_token"]);
+      onLogin();
+      navigate('/');
     } else if (result === 201) {
       // Redirect to registration page
       navigate("/registData");
@@ -89,8 +92,7 @@ const Landing = ({onLogin}) => {
             // Set cookie untuk userId setelah berhasil login
             cookies.set('userId', response.data.id_mhs, { path: '/', maxAge: 3600 });
             console.log(response.status);
-            console.log(response.data.id_mhs);
-            onLogin();
+            // console.log(response.data.id_mhs);
             loginUser(response.status);
         })
         .catch((err) => console.log("error ges", JSON.stringify(err)));
