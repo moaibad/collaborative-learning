@@ -162,9 +162,14 @@ public class UserController {
 					userParam.getTanggal_lahir(), userParam.getLocation(), userParam.getAbout(),
 					userToken, userTokenInfo.getPicture(), userParam.getRole());
 			int saveResult = userService.saveUser(user);
-	
+			
+			User RegisteredUser = userService.getUserByEmail(userTokenInfo.getEmail());
+			Long userId = RegisteredUser.getId_user();
+
+			System.out.println(userId);
+
 			if (saveResult == 1) {
-				return ResponseEntity.status(HttpStatus.CREATED).body(new Result(201, "Account registered successfully"));
+				return ResponseEntity.status(HttpStatus.CREATED).body(new Result(201, "Account registered successfully", userId));
 			} else {
 				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Result(500, "Failed to register"));
 			}
