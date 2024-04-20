@@ -92,8 +92,20 @@ const Landing = ({onLogin}) => {
             // Set cookie untuk userId setelah berhasil login
             cookies.set('userId', response.data.id_mhs, { path: '/', maxAge: 3600 });
             console.log(response.status);
-            // console.log(response.data.id_mhs);
-            loginUser(response.status);
+            console.log(response.data.userId);
+
+            // loginUser(response.status);
+            if (response.status === 200) {
+              // Redirect to dashboard
+              // setTokenToOther(codeResponse["access_token"]);
+              onLogin();
+              navigate('/');
+            } else if (response.status === 201) {
+              // Redirect to registration page
+              navigate("/registData");
+            } else {
+              message.error('Error bro.');
+            }
         })
         .catch((err) => console.log("error ges", JSON.stringify(err)));
     },

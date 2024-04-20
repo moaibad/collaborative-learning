@@ -122,8 +122,10 @@ public class UserController {
 			if (updateUser) {
 				System.out.println(existingUser.getToken());
 			}
+
+			Long userId = existingUser.getId_user();
 			// Send a message indicating the account is already registered
-			return ResponseEntity.ok().body(new Result(200, "login successfully", existingUser.getId_user()));
+			return ResponseEntity.ok().body(new Result(200, "login successfully", userId));
 
 		// register
 		}else {
