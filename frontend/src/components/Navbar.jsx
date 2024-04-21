@@ -84,19 +84,19 @@ const Navbar = () => {
 
   useEffect(() => {
     const getInfoMahasiswa = async () => {
-        try {
-            var response = await axios.get(`http://localhost:8080/user/${UserId}`);
-            setMahasiswa(response.data); 
-            localStorage.setItem("role", JSON.stringify(response.role));
-            console.log("role : ", JSON.parse(localStorage.getItem("role")));
-            console.log("user : ", JSON.stringify(response));
-        } catch (error) {
-            console.error('Error fetching mahasiswa data:', error);
-        }
+      try {
+        var response = await axios.get(`http://localhost:8080/user/${UserId}`);
+        setMahasiswa(response.data);
+        localStorage.setItem("role", JSON.stringify(response.data.role));
+        console.log("role : ", JSON.parse(localStorage.getItem("role")));
+        // console.log("user : ", JSON.stringify(response));
+      } catch (error) {
+        console.error("Error fetching mahasiswa data:", error);
+      }
     };
 
     getInfoMahasiswa();
-  }, []); 
+  }, []);
 
   return (
     <div className="flex justify-between items-center p-2 md:ml-6 md:mr-6 relative">
