@@ -15,10 +15,10 @@ const CourseList = ({ role }) => {
         let endpoint;
         if (role === "teacher") {
           endpoint =
-            "http://moaibad.southeastasia.cloudapp.azure.com/moodle/webservice/rest/server.php?moodlewsrestformat=json&wstoken=5aa6c5a9f9e54193407b3dcd6ec9ab4b&wsfunction=core_enrol_get_users_courses&userid=4";
+            "http://colle.southeastasia.cloudapp.azure.com/moodle/webservice/rest/server.php?moodlewsrestformat=json&wstoken=1f95ee6650d2e1a6aa6e152f6bf4702c&wsfunction=core_enrol_get_users_courses&userid=5";
         } else {
           endpoint =
-            "http://moaibad.southeastasia.cloudapp.azure.com/moodle/webservice/rest/server.php?moodlewsrestformat=json&wstoken=5aa6c5a9f9e54193407b3dcd6ec9ab4b&wsfunction=core_enrol_get_users_courses&userid=5";
+            "http://colle.southeastasia.cloudapp.azure.com/moodle/webservice/rest/server.php?moodlewsrestformat=json&wstoken=1f95ee6650d2e1a6aa6e152f6bf4702c&wsfunction=core_enrol_get_users_courses&userid=4";
         }
         const response = await fetch(endpoint);
         const data = await response.json();
@@ -98,7 +98,7 @@ const CourseList = ({ role }) => {
                 {role === "teacher" && (
                   <button
                     onClick={() =>
-                      (window.location.href = `http://moaibad.southeastasia.cloudapp.azure.com/moodle/course/edit.php?id=${course.id}`)
+                      (window.location.href = `http://colle.southeastasia.cloudapp.azure.com/moodle/course/edit.php?id=${course.id}`)
                     }
                     className="absolute top-0 right-0 text-xl font-bold text-orange-500 p-2 rounded bg-transparent hover:bg-orange-600 hover:text-white"
                   >
@@ -109,7 +109,7 @@ const CourseList = ({ role }) => {
               <div className="px-6 py-4">
                 <Link
                   key={course.id}
-                  to={`http://moaibad.southeastasia.cloudapp.azure.com/moodle/course/view.php?id=${course.id}`}
+                  to={`http://colle.southeastasia.cloudapp.azure.com/moodle/course/view.php?id=${course.id}`}
                 >
                   <div className="font-bold text-xl mb-2">
                     {course.displayname}
