@@ -13,7 +13,7 @@ const CourseAllList = () => {
     const fetchData = async () => {
       try {
         let endpoint =
-          "http://moaibad.southeastasia.cloudapp.azure.com/moodle/webservice/rest/server.php?moodlewsrestformat=json&wstoken=5aa6c5a9f9e54193407b3dcd6ec9ab4b&wsfunction=core_course_get_courses";
+          "http://colle.southeastasia.cloudapp.azure.com/moodle/webservice/rest/server.php?moodlewsrestformat=json&wstoken=1f95ee6650d2e1a6aa6e152f6bf4702c&wsfunction=core_course_get_courses";
 
         const response = await fetch(endpoint);
         const data = await response.json();
@@ -96,7 +96,7 @@ const CourseAllList = () => {
               <div className="px-6 py-4">
                 <Link
                   key={course.id}
-                  to={`http://moaibad.southeastasia.cloudapp.azure.com/moodle/course/view.php?id=${course.id}`}
+                  to={`http://colle.southeastasia.cloudapp.azure.com/moodle/course/view.php?id=${course.id}`}
                 >
                   <div className="font-bold text-xl mb-2">
                     {course.displayname}
