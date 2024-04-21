@@ -86,7 +86,9 @@ const Navbar = () => {
     const getInfoMahasiswa = async () => {
         try {
             var response = await axios.get(`http://localhost:8080/user/${UserId}`);
-            setMahasiswa(response.data); // Memperhatikan bahwa ada kasus ketika responsenya langsung object, bukan response.data
+            setMahasiswa(response.data); 
+            localStorage.setItem("role", JSON.stringify(response.role));
+            console.log("role : ", JSON.parse(localStorage.getItem("role")));
             console.log("user : ", JSON.stringify(response));
         } catch (error) {
             console.error('Error fetching mahasiswa data:', error);
