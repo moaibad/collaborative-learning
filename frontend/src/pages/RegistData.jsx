@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import Cookies from 'universal-cookie';
@@ -14,6 +14,8 @@ import lecturer from '../data/lecturer-role.png';
 import practitioners from '../data/practitioners-role.png';
 import welcome from '../data/welcome.jpg'
 import { classOptions } from '../data/dummy';
+import { TOKEN_MOODLE, HOST_MOODLE} from "../lib/env";
+
 
 const RegistData = ({onLogin}) => {
     const [current, setCurrent] = useState(0);
@@ -37,7 +39,13 @@ const RegistData = ({onLogin}) => {
 
     const cookies = new Cookies();
     const id = cookies.get('userId');
+    const emailCookie = cookies.get('userEmail');
     const navigate = useNavigate();
+
+    useEffect(() => {
+
+    }, [formData]);
+    
 
     const registerUser = async (formData) => {
         try {
@@ -129,6 +137,61 @@ const RegistData = ({onLogin}) => {
         });
     };
 
+    const createUserInMoodle = async (userData) => {
+        const params = new URLSearchParams();
+        params.append('wstoken', TOKEN_MOODLE);
+        params.append('wsfunction', 'core_user_create_users');
+        params.append('moodlewsrestformat', 'json');
+        params.append('users[0][username]', userData.usernameMoodle);
+        params.append('users[0][password]', userData.passwordMoodle);
+        params.append('users[0][firstname]', userData.firstname);
+        params.append('users[0][lastname]', userData.lastname);
+        params.append('users[0][email]', userData.email);
+    
+        const url = `${HOST_MOODLE}/webservice/rest/server.php?${params.toString()}`;
+    
+        try {
+            const response = await axios.post(url);
+            
+            console.log("berhasil hit api moodle register");
+            console.log(response);
+            console.log(response.data);
+            return response.data;
+        } catch (error) {
+            console.error('Error creating user in Moodle:', error);
+            throw new Error('Failed to create user in Moodle');
+        }
+    };
+    
+    const registerUserInMoodle = async (formData) => {
+        try {
+            // Ambil email dari cookie
+            const userEmail = emailCookie;
+            console.log("DISINI", userEmail);
+    
+            const usernameMoodle = userEmail.split('@')[0]; // Mengambil bagian sebelum '@' dari alamat email sebagai nama pengguna Moodle
+            const passwordMoodle = usernameMoodle.charAt(0).toUpperCase()  + id + "."; // Menggabungkan username dengan id_user untuk membuat kata sandi Moodle
+            // const passwordMoodle = "Bibbidibobbidiboo123.";
+
+            // Kirim data pengguna ke Moodle
+            await createUserInMoodle({
+                id_user: formData.id_user,
+                email: userEmail,
+                firstname: formData.firstname,
+                lastname: formData.lastname,
+                usernameMoodle: usernameMoodle,
+                passwordMoodle: passwordMoodle
+            });
+            console.log("User Moodle Created")
+        } catch (error) {
+            // Tangani kesalahan saat pendaftaran pengguna di Moodle
+            message.error('Failed to register user in Moodle. Please try again later.');
+            console.error('Error registering user in Moodle:', error);
+        }
+    };
+    
+    
+    
     const onFinish = () => {
         let isFormValid = true;
 
@@ -139,7 +202,7 @@ const RegistData = ({onLogin}) => {
                     message.error('Please fill in all fields before continuing.');
                     isFormValid = false;
                 }else{
-                    academicInfoMHS(formData);
+                    academicInfoMHS(formData); // Add data Academic
                 }
             } else if (selectedRole === 'teacher') {
                 if (formData.major === '' || formData.university === '' || formData.education === '') {
@@ -159,11 +222,13 @@ const RegistData = ({onLogin}) => {
             // Handle form submission
             message.success('Registration Successful!');
             console.log('Form values:', formData);
-            registerUser(formData);
+            registerUserInMoodle(formData); // Add user moodle
+            registerUser(formData); // Add data personal
             onLogin();
             navigate('/'); // Redirect to home or any other route
         }
     };
+
 
     const academicInfo = (
         <div className='w-10/12 space-y-2 rounded-2xl cursor-default select-none'>

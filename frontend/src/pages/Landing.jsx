@@ -63,8 +63,11 @@ const Landing = ({ onLogin }) => {
             console.log("ga error", JSON.stringify(response.data));
             // Set cookie untuk userId setelah berhasil login
             cookies.set('userId', response.data.userId, { path: '/', maxAge: 3600 });
+            cookies.set('userEmail', response.data.email, { path: '/', maxAge: 3600 });
+
             console.log(response.status);
             console.log(response.data.userId);
+            console.log(response.data.email);
 
             if (response.status === 200) { // LOGIN 
               // setTokenToOther(codeResponse["access_token"]);

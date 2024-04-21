@@ -92,14 +92,14 @@ public class UserController {
 	// ADD PERSONAL INFORMATION USER
 	@PostMapping("/user/PersonalInfo/{id}")
 	public Object addPersonalInfo(HttpServletResponse response, @PathVariable("id") Long id_user,
-							   @RequestBody User userParam) {
-	
+								@RequestBody User userParam) {
+
 		// Memastikan data user ada
 		User existingUser = userService.getUserById(id_user);
 		if (existingUser == null) {
 			return new ResponseEntity<>("Failed to update mahasiswa, Mahasiswa not found", HttpStatus.NOT_FOUND);
 		}
-		
+
 		// Set data request ke object user
 		existingUser.setFirstname(userParam.getFirstname());
 		existingUser.setLastname(userParam.getLastname());
@@ -107,9 +107,9 @@ public class UserController {
 		existingUser.setTanggal_lahir(userParam.getTanggal_lahir());
 		existingUser.setLocation(userParam.getLocation());
 		existingUser.setAbout(userParam.getAbout());
-		existingUser.setRole(userParam.getRole());		
-		existingUser.setUsername_moodle("USERNAMEDUMMY");
-		existingUser.setPassword_moodle("PASSWORDUMMY");
+		existingUser.setRole(userParam.getRole());        
+		existingUser.setUsername_moodle(getMoodleUsername(existingUser.getEmail()));
+		existingUser.setPassword_moodle(generateMoodlePassword(existingUser.getEmail(), id_user)); // Menghasilkan password Moodle baru
 
 		// Memanggil metode service untuk melakukan pembaruan
 		userService.addPersonalInfo(existingUser);
@@ -153,8 +153,9 @@ public class UserController {
 			}
 
 			Long userId = existingUser.getId_user();
+			String email = existingUser.getEmail();
 			// Send a message indicating the account is already registered
-			return ResponseEntity.ok().body(new Result(200, "login successfully", userId));
+			return ResponseEntity.ok().body(new Result(200, "login successfully", userId, email));
 
 		// register
 		}else {
@@ -166,11 +167,12 @@ public class UserController {
 			
 			User RegisteredUser = userService.getUserByEmail(userTokenInfo.getEmail());
 			Long userId = RegisteredUser.getId_user();
+			String email = RegisteredUser.getEmail();
 
 			System.out.println(userId);
 
 			if (saveResult == 1) {
-				return ResponseEntity.status(HttpStatus.CREATED).body(new Result(201, "Account registered successfully", userId));
+				return ResponseEntity.status(HttpStatus.CREATED).body(new Result(201, "Account registered successfully", userId, email));
 			} else {
 				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Result(500, "Failed to register"));
 			}
@@ -193,5 +195,21 @@ public class UserController {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			return new Result(500, "Fail");
 		}
+	}
+
+	// Metode untuk mendapatkan username Moodle dari email
+	private String getMoodleUsername(String email) {
+		int atIndex = email.indexOf('@');
+		if (atIndex != -1) {
+			return email.substring(0, atIndex);
+		}
+		return ""; // default jika email tidak valid
+	}
+
+	// Metode untuk menghasilkan password Moodle baru
+	private String generateMoodlePassword(String email, Long id_user) {
+		String username = getMoodleUsername(email);
+		// Format password baru sesuai kebutuhan
+		return  username.substring(0, 1).toUpperCase() + username.substring(1) + id_user + ".";
 	}
 }
