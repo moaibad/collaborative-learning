@@ -12,7 +12,7 @@ const SemuaKomunitas = () => {
   useEffect(() => {
     const fetchCommunityList = async () => {
       try {
-        const datanya = await getDataCTB(`/servers/findallservers`);
+        const datanya = await getDataCTB(`/servers/allserver/all`);
         if (datanya) {
           setAllKomunitas(datanya.servers);
         }

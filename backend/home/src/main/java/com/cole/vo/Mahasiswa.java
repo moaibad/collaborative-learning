@@ -9,7 +9,10 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Column;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties; 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import jakarta.persistence.FetchType;
+import jakarta.persistence.CascadeType;
 
 @Entity
 @Table(name = "mahasiswa")
@@ -27,11 +30,6 @@ public class Mahasiswa {
 
 	@Column(name = "universitas")
 	private String universitas;
-
-    @OneToOne
-    @JoinColumn(name = "user_id_user", referencedColumnName = "id_user")
-    private User user;
-
 
     // NULL Constructor
     public Mahasiswa(){
@@ -108,4 +106,7 @@ public class Mahasiswa {
         user.setId_user(user_id_user);
     }
     
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id_user", referencedColumnName = "id_user")
+    private User user;
 }

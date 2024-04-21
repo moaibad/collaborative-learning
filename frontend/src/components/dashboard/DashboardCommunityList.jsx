@@ -1,7 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import course1 from '../../data/product1.jpg';
-import course2 from '../../data/product2.jpg';
-import course3 from '../../data/product3.jpg';
 import Cookies from 'universal-cookie';
 import { getDataCTB } from '../../lib/fetchData';
 
@@ -19,15 +16,20 @@ const DashboardCommunityList = () => {
 
         const fetchProfileAndCommunityList = async () => {
             try {
+                const allCommunityListResponse = await getDataCTB(`/servers/findallservers`);
+                console.log(allCommunityListResponse);
                 const profileResponse = await getDataCTB(`/profiles/findidbyemail/${email}`);
                 if (profileResponse && profileResponse.user && profileResponse.user.id) {
                     const profileId = profileResponse.user.id;
                     setProfile(profileId);
+                    console.log(profileId);
                     
                     const communityListResponse = await getDataCTB(`/profiles/findallserver/${profileId}`);
                     if (communityListResponse && communityListResponse.community) {
                         setCommunityList(communityListResponse.community);
                     }
+
+                    console.log(communityListResponse);
                 }
             } catch (error) {
                 console.error('Error fetching profile and community list:', error);
@@ -39,6 +41,9 @@ const DashboardCommunityList = () => {
         }
     }, [email]);
 
+    console.log(communityList);
+    console.log(profile);
+    console.log(email);
     return (
         <div>
             <div className="shadow-md rounded-xl bg-white p-4 mr-4">

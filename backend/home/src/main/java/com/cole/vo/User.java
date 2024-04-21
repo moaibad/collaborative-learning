@@ -4,8 +4,11 @@ import java.util.Date;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Column;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "user")
@@ -56,6 +59,8 @@ public class User {
 	@Column (name = "password_moodle")
 	private String password_moodle;
 
+    @OneToOne(mappedBy = "user")
+    private Mahasiswa mahasiswa;
 
 	// Constructor
 	public User() {

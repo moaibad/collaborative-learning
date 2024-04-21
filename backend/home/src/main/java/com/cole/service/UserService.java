@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cole.repository.UserRepository;
+import com.cole.vo.Mahasiswa;
 import com.cole.vo.User;
 
 @Service
@@ -91,6 +92,24 @@ public class UserService {
 		// Save the updated User object
 		userRepository.updateUser(result);
 		return true;
+	}
+
+	//find mahasiswa by username
+	public List<Mahasiswa> getMahasiswaByUsername(String username) {
+		List<Mahasiswa> user = userRepository.findMahasiswa(username);
+		return user;
+	}
+
+	//find dosen by username
+	public List<User> getDosenByUsername(String username) {
+		List<User> user = userRepository.findDosen(username);
+		return user;
+	}
+
+	//find praktisi by username
+	public List<User> getPraktisiByUsername(String username) {
+		List<User> user = userRepository.findPraktisi(username);
+		return user;
 	}
 
 }

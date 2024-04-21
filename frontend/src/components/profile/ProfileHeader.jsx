@@ -30,7 +30,7 @@ const ProfileHeader = () => {
           try {
               let response;
               if (token === "null") {
-                  response = await axios.get(`http://localhost:8080/user/${UserId}`);
+                  response = await axios.get(`http://localhost:9090/user/${UserId}`);
               } else {
                   response = await getDataDashboard("/user");
               }

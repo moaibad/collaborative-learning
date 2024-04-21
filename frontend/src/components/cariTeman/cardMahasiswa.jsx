@@ -1,8 +1,24 @@
 // cardMahasiswa.js
 
 import React from 'react';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+
 
 const CardMahasiswa = ({ mahasiswa }) => {
+  const [user, setUser] = useState({});
+
+  useEffect(() => {
+    axios.get(`http://localhost:9090/user/${mahasiswa.user_id_user}`)
+      .then((res) => {
+        setUser(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      }
+    );
+  }, [mahasiswa.user_id_user]);
+
   return (
     <div className="card w-64 h-150">
       <ul className="flex flex-wrap -mx-1 overflow-hidden sm:-mx-1 md:justify-center lg:justify-start">
@@ -13,16 +29,16 @@ const CardMahasiswa = ({ mahasiswa }) => {
                 <p className='text-xs'>Mahasiswa</p>
               </div>
               <div className="absolute top-2 left-2 mt-6 bg-blue-300 text-white px-2 py-1 rounded">
-                <p className='text-xs'>Semester {mahasiswa.semester}</p>
+                <p className='text-xs'>Semester {mahasiswa.user_id_user}</p>
               </div>
               <img
                 className='rounded-lg w-full h-48 object-cover mb-2'
-                src={mahasiswa.profileUrl}
+                src={user.profileUrl}
                 alt=""
               />
-              <p className='font-bold text-m text-center'>{mahasiswa.nama}</p>
-              <p className='text-xs text-center text-gray-500'>{mahasiswa.PerguruanTinggi}</p>
-              <p className='text-xs text-center text-gray-500'>{mahasiswa.Kota}, {mahasiswa.Provinsi}</p>
+              <p className='font-bold text-m text-center'>{user.username}</p>
+              <p className='text-xs text-center text-gray-500'>{mahasiswa.universitas}</p>
+              <p className='text-xs text-center text-gray-500'>{user.location}</p>
               <hr className="w-2/3 mx-auto border-gray-400 border-solid border-t-2 mt-2"/>
               <div className="bg-blue-500 text-white px-2 py-1 rounded mt-2 w-2/3 mx-auto">
                 <p className='text-xs text-center'>{mahasiswa.jurusan}</p>

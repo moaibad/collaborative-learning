@@ -15,22 +15,15 @@ const CardSemuaPraktisi = ({ allpraktisi }) => {
               </div>
               <img
                 className='rounded-lg w-full h-48 object-cover mb-2'
-                src={allpraktisi.Image}
+                src="https://utfs.io/f/b779d32b-cdf9-4ccd-aa59-eeaa7344a03c-nlisfc.png"
                 alt=""
               />
               <p className='font-bold text-m text-center'>{allpraktisi.Nama}</p>
               <p className='text-xs text-center text-gray-500'>{allpraktisi.PerguruanTinggi}</p>
               <p className='text-xs text-center text-gray-500'>{allpraktisi.Kota}, {allpraktisi.Provinsi}</p>
               <hr className="w-2/3 mx-auto border-gray-400 border-solid border-t-2 mt-2"/>
-              <div className= "text-white px-2 rounded mt-2 flex flex-row">
-                {topikList.map((topik, index) => (
-                  <div key={index} className="bg-pink-400 text-white px-2 py-1 rounded m-1">
-                    <p className='text-xs'>{topik.trim()}</p>
-                  </div>
-                ))}
-              </div>
+
             </div>
-            <hr className="w-2/3 mx-auto border-gray-400 border-solid border-t-2 mt-2"/>
             <div className='flex py-1 font-bold'>
                 <p className='text-xs ml-2 mr-16'>Bergabung</p>
                 <p className='text-xs'>Likes</p>

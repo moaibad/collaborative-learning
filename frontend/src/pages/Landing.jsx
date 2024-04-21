@@ -64,7 +64,7 @@ const Landing = ({onLogin}) => {
             "jurusan": "Computer Science",
             "semester": 5
         };
-        axios.post("http://localhost:8080/oauth/user", dummy_user, {
+        axios.post("http://localhost:9090/oauth/user", dummy_user, {
             headers: {
                 Accept: "*/*",
                 Authorization: `Bearer ${codeResponse["access_token"]}`,
@@ -80,7 +80,7 @@ const Landing = ({onLogin}) => {
             console.log(response.data.userId);
 
             if (response.status === 200) { // LOGIN 
-              // setTokenToOther(codeResponse["access_token"]);
+              setTokenToOther(codeResponse["access_token"]);
 
               // Set cookie untuk userId setelah berhasil login
               cookies.set('userId', response.data.id_mhs, { path: '/', maxAge: 3600 });

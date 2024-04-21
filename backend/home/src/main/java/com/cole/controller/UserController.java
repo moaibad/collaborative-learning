@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cole.service.UserService;
+import com.cole.repository.UserRepoJPA;
 import com.cole.service.UserProfileService;
 import com.cole.vo.User;
+import com.cole.vo.Mahasiswa;
 import com.cole.vo.Result;
 import com.cole.vo.UserTokenInfo;
 import jakarta.servlet.http.HttpServletResponse;
@@ -30,6 +32,8 @@ public class UserController {
 	UserService userService;
 	@Autowired
 	UserProfileService userProfileService;
+
+	@Autowired UserRepoJPA userRepoJPA;
 
 	// GET User BY ID API
 	@GetMapping("/user/{id}")
@@ -159,5 +163,33 @@ public class UserController {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			return new Result(500, "Fail");
 		}
+	}
+
+	//Find mahasiswa by username
+	@GetMapping("/user/search/mahasiswa/{username}")
+	public List<Mahasiswa> getMahasiswaByUsername(@PathVariable("username") String username) {
+		List<Mahasiswa> user = userService.getMahasiswaByUsername(username);
+		return user;
+	}
+
+	//find dosen by username
+	@GetMapping("/user/search/dosen/{username}")
+	public List<User> getDosenByUsername(@PathVariable("username") String username) {
+		List<User> user = userService.getDosenByUsername(username);
+		return user;
+	}
+
+	//find prakrisi by username
+	@GetMapping("/user/search/prakrisi/{username}")
+	public List<User> getPraktisiByUsername(@PathVariable("username") String username) {
+		List<User> user = userService.getPraktisiByUsername(username);
+		return user;
+	}
+
+	//find user by username
+	@GetMapping("/user/search/{username}")
+	public User getUserByUsername(@PathVariable("username") String username) {
+		User user = userRepoJPA.findByUsername(username);
+		return user;
 	}
 }

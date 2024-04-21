@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.cole.repository.MahasiswaRepoJPA;
 import com.cole.service.MahasiswaService;
 import com.cole.service.UserService;
 import com.cole.vo.Mahasiswa;
@@ -20,6 +21,8 @@ public class MahasiswaController {
 
     @Autowired
     private MahasiswaService mahasiswaService;
+
+    @Autowired MahasiswaRepoJPA mahasiswaRepoJPA;
 
     @Autowired
     private UserService userService;
@@ -94,4 +97,11 @@ public class MahasiswaController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    // READ BY USERNAME
+    @GetMapping("/mahasiswa/search/{username}")
+    public List<Mahasiswa> getMahasiswaByUsername(@PathVariable("username") String username) {
+        return mahasiswaService.findByUsername(username);
+    }
+    
 }
