@@ -11,7 +11,7 @@ const SearchBar = ({ onSearch }) => {
       type="search"
       placeholder='Keyword [Nama Pengguna/Nama Komunitas] [Perguruan Tinggi] [Jurusan] [Topik]'
       className='w-full p-4 rounded-md bg-slate-200'
-      style={{ fontSize: '0.8rem' }}
+      style={{ fontSize: '1.0 rem' }}
       onChange={handleChange}
     />
   );

@@ -21,12 +21,12 @@ const CardSemuaDosen = ({ alldosen }) => {
               <p className='font-bold text-m text-center'>{alldosen.Nama}</p>
               <p className='text-xs text-center text-gray-500'>{alldosen.PerguruanTinggi}</p>
               <p className='text-xs text-center text-gray-500'>{alldosen.Kota}, {alldosen.Provinsi}</p>
-              <hr className="w-2/3 mx-auto border-gray-400 border-solid border-t-2 mt-2"/>
+              <hr className="w-full mx-auto border-gray-400 border-solid border-t-2 mt-2"/>
               <div className="bg-blue-500 text-white px-2 py-1 rounded mt-2 w-2/3 mx-auto">
                 <p className='text-xs text-center'>{alldosen.Jurusan}</p>
               </div>
             </div>
-            <hr className="w-2/3 mx-auto border-gray-400 border-solid border-t-2 mt-2"/>
+            <hr className="w-full mx-auto border-gray-400 border-solid border-t-2 mt-2"/>
             <div className='flex py-1 font-bold'>
                 <p className='text-xs ml-2 mr-16'>Bergabung</p>
                 <p className='text-xs'>Likes</p>

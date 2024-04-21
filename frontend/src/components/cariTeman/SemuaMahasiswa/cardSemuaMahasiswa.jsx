@@ -36,7 +36,7 @@ const CardSemuaMahasiswa = ({ allmahasiswa }) => {
               <p className='font-bold text-m text-center'>{user.username}</p>
               <p className='text-xs text-center text-gray-500'>{allmahasiswa.universitas}</p>
               <p className='text-xs text-center text-gray-500'>{user.location}</p>
-              <hr className="w-2/3 mx-auto border-gray-400 border-solid border-t-2 mt-2"/>
+              <hr className="w-full mx-auto border-gray-400 border-solid border-t-2 mt-2"/>
               <div className="bg-blue-500 text-white px-2 py-1 rounded mt-2 w-2/3 mx-auto">
                 <p className='text-xs text-center'>{allmahasiswa.jurusan}</p>
               </div>
@@ -53,7 +53,7 @@ const CardSemuaMahasiswa = ({ allmahasiswa }) => {
               <div className='rounded-full h-4 w-4 bg-green-500'></div>
               <p className='text-s font-bold text-gray-600 ml-12'>{allmahasiswa.Likes}</p>
             </div>
-            <hr className="w-2/3 mx-auto border-gray-400 border-solid border-t-2 mt-2"/>
+            <hr className="w-full mx-auto border-gray-400 border-solid border-t-2 mt-2"/>
             <p className='text-xs px-4 py-1 font-bold'>Bergabung</p>
             <p className='text-xs text-gray-500 px-4 py-1 font-semibold'>{allmahasiswa.Bergabung}</p>
           </div>

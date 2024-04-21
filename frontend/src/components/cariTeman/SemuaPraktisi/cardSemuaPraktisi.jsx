@@ -21,7 +21,7 @@ const CardSemuaPraktisi = ({ allpraktisi }) => {
               <p className='font-bold text-m text-center'>{allpraktisi.Nama}</p>
               <p className='text-xs text-center text-gray-500'>{allpraktisi.PerguruanTinggi}</p>
               <p className='text-xs text-center text-gray-500'>{allpraktisi.Kota}, {allpraktisi.Provinsi}</p>
-              <hr className="w-2/3 mx-auto border-gray-400 border-solid border-t-2 mt-2"/>
+              <hr className="w-full mx-auto border-gray-400 border-solid border-t-2 mt-2"/>
 
             </div>
             <div className='flex py-1 font-bold'>

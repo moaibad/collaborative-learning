@@ -15,7 +15,7 @@ const CariTeman = () => {
 
   return (
   <>
-  <div className='m-4 grid grid-cols-2 gap-4 mt-4'>
+  <div className='m-4 grid grid-cols-1 gap-4 mt-4'>
    <SearchBar onSearch={handleSearch} />
   </div>
   <div className='text-3xl font-bold text-center my-5 py-5'><Title/></div> 

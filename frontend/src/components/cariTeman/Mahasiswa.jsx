@@ -9,9 +9,13 @@ const Mahasiswa = ({ searchKeyword }) => {
   const [mahasiswaList, setMahasiswaList] = useState ([]);
 
   useEffect(() => {
-    const fetchMahasiswa = async () => {
+    const fetchData = async () => {
       try {
-        const response = await axios.get(`http://localhost:9090/mahasiswa/search/${searchKeyword}`);
+        let url = 'http://localhost:9090/mahasiswas';
+        if (searchKeyword) {
+          url = `http://localhost:9090/mahasiswa/search/${searchKeyword}`;
+        }
+        const response = await axios.get(url);
         if (response.data) {
           setMahasiswaList(response.data);
         }
@@ -20,7 +24,7 @@ const Mahasiswa = ({ searchKeyword }) => {
       }
     };
 
-    fetchMahasiswa();
+    fetchData();
   }, [searchKeyword]);
 
   console.log(mahasiswaList);
