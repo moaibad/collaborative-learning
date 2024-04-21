@@ -13,7 +13,7 @@ const CourseList = ({ role }) => {
     const fetchData = async () => {
       try {
         let endpoint;
-        if (role === "Teacher") {
+        if (role === "teacher") {
           endpoint =
             "http://moaibad.southeastasia.cloudapp.azure.com/moodle/webservice/rest/server.php?moodlewsrestformat=json&wstoken=5aa6c5a9f9e54193407b3dcd6ec9ab4b&wsfunction=core_enrol_get_users_courses&userid=4";
         } else {
@@ -95,7 +95,7 @@ const CourseList = ({ role }) => {
                   src={coursePage2}
                   alt={coursePage2}
                 />
-                {role === "Teacher" && (
+                {role === "teacher" && (
                   <button
                     onClick={() =>
                       (window.location.href = `http://moaibad.southeastasia.cloudapp.azure.com/moodle/course/edit.php?id=${course.id}`)
@@ -115,7 +115,7 @@ const CourseList = ({ role }) => {
                     {course.displayname}
                   </div>
                 </Link>
-                {role !== "Teacher" && (
+                {role !== "teacher" && (
                   <>
                     <hr className="border-1 border-gray-600" />
                     <div className="flex items-center justify-between gap-2 cursor-pointer p-1 hover:bg-light-gray rounded-lg">
