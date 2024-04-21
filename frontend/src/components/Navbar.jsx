@@ -87,9 +87,9 @@ const Navbar = () => {
         try {
             var response = await axios.get(`http://localhost:8080/user/${UserId}`);
             setMahasiswa(response.data); 
-            localStorage.setItem("role", JSON.stringify(response.role));
+            localStorage.setItem("role", JSON.stringify(response.data.role));
             console.log("role : ", JSON.parse(localStorage.getItem("role")));
-            console.log("user : ", JSON.stringify(response));
+            console.log("user : ", JSON.stringify(response.data));
         } catch (error) {
             console.error('Error fetching mahasiswa data:', error);
         }

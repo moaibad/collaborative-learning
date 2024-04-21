@@ -167,12 +167,13 @@ const RegistData = ({onLogin}) => {
         try {
             // Ambil email dari cookie
             const userEmail = emailCookie;
-            console.log("DISINI", userEmail);
     
             const usernameMoodle = userEmail.split('@')[0]; // Mengambil bagian sebelum '@' dari alamat email sebagai nama pengguna Moodle
-            const passwordMoodle = usernameMoodle.charAt(0).toUpperCase()  + id + "."; // Menggabungkan username dengan id_user untuk membuat kata sandi Moodle
+            const passwordMoodle = usernameMoodle.charAt(0).toUpperCase()  + usernameMoodle.slice(1) + id + "."; // Menggabungkan username dengan id_user untuk membuat kata sandi Moodle
             // const passwordMoodle = "Bibbidibobbidiboo123.";
 
+            console.log("USERNAME MOODLE : ", usernameMoodle);
+            console.log("PASSWORD MOODLE : ", passwordMoodle);
             // Kirim data pengguna ke Moodle
             await createUserInMoodle({
                 id_user: formData.id_user,
