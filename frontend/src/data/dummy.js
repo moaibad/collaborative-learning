@@ -467,6 +467,13 @@ export const customersGrid = [
   },
 ];
 
+export const classOptions = [
+  { value: '2021', label: '2021' },
+  { value: '2022', label: '2022' },
+  { value: '2023', label: '2023' },
+  { value: '2024', label: '2024' },
+];
+
 export const employeesGrid = [
   {
     headerText: "Employee",
@@ -5758,3 +5765,17 @@ export const PyramidData = [
   { x: "Fruits", y: 520, text: "520 cal" },
   { x: "Bread, Rice, Pasta", y: 930, text: "930 cal" },
 ];
+
+export const dummy_user = {
+  "mhs_id": -1,
+  "nama": "John Doe",
+  "username": "john_doe",
+  "email": "john.doe@example.com",
+  "password": "securepassword",
+  "tanggal_lahir": new Date("1990-01-01"),
+  "location": "City, Country",
+  "about": "I am a student.",
+  "kampus": "Example University",
+  "jurusan": "Computer Science",
+  "semester": 5
+};

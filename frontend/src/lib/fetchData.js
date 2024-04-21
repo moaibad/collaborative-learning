@@ -28,7 +28,7 @@ export const getGoogleUserProfile = async () => {
 
 export async function loginMahasiswa(loginData){
   const token = await getUserToken();
-  axios.post(`${VITE_BACKEND_URL}/oauth/mahasiswa`,loginData,{
+  axios.post(`${VITE_BACKEND_URL}/oauth/user`,loginData,{
     headers: {
       Authorization: `Bearer ${token}`,
       Accept: 'application/json',

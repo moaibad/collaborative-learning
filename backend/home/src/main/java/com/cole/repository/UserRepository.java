@@ -83,6 +83,16 @@ public class UserRepository {
 				user.getToken(), user.getProfileUrl(), user.getId_user());
 	}
 
+	//ADD Personal Info
+	public int addPersonalInfo(User user) {
+        String sql = "UPDATE user SET firstname = ?, lastname = ?, username = ?, tanggal_lahir = ?, location = ?, about = ?, role = ?, username_moodle = ?, password_moodle = ? WHERE id_user = ?";
+        return jdbcTemplate.update(sql, user.getFirstname(), user.getLastname(), user.getUsername(),
+										user.getTanggal_lahir(), user.getLocation(), 
+										user.getAbout(), user.getRole(),
+										user.getUsername_moodle(), user.getPassword_moodle(), 
+										user.getId_user());
+    }
+
 	//FIND BY EMAIL AND PASSWORD
 	public User findUserByEmailAndPassword(String email, String password) {
 		String sql = "SELECT * FROM user WHERE email = ? AND password = ?";
