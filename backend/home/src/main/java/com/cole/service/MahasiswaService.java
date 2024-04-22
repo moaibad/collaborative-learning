@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.cole.repository.MahasiswaRepoJPA;
 import com.cole.repository.MahasiswaRepository;
 import com.cole.vo.Mahasiswa;
 
@@ -14,6 +15,13 @@ public class MahasiswaService {
     @Autowired
     private MahasiswaRepository mahasiswaRepository;
 
+    @Autowired
+    private MahasiswaRepoJPA mahasiswaRepositoryJPA;
+
+    public List<Mahasiswa> findByUsername(String username) {
+        return mahasiswaRepositoryJPA.findByUsername(username);
+    }
+    
     public Mahasiswa findOne(Long id_mhs) {
         return mahasiswaRepository.findOne(id_mhs);
     }

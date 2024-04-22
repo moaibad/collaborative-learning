@@ -19,25 +19,14 @@ import {
 import Course from "./pages/Course";
 import DetailCourse from "./components/course/detailCourse";
 import MateriCourse from "./components/course/materiCourse";
-import {
-  Profile,
-  ProfileEdit,
-  Home,
-  TanyaJawab,
-  Achievement,
-  CariTeman,
-  Quiz,
-  Login,
-  Register,
-  HomeDosen,
-  Landing,
-} from "./pages/";
-import "./App.css";
-import { getUserInfo } from "./lib/fetchData";
-import Cookies from "universal-cookie";
+import { Profile, ProfileEdit, Home, TanyaJawab, Achievement, CariTeman, Quiz, Login, Register, HomeDosen, Landing,  SemuaMahasiswa, SemuaDosen, SemuaPraktisi, SemuaKomunitas} from './pages/';
+import './App.css'
+import {getUserInfo} from './lib/fetchData';
+import Cookies from 'universal-cookie';
 import CourseAllList from "./components/course/courseAllList";
 import RegistData from "./pages/RegistData";
 import HistoryQuiz from "./components/quiz/historyQuiz";
+
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -120,7 +109,11 @@ const App = () => {
                 <Route path="/profile/edit" element={<ProfileEdit />} />
                 <Route path="/profile/achievement" element={<Achievement />} />
                 <Route path="/tanya-jawab" element={<TanyaJawab />} />
-                <Route path="/cari-teman" element={<CariTeman />} />
+                <Route path='/cari-teman' element={<CariTeman />} />
+                <Route path='/cari-teman/semua-mahasiswa' element={<SemuaMahasiswa/>}/>
+                <Route path='/cari-teman/semua-dosen' element={<SemuaDosen/>}/>
+                <Route path='/cari-teman/semua-praktisi' element={<SemuaPraktisi/>}/>
+                <Route path='/cari-teman/semua-komunitas' element={<SemuaKomunitas/>}/>
                 <Route path="/quiz" element={<Quiz />} />
                 <Route path="/course" element={<Course />} />
                 <Route path="/all-course" element={<CourseAllList />} />

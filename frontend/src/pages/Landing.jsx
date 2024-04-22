@@ -72,7 +72,12 @@ const Landing = ({ onLogin }) => {
             // console.log(test.charAt(0).toUpperCase() + test.slice(1));
 
             if (response.status === 200) { // LOGIN 
-              // setTokenToOther(codeResponse["access_token"]);
+
+              setTokenToOther(codeResponse["access_token"]);
+
+              // Set cookie untuk userId setelah berhasil login
+              cookies.set('userId', response.data.userId, { path: '/', maxAge: 3600 });
+
               onLogin();
               navigate('/');
 

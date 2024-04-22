@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cole.service.UserService;
+import com.cole.repository.UserRepoJPA;
 import com.cole.service.UserProfileService;
 import com.cole.vo.User;
+import com.cole.vo.Mahasiswa;
 import com.cole.vo.Result;
 import com.cole.vo.UserTokenInfo;
 import jakarta.servlet.http.HttpServletResponse;
@@ -31,7 +33,11 @@ public class UserController {
 	@Autowired
 	UserProfileService userProfileService;
 
-	// GET USER BY ID API
+
+	@Autowired UserRepoJPA userRepoJPA;
+
+	// GET User BY ID API
+
 	@GetMapping("/user/{id}")
 	public User getUser(@PathVariable("id") Long id_user) {
 		User user = userService.getUserById(id_user);
@@ -197,6 +203,33 @@ public class UserController {
 		}
 	}
 
+	//Find mahasiswa by username
+	@GetMapping("/user/search/mahasiswa/{username}")
+	public List<Mahasiswa> getMahasiswaByUsername(@PathVariable("username") String username) {
+		List<Mahasiswa> user = userService.getMahasiswaByUsername(username);
+		return user;
+	}
+
+	//find dosen by username
+	@GetMapping("/user/search/dosen/{username}")
+	public List<User> getDosenByUsername(@PathVariable("username") String username) {
+		List<User> user = userService.getDosenByUsername(username);
+		return user;
+	}
+
+	//find prakrisi by username
+	@GetMapping("/user/search/prakrisi/{username}")
+	public List<User> getPraktisiByUsername(@PathVariable("username") String username) {
+		List<User> user = userService.getPraktisiByUsername(username);
+		return user;
+	}
+
+	//find user by username
+	@GetMapping("/user/search/{username}")
+	public User getUserByUsername(@PathVariable("username") String username) {
+		User user = userRepoJPA.findByUsername(username);
+		return user;
+	}
 	// Metode untuk mendapatkan username Moodle dari email
 	private String getMoodleUsername(String email) {
 		int atIndex = email.indexOf('@');
@@ -211,5 +244,6 @@ public class UserController {
 		String username = getMoodleUsername(email);
 		// Format password baru sesuai kebutuhan
 		return  username.substring(0, 1).toUpperCase() + username.substring(1) + id_user + ".";
+
 	}
 }

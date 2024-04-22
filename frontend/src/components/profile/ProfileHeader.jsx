@@ -24,6 +24,7 @@ const ProfileHeader = () => {
               response.data.tanggal_lahir = formattedDateOfBirth;
 
               setUser(response.data); 
+            
               console.log("user : ", JSON.stringify(response));
           } catch (error) {
               console.error('Error fetching user data:', error);
