@@ -229,7 +229,7 @@ public class UserController {
 	public User getUserByUsername(@PathVariable("username") String username) {
 		User user = userRepoJPA.findByUsername(username);
 		return user;
-
+	}
 	// Metode untuk mendapatkan username Moodle dari email
 	private String getMoodleUsername(String email) {
 		int atIndex = email.indexOf('@');

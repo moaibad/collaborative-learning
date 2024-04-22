@@ -11,9 +11,9 @@ const Mahasiswa = ({ searchKeyword }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let url = 'http://localhost:9090/mahasiswas';
+        let url = 'http://localhost:8080/mahasiswas';
         if (searchKeyword) {
-          url = `http://localhost:9090/mahasiswa/search/${searchKeyword}`;
+          url = `http://localhost:8080/mahasiswa/search/${searchKeyword}`;
         }
         const response = await axios.get(url);
         if (response.data) {

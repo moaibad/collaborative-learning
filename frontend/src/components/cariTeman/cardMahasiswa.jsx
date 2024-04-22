@@ -9,7 +9,7 @@ const CardMahasiswa = ({ mahasiswa }) => {
   const [user, setUser] = useState({});
 
   useEffect(() => {
-    axios.get(`http://localhost:9090/user/${mahasiswa.user_id_user}`)
+    axios.get(`http://localhost:8080/user/${mahasiswa.user_id_user}`)
       .then((res) => {
         setUser(res.data);
       })

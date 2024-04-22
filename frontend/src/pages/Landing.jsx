@@ -76,7 +76,7 @@ const Landing = ({ onLogin }) => {
               setTokenToOther(codeResponse["access_token"]);
 
               // Set cookie untuk userId setelah berhasil login
-              cookies.set('userId', response.data.id_mhs, { path: '/', maxAge: 3600 });
+              cookies.set('userId', response.data.userId, { path: '/', maxAge: 3600 });
 
               onLogin();
               navigate('/');
