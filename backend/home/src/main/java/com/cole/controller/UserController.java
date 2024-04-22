@@ -33,23 +33,25 @@ public class UserController {
 	@Autowired
 	UserProfileService userProfileService;
 
+
 	@Autowired UserRepoJPA userRepoJPA;
 
 	// GET User BY ID API
+
 	@GetMapping("/user/{id}")
 	public User getUser(@PathVariable("id") Long id_user) {
 		User user = userService.getUserById(id_user);
 		return user;
 	}
 
-	// GET List MAHASISWA API
+	// GET List USER API
 	@GetMapping("/users")
 	public List<User> getUsers() {
 		List<User> users = userService.getUsers();
 		return users;
 	}
 
-	// GET MAHASISWA API
+	// GET USER API
 	@GetMapping("/user")
 	public User getUserByToken(@RequestHeader("Authorization") String authorizationHeader) {
 		String userToken = authorizationHeader.replace("Bearer ", "");
@@ -59,7 +61,7 @@ public class UserController {
 		return user;
 	}
 
-	// Login User API
+	// Login User API (UNUSED API, REMOVE LATER)
 	@PostMapping("/user/login")
 	public Object loginUser(HttpServletResponse response, @RequestBody User userParam) {
 		User user = userService.loginUser(userParam.getEmail(), userParam.getPassword());
@@ -93,7 +95,36 @@ public class UserController {
 		}
 	}
 
-	// login & registrasi OAuth
+	// ADD PERSONAL INFORMATION USER
+	@PostMapping("/user/PersonalInfo/{id}")
+	public Object addPersonalInfo(HttpServletResponse response, @PathVariable("id") Long id_user,
+								@RequestBody User userParam) {
+
+		// Memastikan data user ada
+		User existingUser = userService.getUserById(id_user);
+		if (existingUser == null) {
+			return new ResponseEntity<>("Failed to update mahasiswa, Mahasiswa not found", HttpStatus.NOT_FOUND);
+		}
+
+		// Set data request ke object user
+		existingUser.setFirstname(userParam.getFirstname());
+		existingUser.setLastname(userParam.getLastname());
+		existingUser.setUsername(userParam.getUsername());
+		existingUser.setTanggal_lahir(userParam.getTanggal_lahir());
+		existingUser.setLocation(userParam.getLocation());
+		existingUser.setAbout(userParam.getAbout());
+		existingUser.setRole(userParam.getRole());        
+		existingUser.setUsername_moodle(getMoodleUsername(existingUser.getEmail()));
+		existingUser.setPassword_moodle(generateMoodlePassword(existingUser.getEmail(), id_user)); // Menghasilkan password Moodle baru
+
+		// Memanggil metode service untuk melakukan pembaruan
+		userService.addPersonalInfo(existingUser);
+
+		return new ResponseEntity<>(existingUser, HttpStatus.OK);
+
+	}
+
+	// login & registrasi OAuth API
 	@PostMapping("/oauth/user")
 	public ResponseEntity<Object> oauthUser(
 			HttpServletResponse response,
@@ -128,8 +159,9 @@ public class UserController {
 			}
 
 			Long userId = existingUser.getId_user();
+			String email = existingUser.getEmail();
 			// Send a message indicating the account is already registered
-			return ResponseEntity.ok().body(new Result(200, "login successfully", userId));
+			return ResponseEntity.ok().body(new Result(200, "login successfully", userId, email));
 
 		// register
 		}else {
@@ -138,16 +170,22 @@ public class UserController {
 					userParam.getTanggal_lahir(), userParam.getLocation(), userParam.getAbout(),
 					userToken, userTokenInfo.getPicture(), userParam.getRole());
 			int saveResult = userService.saveUser(user);
-	
+			
+			User RegisteredUser = userService.getUserByEmail(userTokenInfo.getEmail());
+			Long userId = RegisteredUser.getId_user();
+			String email = RegisteredUser.getEmail();
+
+			System.out.println(userId);
+
 			if (saveResult == 1) {
-				return ResponseEntity.status(HttpStatus.CREATED).body(new Result(201, "Account registered successfully"));
+				return ResponseEntity.status(HttpStatus.CREATED).body(new Result(201, "Account registered successfully", userId, email));
 			} else {
 				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Result(500, "Failed to register"));
 			}
 		}
 	}
 
-	// EDIT MAHASISWA BY ID API
+	// EDIT USER BY ID
 	@PutMapping("/user/{id}")
 	public Object modifyUser(HttpServletResponse response, @PathVariable("id") Long id_user,
 			@RequestBody User userParam) {
@@ -191,5 +229,21 @@ public class UserController {
 	public User getUserByUsername(@PathVariable("username") String username) {
 		User user = userRepoJPA.findByUsername(username);
 		return user;
+
+	// Metode untuk mendapatkan username Moodle dari email
+	private String getMoodleUsername(String email) {
+		int atIndex = email.indexOf('@');
+		if (atIndex != -1) {
+			return email.substring(0, atIndex);
+		}
+		return ""; // default jika email tidak valid
+	}
+
+	// Metode untuk menghasilkan password Moodle baru
+	private String generateMoodlePassword(String email, Long id_user) {
+		String username = getMoodleUsername(email);
+		// Format password baru sesuai kebutuhan
+		return  username.substring(0, 1).toUpperCase() + username.substring(1) + id_user + ".";
+
 	}
 }

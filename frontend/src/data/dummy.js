@@ -5765,3 +5765,17 @@ export const PyramidData = [
   { x: "Fruits", y: 520, text: "520 cal" },
   { x: "Bread, Rice, Pasta", y: 930, text: "930 cal" },
 ];
+
+export const dummy_user = {
+  "mhs_id": -1,
+  "nama": "John Doe",
+  "username": "john_doe",
+  "email": "john.doe@example.com",
+  "password": "securepassword",
+  "tanggal_lahir": new Date("1990-01-01"),
+  "location": "City, Country",
+  "about": "I am a student.",
+  "kampus": "Example University",
+  "jurusan": "Computer Science",
+  "semester": 5
+};

@@ -6,43 +6,33 @@ import { Flex, Progress } from 'antd';
 import cover1 from '../../data/cover2.png'
 import avatar from '../../data/avatar.jpg';
 import { getDataDashboard } from "../../lib/fetchData";
+import { formatTanggalLahir } from "../../lib/utils";
+
 const ProfileHeader = () => {
     const UserId = Cookies.get('userId');
-    const [mahasiswa, setMahasiswa] = useState("");
-    
-
-    // const getInfoMahasiswa = async () => {
-    //     try {
-    //         const response = await getDataDashboard("/mahasiswa");
-    //         if(response){
-    //             setMahasiswa(response);
-    //         }
-    //         console.log("mahasiswa : ",JSON.stringify(response));
-    //     } catch (error) {
-    //     console.error('Error fetching mahasiswa data:', error);
-    //     }
-    // };
+    const [user, setUser] = useState("");
 
     const token = Cookies.get('user_token');
 
     useEffect(() => {
-      const getInfoMahasiswa = async () => {
+      const getInfoUser = async () => {
           try {
-              let response;
-              if (token === "null") {
-                  response = await axios.get(`http://localhost:9090/user/${UserId}`);
-              } else {
-                  response = await getDataDashboard("/user");
-              }
-              setMahasiswa(response.data || response); // Memperhatikan bahwa ada kasus ketika responsenya langsung object, bukan response.data
+              var response = await axios.get(`http://localhost:8080/user/${UserId}`);
+           
+              const formattedDateOfBirth = formatTanggalLahir(response.data.tanggal_lahir);
+              // Mengatur mahasiswa dengan tanggal lahir yang sudah diformat
+              response.data.tanggal_lahir = formattedDateOfBirth;
+
+              setUser(response.data); 
+            
               console.log("user : ", JSON.stringify(response));
           } catch (error) {
-              console.error('Error fetching mahasiswa data:', error);
+              console.error('Error fetching user data:', error);
           }
       };
   
-      getInfoMahasiswa();
-    }, [token]); // Perubahan token akan memicu useEffect untuk dijalankan kembali
+      getInfoUser();
+    }, []); 
 
     
   return (
@@ -55,19 +45,19 @@ const ProfileHeader = () => {
                     <Flex className='absolute -right-1.5 -bottom-1.5' gap="small" wrap="wrap">
                         <Progress strokeColor={"#fb923c"} type="circle" percent={40} size={109} format={() => ''}/>
                     </Flex>
-                    <img className='h-24 rounded-full' src={mahasiswa.profileUrl ? mahasiswa.profileUrl : avatar} alt="Avatar" />
+                    <img className='h-24 rounded-full' src={user.profileUrl ? user.profileUrl : avatar} alt="Avatar" />
                 </div>
             </div>
         </div>
         <div className='text-center mt-14'>
-            <p className='font-bold text-xl'>{mahasiswa.nama}</p>
-            <p>{mahasiswa.bio}</p>
+            <p className='font-bold text-xl'>{user.nama}</p>
+            <p>{user.bio}</p>
             <div className='justify-center text-slate-500 flex gap-2 text-sm'>
-                <p>@{mahasiswa.username}</p>
+                <p>@{user.username}</p>
                 <span>•</span>
                 <p>Tanggal gabung</p>
                 <span>•</span>
-                <p>Tanggal Lahir</p>
+                <p>{user.tanggal_lahir}</p>
             </div>
         </div>
         <div className='flex gap-6 justify-center mt-6 mb-6'> 

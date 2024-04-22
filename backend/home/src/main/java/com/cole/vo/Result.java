@@ -4,6 +4,7 @@ public class Result {
 	int result;
 	String message;
 	Long userId; 
+	String email;
 
 	public Result() {
 	}
@@ -17,6 +18,13 @@ public class Result {
         this.result = result;
         this.message = message;
         this.userId = userId;
+    }
+
+	public Result(int result, String message, Long userId, String email) {
+        this.result = result;
+        this.message = message;
+        this.userId = userId;
+		this.email = email;
     }
 		
 	public int getResult() {
@@ -41,4 +49,12 @@ public class Result {
     public void setUserId(Long userId) {
         this.userId = userId;
     }
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
 }

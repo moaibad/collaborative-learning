@@ -112,4 +112,8 @@ public class UserService {
 		return user;
 	}
 
+	public int addPersonalInfo(User user) {
+        return userRepository.addPersonalInfo(user);
+    }
+
 }

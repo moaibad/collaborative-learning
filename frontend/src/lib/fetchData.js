@@ -166,6 +166,7 @@ export const getUserInfo = async () =>{
   return null;
 };
 
+
 export async function setTokenToOther(user_token){
   const listUrl = [VITE_BACKEND_CTB_URL,VITE_BACKEND_TJ_URL];
   listUrl.forEach((url)=>{
