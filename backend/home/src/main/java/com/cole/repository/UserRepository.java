@@ -7,7 +7,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import com.cole.mapper.MahasiswaMapper;
 import com.cole.mapper.UserMapper;
+import com.cole.vo.Mahasiswa;
 import com.cole.vo.User;
 
 @Repository
@@ -99,5 +101,29 @@ public class UserRepository {
 		RowMapper<User> rowMapper = new UserMapper();
 		List<User> userList = jdbcTemplate.query(sql, rowMapper, email, password);
 		return userList.isEmpty() ? null : userList.get(0);
+	}
+
+	//Find Mahasiswa
+	public List<Mahasiswa> findMahasiswa(String username) {
+		String sql = "SELECT u.*, m.*" +
+		"FROM user u " +
+		"JOIN mahasiswa m ON u.id_user = m.user_id_user " +
+		"WHERE u.username LIKE ?";
+		RowMapper<Mahasiswa> rowMapper = new MahasiswaMapper();
+		return this.jdbcTemplate.query(sql, rowMapper, username);
+	}
+
+	//Find Dosen
+	public List<User> findDosen(String username) {
+		String sql = "SELECT u.*, d.* " + "FROM user u " + "JOIN dosen d ON u.id_user = d.user_id_user " + "WHERE u.username LIKE ?";
+		RowMapper<User> rowMapper = new UserMapper();
+		return this.jdbcTemplate.query(sql, rowMapper, username);
+	}
+
+	//Find Praktisi
+	public List<User> findPraktisi(String username) {
+		String sql = "SELECT u.*, p.* " + "FROM user u " + "JOIN praktisi p ON u.id_user = p.user_id_user " + "WHERE u.username LIKE ?";
+		RowMapper<User> rowMapper = new UserMapper();
+		return this.jdbcTemplate.query(sql, rowMapper, username);
 	}
 }

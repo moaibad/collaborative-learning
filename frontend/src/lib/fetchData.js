@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { GoogleLogin } from '@react-oauth/google';
 import Cookies from 'universal-cookie';
-import { VITE_BACKEND_URL, VITE_BACKEND_CTB_URL, VITE_BACKEND_TJ_URL } from './env';
+import { VITE_BACKEND_URL, VITE_BACKEND_CTB_URL , VITE_BACKEND_TJ_URL} from './env';
 export const getGoogleUserProfile = async () => {
     const token = await getUserToken();
     if(!token){
@@ -18,6 +18,9 @@ export const getGoogleUserProfile = async () => {
     return axios.get(`${apiUrl}?access_token=${token}`, config)
     .then((response) => {
       console.log(JSON.stringify(response.data));
+      //set cookies email
+      const cookies = new Cookies();
+      cookies.set('email', response.data.email, { path: '/', maxAge: 3600 });
       return response.data;
     })
     .catch((error) => {
@@ -44,20 +47,6 @@ export async function loginMahasiswa(loginData){
     console.log(JSON.stringify(err_res.response));
     return {ok : false};
   })
-}
-
-export async function setTokenToOther(user_token){
-  const listUrl = [VITE_BACKEND_CTB_URL,VITE_BACKEND_TJ_URL];
-  listUrl.forEach((url)=>{
-    axios.post(`${url}/status`,{user_token : user_token})
-    .then((res)=>{
-        console.log(JSON.stringify(res.data));
-    })
-    .catch((err_res)=>{
-        console.log(JSON.stringify(err_res));
-    });
-  })
-  
 }
 
 // Define a function to fetch user profile
@@ -176,3 +165,18 @@ export const getUserInfo = async () =>{
   }
   return null;
 };
+
+
+export async function setTokenToOther(user_token){
+  const listUrl = [VITE_BACKEND_CTB_URL,VITE_BACKEND_TJ_URL];
+  listUrl.forEach((url)=>{
+    axios.post(`${url}/status`,{user_token : user_token})
+    .then((res)=>{
+        console.log(JSON.stringify(res.data));
+    })
+    .catch((err_res)=>{
+        console.log(JSON.stringify(err_res));
+    });
+  })
+  
+}

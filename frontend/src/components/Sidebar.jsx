@@ -15,6 +15,7 @@ const Sidebar = () => {
   const logOut = () => {
     cookies.remove("user_token");
     cookies.remove("userId");
+    cookies.remove("email");
     googleLogout();
     setProfile(null);
     window.location.href = "/landing";
