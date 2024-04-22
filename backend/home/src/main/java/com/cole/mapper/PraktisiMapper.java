@@ -17,6 +17,7 @@ public class PraktisiMapper implements RowMapper<Praktisi> {
         praktisi.setId_praktisi(rs.getLong("id_praktisi"));
         praktisi.setAsal_perusahaan(rs.getString("asal_perusahaan"));
         praktisi.setPendidikan_terakhir(rs.getString("pendidikan_terakhir"));
+        praktisi.setPosisi(rs.getString("posisi"));
         praktisi.setUser_id_user(rs.getLong("user_id_user"));
 
         return praktisi;

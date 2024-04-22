@@ -69,18 +69,19 @@ public class PraktisiController {
         if (existingPraktisi == null) {
             return new ResponseEntity<>("Failed to update praktisi, Praktisi not found", HttpStatus.NOT_FOUND);
         }
-    
+
         // Melakukan update pada data praktisi
         existingPraktisi.setAsal_perusahaan(praktisi.getAsal_perusahaan());
         existingPraktisi.setPendidikan_terakhir(praktisi.getPendidikan_terakhir());
-    
+        existingPraktisi.setPosisi(praktisi.getPosisi());
+        existingPraktisi.setUser_id_user(praktisi.getUser_id_user());
+
         // Memanggil metode service untuk melakukan pembaruan
         praktisiService.updateByUserId(existingPraktisi);
-        
+
         return new ResponseEntity<>(existingPraktisi, HttpStatus.OK);
-        
     }
-    
+
     // DELETE
     @DeleteMapping("/praktisi/{id}") // Id merupakan user id
     public ResponseEntity<Void> deletePraktisiById(@PathVariable("id") Long id) {

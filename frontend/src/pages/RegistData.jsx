@@ -83,6 +83,51 @@ const RegistData = ({onLogin}) => {
         }
     };
 
+    const academicInfoDosen = async (formData) => {
+        try {
+            console.log(formData.major); // Jurusan
+            console.log(formData.university); // Universitas
+            console.log(formData.education); // Pendidikan Terakhir
+            const response = await axios.post(`http://localhost:8080/dosen`, {
+                jurusan: formData.major,
+                universitas: formData.university,
+                pendidikan_terakhir: formData.education,
+                user_id_user: id // Asumsi id sudah didefinisikan sebelumnya
+            });
+    
+            console.log(response.status);
+            console.log(response.data); // Mengakses data langsung dari respons
+    
+        } catch (error) {
+            // Handle registration errors
+            console.error('Error Add Academic Data Dosen:', error);
+            message.error('An error occurred. Please try again later.');
+        }
+    };
+
+    const academicInfoPraktisi = async (formData) => {
+        try {
+            console.log(formData.education); // Bidang Keahlian
+            console.log(formData.company); // Perusahaan
+            console.log(formData.roleInCompany); // Posisi
+            const response = await axios.post(`http://localhost:8080/praktisi`, {
+                pendidikan_terakhir: formData.education,
+                asal_perusahaan: formData.company,
+                posisi: formData.roleInCompany,
+                user_id_user: id // Asumsi id sudah didefinisikan sebelumnya
+            });
+    
+            console.log(response.status);
+            console.log(response.data); // Mengakses data langsung dari respons
+    
+        } catch (error) {
+            // Handle registration errors
+            console.error('Error Add Academic Data Praktisi:', error);
+            message.error('An error occurred. Please try again later.');
+        }
+    };
+    
+
     const continues = () => {
         setCurrent(current + 1);
     }
@@ -209,12 +254,18 @@ const RegistData = ({onLogin}) => {
                 if (formData.major === '' || formData.university === '' || formData.education === '') {
                     message.error('Please fill in all fields before continuing.');
                     isFormValid = false;
+                }else{
+                    academicInfoDosen(formData);
                 }
+
             } else if (selectedRole === 'practitioners') {
-                if (formData.company === '' || formData.roleInCompany === '' || formData.education === '') {
+                if (formData.education === '' || formData.company=== '' || formData.roleInCompany=== '') {
                     message.error('Please fill in all fields before continuing.');
                     isFormValid = false;
+                }else{
+                    academicInfoPraktisi(formData);
                 }
+
             }
         }
 

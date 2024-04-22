@@ -14,14 +14,17 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties({"user"})
 public class Praktisi {
     @Id
-	@Column(name = "id_praktisi")
-	private Long id_praktisi;
+    @Column(name = "id_praktisi")
+    private Long id_praktisi;
 
-	@Column(name = "asal_perusahaan")
-	private String asal_perusahaan;
+    @Column(name = "asal_perusahaan")
+    private String asal_perusahaan;
 
-	@Column(name = "pendidikan_terakhir")
-	private String pendidikan_terakhir;
+    @Column(name = "pendidikan_terakhir")
+    private String pendidikan_terakhir;
+
+    @Column(name = "posisi")
+    private String posisi;
 
     @OneToOne
     @JoinColumn(name = "user_id_user", referencedColumnName = "id_user")
@@ -33,17 +36,19 @@ public class Praktisi {
     }
 
     // Constructor without ID
-    public Praktisi(String asal_perusahaan, String pendidikan_terakhir, User user) {
+    public Praktisi(String asal_perusahaan, String pendidikan_terakhir, String posisi, User user) {
         this.asal_perusahaan = asal_perusahaan;
         this.pendidikan_terakhir = pendidikan_terakhir;
+        this.posisi = posisi;
         this.user = user;
     }
 
     // Constructor with ID
-    public Praktisi(Long id_praktisi, String asal_perusahaan, String pendidikan_terakhir, User user) {
+    public Praktisi(Long id_praktisi, String asal_perusahaan, String pendidikan_terakhir, String posisi, User user) {
         this.id_praktisi = id_praktisi;
         this.asal_perusahaan = asal_perusahaan;
         this.pendidikan_terakhir = pendidikan_terakhir;
+        this.posisi = posisi;
         this.user = user;
     }
 
@@ -70,6 +75,14 @@ public class Praktisi {
 
     public void setPendidikan_terakhir(String pendidikan_terakhir) {
         this.pendidikan_terakhir = pendidikan_terakhir;
+    }
+
+    public String getPosisi() {
+        return posisi;
+    }
+
+    public void setPosisi(String posisi) {
+        this.posisi = posisi;
     }
 
     public User getUser() {

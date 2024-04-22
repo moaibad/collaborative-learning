@@ -35,18 +35,18 @@ public class PraktisiRepository {
     }
 
     public int save(Praktisi praktisi) {
-        String sql = "INSERT INTO praktisi (asal_perusahaan, pendidikan_terakhir, user_id_user) VALUES (?, ?, ?)";
-        return jdbcTemplate.update(sql, praktisi.getAsal_perusahaan(), praktisi.getPendidikan_terakhir(), praktisi.getUser().getId_user());
+        String sql = "INSERT INTO praktisi (asal_perusahaan, pendidikan_terakhir, posisi, user_id_user) VALUES (?, ?, ?, ?)";
+        return jdbcTemplate.update(sql, praktisi.getAsal_perusahaan(), praktisi.getPendidikan_terakhir(), praktisi.getPosisi(), praktisi.getUser_id_user());
     }
 
     public int update(Praktisi praktisi) {
-        String sql = "UPDATE praktisi SET asal_perusahaan = ?, pendidikan_terakhir = ? WHERE id_praktisi = ?";
-        return jdbcTemplate.update(sql, praktisi.getAsal_perusahaan(), praktisi.getPendidikan_terakhir(), praktisi.getId_praktisi());
+        String sql = "UPDATE praktisi SET asal_perusahaan = ?, pendidikan_terakhir = ?, posisi = ? WHERE id_praktisi = ?";
+        return jdbcTemplate.update(sql, praktisi.getAsal_perusahaan(), praktisi.getPendidikan_terakhir(), praktisi.getPosisi(), praktisi.getId_praktisi());
     }
 
     public int updateByUserId(Praktisi praktisi) {
-        String sql = "UPDATE praktisi SET asal_perusahaan = ?, pendidikan_terakhir = ? WHERE user_id_user = ?";
-        return jdbcTemplate.update(sql, praktisi.getAsal_perusahaan(), praktisi.getPendidikan_terakhir(), praktisi.getUser_id_user());
+        String sql = "UPDATE praktisi SET asal_perusahaan = ?, pendidikan_terakhir = ?, posisi = ? WHERE user_id_user = ?";
+        return jdbcTemplate.update(sql, praktisi.getAsal_perusahaan(), praktisi.getPendidikan_terakhir(), praktisi.getPosisi(), praktisi.getUser_id_user());
     }
 
     public int delete(Long id) {
