@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import Cookies from 'universal-cookie';
@@ -14,8 +14,10 @@ import lecturer from '../data/lecturer-role.png';
 import practitioners from '../data/practitioners-role.png';
 import welcome from '../data/welcome.jpg'
 import { classOptions } from '../data/dummy';
+import { TOKEN_MOODLE, HOST_MOODLE} from "../lib/env";
 
-const RegistData = () => {
+
+const RegistData = ({onLogin}) => {
     const [current, setCurrent] = useState(0);
     const [error, setError] = useState('');
     const [selectedRole, setSelectedRole] = useState('');
@@ -23,7 +25,7 @@ const RegistData = () => {
         firstname: '',
         lastname: '',
         username: '',
-        birth: '',
+        tanggal_lahir: '',
         location: '',
         about: '',
         major: '',
@@ -37,25 +39,46 @@ const RegistData = () => {
 
     const cookies = new Cookies();
     const id = cookies.get('userId');
+    const emailCookie = cookies.get('userEmail');
     const navigate = useNavigate();
+
+    useEffect(() => {
+
+    }, [formData]);
+    
 
     const registerUser = async (formData) => {
         try {
             const response = await axios.post(`http://localhost:8080/user/PersonalInfo/${id}`, formData);
 
-            const responseData = await response.json();
-            console.log(response.status)
+            console.log(response.status);
+            console.log(response.data); // Mengakses data langsung dari respons
 
-            // Handle successful registration
-            if (response.status === 201) {
-                message.success("Register done!");
-                setTimeout(() => { navigate('/') }, 1500);
-            } else {
-                setError(responseData.message || 'Registration failed. Please try again.');
-            }
         } catch (error) {
             // Handle registration errors
             console.error('Error registering:', error);
+            message.error('An error occurred. Please try again later.');
+        }
+    };
+
+    const academicInfoMHS = async (formData) => {
+        try {
+            console.log(formData.major);
+            console.log(formData.class);
+            console.log(formData.university);
+            const response = await axios.post(`http://localhost:8080/mahasiswa`, {
+                jurusan : formData.major,
+                angkatan : formData.class,
+                universitas : formData.university,
+                user_id_user : id
+            });
+
+            console.log(response.status);
+            console.log(response.data); // Mengakses data langsung dari respons
+
+        } catch (error) {
+            // Handle registration errors
+            console.error('Error Add Academic Data Mahasiswa:', error);
             message.error('An error occurred. Please try again later.');
         }
     };
@@ -78,7 +101,7 @@ const RegistData = () => {
                 break;
             case 2:
                 // Validasi untuk langkah 3
-                if (formData.firstname === '' || formData.lastname === '' || formData.username === '' || formData.birth === '' || formData.location === '' || formData.about === '') {
+                if (formData.firstname === '' || formData.lastname === '' || formData.username === '' || formData.tanggal_lahir === '' || formData.location === '' || formData.about === '') {
                     message.error('Please fill in all fields before continuing.');
                     isFormValid = false;
                 }
@@ -114,6 +137,62 @@ const RegistData = () => {
         });
     };
 
+    const createUserInMoodle = async (userData) => {
+        const params = new URLSearchParams();
+        params.append('wstoken', TOKEN_MOODLE);
+        params.append('wsfunction', 'core_user_create_users');
+        params.append('moodlewsrestformat', 'json');
+        params.append('users[0][username]', userData.usernameMoodle);
+        params.append('users[0][password]', userData.passwordMoodle);
+        params.append('users[0][firstname]', userData.firstname);
+        params.append('users[0][lastname]', userData.lastname);
+        params.append('users[0][email]', userData.email);
+    
+        const url = `${HOST_MOODLE}/webservice/rest/server.php?${params.toString()}`;
+    
+        try {
+            const response = await axios.post(url);
+            
+            console.log("berhasil hit api moodle register");
+            console.log(response);
+            console.log(response.data);
+            return response.data;
+        } catch (error) {
+            console.error('Error creating user in Moodle:', error);
+            throw new Error('Failed to create user in Moodle');
+        }
+    };
+    
+    const registerUserInMoodle = async (formData) => {
+        try {
+            // Ambil email dari cookie
+            const userEmail = emailCookie;
+    
+            const usernameMoodle = userEmail.split('@')[0]; // Mengambil bagian sebelum '@' dari alamat email sebagai nama pengguna Moodle
+            const passwordMoodle = usernameMoodle.charAt(0).toUpperCase()  + usernameMoodle.slice(1) + id + "."; // Menggabungkan username dengan id_user untuk membuat kata sandi Moodle
+            // const passwordMoodle = "Bibbidibobbidiboo123.";
+
+            console.log("USERNAME MOODLE : ", usernameMoodle);
+            console.log("PASSWORD MOODLE : ", passwordMoodle);
+            // Kirim data pengguna ke Moodle
+            await createUserInMoodle({
+                id_user: formData.id_user,
+                email: userEmail,
+                firstname: formData.firstname,
+                lastname: formData.lastname,
+                usernameMoodle: usernameMoodle,
+                passwordMoodle: passwordMoodle
+            });
+            console.log("User Moodle Created")
+        } catch (error) {
+            // Tangani kesalahan saat pendaftaran pengguna di Moodle
+            message.error('Failed to register user in Moodle. Please try again later.');
+            console.error('Error registering user in Moodle:', error);
+        }
+    };
+    
+    
+    
     const onFinish = () => {
         let isFormValid = true;
 
@@ -123,6 +202,8 @@ const RegistData = () => {
                 if (formData.major === '' || formData.class === '' || formData.university === '') {
                     message.error('Please fill in all fields before continuing.');
                     isFormValid = false;
+                }else{
+                    academicInfoMHS(formData); // Add data Academic
                 }
             } else if (selectedRole === 'teacher') {
                 if (formData.major === '' || formData.university === '' || formData.education === '') {
@@ -142,10 +223,13 @@ const RegistData = () => {
             // Handle form submission
             message.success('Registration Successful!');
             console.log('Form values:', formData);
-            registerUser(formData);
+            registerUserInMoodle(formData); // Add user moodle
+            registerUser(formData); // Add data personal
+            onLogin();
             navigate('/'); // Redirect to home or any other route
         }
     };
+
 
     const academicInfo = (
         <div className='w-10/12 space-y-2 rounded-2xl cursor-default select-none'>
@@ -203,12 +287,12 @@ const RegistData = () => {
                 </div>
                 <div className='flex gap-4 w-full'>
                     <div>
-                        <label>Date of Birth</label>
+                        <label>Date of birth</label>
                         <input
                             className='block w-full rounded-md border-0 p-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 transition duration-300 outline-none'
                             type="date"
-                            name="birth"
-                            value={formData.birth}
+                            name="tanggal_lahir"
+                            value={formData.tanggal_lahir}
                             onChange={handleChange}
                         />
                     </div>
