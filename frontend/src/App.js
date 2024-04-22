@@ -37,6 +37,7 @@ import { getUserInfo } from "./lib/fetchData";
 import Cookies from "universal-cookie";
 import CourseAllList from "./components/course/courseAllList";
 import RegistData from "./pages/RegistData";
+import HistoryQuiz from "./components/quiz/historyQuiz";
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -94,7 +95,10 @@ const App = () => {
               element={<Register onLogin={handleLogin} />}
             />
             <Route path="/login" element={<Login onLogin={handleLogin} />} />
-            <Route path="/registData" element={<RegistData />} />
+            <Route
+              path="/registData"
+              element={<RegistData onLogin={handleLogin} />}
+            />
             <Route path="*" element={<Navigate to="/landing" />} />
           </Routes>
         </div>
@@ -122,6 +126,7 @@ const App = () => {
                 <Route path="/all-course" element={<CourseAllList />} />
                 <Route path="/detail-course/:id" element={<DetailCourse />} />
                 <Route path="/materi-course/:id" element={<MateriCourse />} />
+                <Route path="/quiz/histories" element={<HistoryQuiz />} />
                 {/* Add a default route to redirect to Home if no route matches */}
                 <Route path="*" element={<Navigate to="/course" />} />
               </Routes>
