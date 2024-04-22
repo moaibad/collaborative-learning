@@ -3,11 +3,14 @@ import { AiOutlineLike } from "react-icons/ai";
 import { FaRegComment } from "react-icons/fa6";
 import { FaRegEye, FaHistory } from "react-icons/fa";
 import { Link } from 'react-router-dom';
+import Cookies from 'universal-cookie';
 
 
 const QuestionList = () => {
   const [questions, setQuestions] = useState([]);
-  const authorId = "65dfee47d87246ca81ba274e";
+  const [email, setEmail] = useState('');
+  const authorId = "660e301559e58f5dadaee592";
+  //const email = "suci.awalia.tif421@polban.ac.id"
 
   const getTimestamp = (createdAt) => {
     const options = {
@@ -36,10 +39,17 @@ const QuestionList = () => {
   };
 
   useEffect(() => {
+    const cookies = new Cookies();
+    const userEmail = cookies.get('email'); // Retrieve email from cookies
+    setEmail(userEmail);
+    console.log("email: ", userEmail);
     const fetchData = async () => {
       try {
+        // const response = await fetch(
+        //   `http://localhost:3001/api/questions?authorId=${authorId}`
+        // );
         const response = await fetch(
-          `http://localhost:3001/api/questions?authorId=${authorId}`
+          `http://localhost:3001/api/questions?email=${userEmail}`
         );
         const data = await response.json();
         setQuestions(data);
