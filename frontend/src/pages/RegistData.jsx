@@ -445,15 +445,21 @@ const RegistData = ({onLogin}) => {
                 <div className='w-5/12 space-y-4'>
                     <div>
                         <label>Major</label>
-                        <input className='block w-full rounded-md border-0 p-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 transition duration-300 outline-none' type="text" name="major" value={formData.major} onChange={handleChange} />
+                        <input className='block w-full rounded-md border-0 p-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 transition duration-300 outline-none' 
+                            type="text" name="major" value={formData.major} onChange={handleChange} placeholder=''
+                        />
                     </div>
                     <div>
                         <label>University</label>
-                        <input className='block w-full rounded-md border-0 p-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 transition duration-300 outline-none' type="text" name="university" value={formData.university} onChange={handleChange} />
+                        <input className='block w-full rounded-md border-0 p-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 transition duration-300 outline-none' 
+                            type="text" name="university" value={formData.university} onChange={handleChange} placeholder=''
+                        />
                     </div>
                     <div>
                         <label>Latest Education</label>
-                        <input className='block w-full rounded-md border-0 p-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 transition duration-300 outline-none' type="text" name="education" value={formData.education} onChange={handleChange} />
+                        <input className='block w-full rounded-md border-0 p-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 transition duration-300 outline-none' 
+                            type="text" name="education" value={formData.education} onChange={handleChange} placeholder='Ex: S2 ITB'
+                        />
                     </div>
                 </div>
                 <div className='w-7/12 flex justify-center'>

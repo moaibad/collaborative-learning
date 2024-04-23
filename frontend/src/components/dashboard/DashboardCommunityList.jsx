@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Cookies from 'universal-cookie';
 import { getDataCTB } from '../../lib/fetchData';
+import { MdGroupOff } from "react-icons/md";
 
 const DashboardCommunityList = () => {
     const [communityList, setCommunityList] = useState([]);
@@ -44,9 +45,12 @@ const DashboardCommunityList = () => {
     console.log(communityList);
     console.log(profile);
     console.log(email);
+
+    
+
     return (
         <div>
-            <div className="shadow-md rounded-xl bg-white p-4 mr-4">
+            <div className="border-2 border-slate-200 rounded-xl bg-white p-4 mr-4">
                 <p className='text-xl font-bold mb-4'>Community Lists</p>
                 <div className=''>
                     {/* Render all communities if showAllCommunities is true, otherwise render the first three */}
@@ -70,6 +74,15 @@ const DashboardCommunityList = () => {
                         </div>
                     )}
                 </div>
+                {/* Else statement */}
+                {!showAllCommunities && communityList.length <= 3 && (
+                    <div className='text-slate-400 text-center p-8 gap-4 grid grid-cols-1'>
+                        <div className='place-self-center'>
+                          <MdGroupOff size={72} />
+                        </div>
+                        <p className='font-semibold'>Tidak ada community yang diikuti</p>
+                    </div>
+                )}
             </div>
         </div>
     );
