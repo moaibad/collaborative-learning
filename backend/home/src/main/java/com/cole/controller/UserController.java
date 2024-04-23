@@ -80,7 +80,7 @@ public class UserController {
 		User user = new User(userParam.getNama(), userParam.getUsername(),
 				userParam.getEmail(), userParam.getPassword(),
 				userParam.getTanggal_lahir(), userParam.getLocation(), userParam.getAbout(),
-				userParam.getToken(), userParam.getProfileUrl(), userParam.getRole());
+				userParam.getToken(), userParam.getProfileUrl(), userParam.getRole(), userParam.getTanggal_daftar());
 
 		int saveResult = userService.saveUser(user);
 
@@ -160,6 +160,7 @@ public class UserController {
 
 			Long userId = existingUser.getId_user();
 			String email = existingUser.getEmail();
+			String role = existingUser.getRole();
 			// Send a message indicating the account is already registered
 			return ResponseEntity.ok().body(new Result(200, "login successfully", userId, email));
 
@@ -168,7 +169,7 @@ public class UserController {
 			User user = new User(userTokenInfo.getName(), userTokenInfo.getName(),
 					userTokenInfo.getEmail(), userParam.getPassword(),
 					userParam.getTanggal_lahir(), userParam.getLocation(), userParam.getAbout(),
-					userToken, userTokenInfo.getPicture(), userParam.getRole());
+					userToken, userTokenInfo.getPicture(), userParam.getRole(), userParam.getTanggal_daftar());
 			int saveResult = userService.saveUser(user);
 			
 			User RegisteredUser = userService.getUserByEmail(userTokenInfo.getEmail());
@@ -192,7 +193,7 @@ public class UserController {
 		User user = new User(id_user, userParam.getNama(), userParam.getUsername(),
 				userParam.getEmail(), userParam.getPassword(),
 				userParam.getTanggal_lahir(), userParam.getLocation(), userParam.getAbout(),
-				userParam.getToken(), userParam.getProfileUrl(), userParam.getRole());
+				userParam.getToken(), userParam.getProfileUrl(), userParam.getRole(), userParam.getTanggal_daftar());
 
 		boolean isSuccess = userService.updateUser(user);
 		if (isSuccess) {

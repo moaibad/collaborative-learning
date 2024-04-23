@@ -11,7 +11,7 @@ import { loginMahasiswa, setTokenToOther } from "../lib/fetchData";
 import { FcGoogle } from "react-icons/fc";
 import gsap from 'gsap';
 import { message  } from 'antd';
-import { dummy_user } from '../data/dummy';
+import { data_akun } from '../data/dummy';
 
 import avatar from "../data/landing-profile.png";
 import SplitType from "split-type";
@@ -51,7 +51,7 @@ const Landing = ({ onLogin }) => {
     onSuccess: (codeResponse) => {
         cookies.set('user_token', codeResponse["access_token"], { path: '/', maxAge: 3600 });
         setUser(codeResponse);
-        axios.post("http://localhost:8080/oauth/user", dummy_user, {
+        axios.post("http://localhost:8080/oauth/user", data_akun, {
             headers: {
                 Accept: "*/*",
                 Authorization: `Bearer ${codeResponse["access_token"]}`,
@@ -68,14 +68,9 @@ const Landing = ({ onLogin }) => {
             console.log(response.status);
             console.log(response.data.userId);
             console.log(response.data.email);
-            // const test = "halo"
-            // console.log(test.charAt(0).toUpperCase() + test.slice(1));
 
             if (response.status === 200) { // LOGIN 
               setTokenToOther(codeResponse["access_token"]);
-
-              // Set cookie untuk userId setelah berhasil login
-              cookies.set('userId', response.data.userId, { path: '/', maxAge: 3600 });
 
               onLogin();
               navigate('/');

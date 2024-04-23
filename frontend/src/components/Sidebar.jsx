@@ -12,10 +12,12 @@ const Sidebar = () => {
   console.log("role : ", JSON.parse(localStorage.getItem("role")));
   const role = JSON.parse(localStorage.getItem("role"));
 
+
   const logOut = () => {
     cookies.remove("user_token");
     cookies.remove("userId");
     cookies.remove("email");
+    localStorage.removeItem("role");
     googleLogout();
     setProfile(null);
     window.location.href = "/landing";

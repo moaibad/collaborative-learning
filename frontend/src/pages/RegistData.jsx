@@ -15,6 +15,7 @@ import practitioners from '../data/practitioners-role.png';
 import welcome from '../data/welcome.jpg'
 import { classOptions } from '../data/dummy';
 import { TOKEN_MOODLE, HOST_MOODLE} from "../lib/env";
+import { setTokenToOther } from "../lib/fetchData";
 
 
 const RegistData = ({onLogin}) => {
@@ -39,6 +40,7 @@ const RegistData = ({onLogin}) => {
 
     const cookies = new Cookies();
     const id = cookies.get('userId');
+    const user_token = cookies.get('user_token');
     const emailCookie = cookies.get('userEmail');
     const navigate = useNavigate();
 
@@ -276,6 +278,7 @@ const RegistData = ({onLogin}) => {
             console.log('Form values:', formData);
             registerUserInMoodle(formData); // Add user moodle
             registerUser(formData); // Add data personal
+            setTokenToOther(user_token);
             onLogin();
             navigate('/'); // Redirect to home or any other route
         }

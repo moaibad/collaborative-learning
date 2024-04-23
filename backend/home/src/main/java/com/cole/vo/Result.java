@@ -5,6 +5,7 @@ public class Result {
 	String message;
 	Long userId; 
 	String email;
+	String role;
 
 	public Result() {
 	}
@@ -57,4 +58,5 @@ public class Result {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+
 }

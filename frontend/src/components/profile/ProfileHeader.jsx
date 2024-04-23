@@ -6,7 +6,7 @@ import { Flex, Progress } from 'antd';
 import cover1 from '../../data/cover2.png'
 import avatar from '../../data/avatar.jpg';
 import { getDataDashboard } from "../../lib/fetchData";
-import { formatTanggalLahir } from "../../lib/utils";
+import { formatTanggalMDY } from "../../lib/utils";
 
 const ProfileHeader = () => {
     const UserId = Cookies.get('userId');
@@ -19,9 +19,11 @@ const ProfileHeader = () => {
           try {
               var response = await axios.get(`http://localhost:8080/user/${UserId}`);
            
-              const formattedDateOfBirth = formatTanggalLahir(response.data.tanggal_lahir);
-              // Mengatur mahasiswa dengan tanggal lahir yang sudah diformat
+              const formattedDateOfBirth = formatTanggalMDY(response.data.tanggal_lahir);
+              const formattedDateOfRegister = formatTanggalMDY(response.data.tanggal_daftar);
+            
               response.data.tanggal_lahir = formattedDateOfBirth;
+              response.data.tanggal_daftar = formattedDateOfRegister;
 
               setUser(response.data); 
             
@@ -55,7 +57,7 @@ const ProfileHeader = () => {
             <div className='justify-center text-slate-500 flex gap-2 text-sm'>
                 <p>@{user.username}</p>
                 <span>•</span>
-                <p>Tanggal gabung</p>
+                <p>{user.tanggal_daftar}</p>
                 <span>•</span>
                 <p>{user.tanggal_lahir}</p>
             </div>
