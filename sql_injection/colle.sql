@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3307
--- Generation Time: Apr 23, 2024 at 01:32 PM
+-- Generation Time: Apr 23, 2024 at 01:42 PM
 -- Server version: 11.2.2-MariaDB
 -- PHP Version: 8.2.4
 
@@ -57,7 +57,8 @@ INSERT INTO `mahasiswa` (`id_mhs`, `jurusan`, `angkatan`, `universitas`, `user_i
 (1, 'Teknik Informatika', '2021', 'Politeknik Negeri Bandung', 2),
 (5, 'Teknik Informatika', '2021', 'Politeknik Negeri Bandung', 4),
 (7, 'Teknik Informatika', '2021', 'Politeknik Negeri Bandung', 3),
-(60, 'D4 Teknik Informatika', '2021', 'POLBAN', 84);
+(60, 'D4 Teknik Informatika', '2021', 'POLBAN', 84),
+(61, 'S1 Teknik Kimia', '2022', 'ITB', 85);
 
 -- --------------------------------------------------------
 
@@ -113,8 +114,9 @@ INSERT INTO `user` (`id_user`, `nama`, `username`, `email`, `password`, `tanggal
 (2, 'Naufal Al Ghani', 'Ghani', 'waw@gmail.com', '123', '2003-05-26', 'Bandung', 'LOREM IPSUM DOLOR SI AMET', NULL, NULL, 'mahasiswa', NULL, NULL, NULL, NULL, NULL),
 (3, 'Alya Mikayla Putri', 'Alya', 'wew@gmail.com', '1234', '2010-05-13', 'Bandung', 'LOREM IPSUM DOLOR SI AMET SISISISI', NULL, NULL, 'mahasiswa', NULL, NULL, NULL, NULL, NULL),
 (5, 'Test Hapus', 'hapus', 'hapus@gmail.com', '123', '2003-05-26', 'Bandung', 'LOREM IPSUM DOLOR SI HAPUS', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(83, 'PKM Beasiswa', 'Doni', 'pkmbeasiswa@gmail.com', 'securepassword', '1995-12-05', 'Bandung', 'Hai Aku Praktisi Doni dari Gojek', 'ya29.a0Ad52N38aH7TrdXIAkuRXJ2c-91YPsNNex3v-pvLR4Y6j3NRBhiZtbAnLT0cs0nB__P3ULcots2pzFOneyPhhKGtYNWf9Uriz7ePkb8gl0x92UMgVK5ZGtcHYjobOOdTPA-8JOGj1ZEMbBKl4flSkUiH7Am9o3Ip1xGszaCgYKAXcSARISFQHGX2Mism0PFR5K292L4RCGi_ROsQ0171', 'https://lh3.googleusercontent.com/a/ACg8ocLkkAkLahq2ihLm4S5V0Lvx0GHAaZABVOiiWf3k6mlVFTEzSw=s96-c', 'practitioners', 'Doni', 'Salmanan', 'pkmbeasiswa', 'Pkmbeasiswa83.', '2024-04-23'),
-(84, 'Naufal AlGhani', 'Ghani', 'alghani63@gmail.com', 'securepassword', '2003-05-26', 'Bandung', 'Hai Aku Ghani', 'ya29.a0Ad52N3_3j11-ThLJRvoq8eM0l6oCJ-a-vvRi6pMVEbrKAnvVbHfWMTLfEGD5DpRKHSMLXdiKdUVg6GsPA4XOczfN1kXF2vqzzIXR8yFSNLgzoYpF0nN_BIXRMx5EH2zF-PE0abq-6dWaY7Txof-2juibR-0zMLJID83jaCgYKAWASARISFQHGX2MinZRBsfdbI6geqvWbYcj3IA0171', 'https://lh3.googleusercontent.com/a/ACg8ocJdfJ97d4YUjWca6k_ho6hehA5xRBgs2AEYpJMEkJm1omrlwNxp=s96-c', 'student', 'Naufal', 'Al.Ghani', 'alghani63', 'Alghani6384.', '2024-04-23');
+(83, 'PKM Beasiswa', 'Doni', 'pkmbeasiswa@gmail.com', 'securepassword', '1995-12-05', 'Bandung', 'Hai Aku Praktisi Doni dari Gojek', 'ya29.a0Ad52N3-Nt86f5xiFZ0Cje1IouR_r9DU4vnpo8oMUbd6oove0Bg58_a4-fiiRm5QRz2lppQQZFk2DX-3d6_UgbBf0NKyYf4kjwv_Y6emuOJSVDnR9ffSGmen_Wv7lRJQLGWzvL_ZpkDPCbnPhIxRqKicV5BthVmMW6JmqaCgYKAdASARISFQHGX2MiBPSI3gM0CjA9sEnjjRm-GQ0171', 'https://lh3.googleusercontent.com/a/ACg8ocLkkAkLahq2ihLm4S5V0Lvx0GHAaZABVOiiWf3k6mlVFTEzSw=s96-c', 'practitioners', 'Doni', 'Salmanan', 'pkmbeasiswa', 'Pkmbeasiswa83.', '2024-04-23'),
+(84, 'Naufal AlGhani', 'Ghani', 'alghani63@gmail.com', 'securepassword', '2003-05-26', 'Bandung', 'Hai Aku Ghani', 'ya29.a0Ad52N39fHFctO4rLUFQ1UyrAD-g8pC1Xu67fZICS-oHUsEtYPP9w_3fxzZZt9ZHoOsqN19M6Pp_SAgFKeYWzm69RcI2Lr_fT2MvJfZQranFeC6mF5M9ifC-fgJMdr0AmgKMaEbOk4gb9nrDhWEp9KONTaZoEWRght1z-aCgYKAVwSARISFQHGX2MiLFo3pbWYmWtOyMPcp8uw1w0171', 'https://lh3.googleusercontent.com/a/ACg8ocJdfJ97d4YUjWca6k_ho6hehA5xRBgs2AEYpJMEkJm1omrlwNxp=s96-c', 'student', 'Naufal', 'Al.Ghani', 'alghani63', 'Alghani6384.', '2024-04-23'),
+(85, 'Agniva Kamila', 'Agniva', 'agnivakml13@gmail.com', 'securepassword', '2004-05-13', 'Cimahi', 'Hai Aku Agni', 'ya29.a0Ad52N3_1t5tleP9H8gFWwaDckNKQBBbf9puPSqhepSU1J9UFGU1jG6jYE70GuArYooG--XyyJ8JJQx_iBnf4Bf7gp2iTNML6_6qI8GoPJwSOKrYPzY6ExAeCG_b8jJIZ71T3IaACaXFo_0j73ZtRX0qZIcOoLnc0RiV5aCgYKAUMSARASFQHGX2MiF5GcznXe_uGAlQlkaE0C6Q0171', 'https://lh3.googleusercontent.com/a/ACg8ocJXxhPcQq-EDZbtvWtipvb3BXMli65LZDJ_wpKNuEq7ouCQNqs=s96-c', 'student', 'Agniva', 'Kamila', 'agnivakml13', 'Agnivakml1385.', '2024-04-23');
 
 --
 -- Indexes for dumped tables
@@ -161,7 +163,7 @@ ALTER TABLE `dosen`
 -- AUTO_INCREMENT for table `mahasiswa`
 --
 ALTER TABLE `mahasiswa`
-  MODIFY `id_mhs` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
+  MODIFY `id_mhs` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
 
 --
 -- AUTO_INCREMENT for table `praktisi`
@@ -173,7 +175,7 @@ ALTER TABLE `praktisi`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=85;
+  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=86;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
