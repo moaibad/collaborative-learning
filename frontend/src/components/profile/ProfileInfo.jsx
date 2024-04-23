@@ -5,6 +5,8 @@ import { getDataDashboard } from "../../lib/fetchData";
 const ProfileInfo = () => {
   const [user, setUser] = useState("");
   const [mahasiswa, setMahasiswa] = useState("");
+  const [dosen, setDosen] = useState("");
+  const [praktisi, setPraktisi] = useState("");
   const UserId = Cookies.get('userId');
   const token = Cookies.get('user_token');
 
@@ -40,14 +42,33 @@ const ProfileInfo = () => {
         {mahasiswa && (
           <>
           <div className='w-1/2 leading-loose'>
-              <p className='font-bold mt-6'>General Information</p>
-              <p className='flex justify-between'>Asal Kampus<div></div>{mahasiswa.universitas}</p>
-              <p className='flex justify-between'>Jurusan<div></div>{mahasiswa.jurusan}</p>
-              <p className='flex justify-between'>Semester<div></div>{mahasiswa.angkatan}</p>
+              <p className='font-bold mt-6'>Academic Information</p>
+              <p className='flex justify-between'>University<div></div>{mahasiswa.universitas}</p>
+              <p className='flex justify-between'>Major<div></div>{mahasiswa.jurusan}</p>
+              <p className='flex justify-between'>Class<div></div>{mahasiswa.angkatan}</p>
           </div>
         </>
         )}
-        
+        {dosen && (
+          <>
+          <div className='w-1/2 leading-loose'>
+              <p className='font-bold mt-6'>Academic Information</p>
+              <p className='flex justify-between'>University<div></div>{mahasiswa.universitas}</p>
+              <p className='flex justify-between'>Major<div></div>{mahasiswa.jurusan}</p>
+              <p className='flex justify-between'>Latest Education<div></div>{mahasiswa.angkatan}</p>
+          </div>
+        </>
+        )}
+        {praktisi && (
+          <>
+          <div className='w-1/2 leading-loose'>
+              <p className='font-bold mt-6'>Academic Information</p>
+              <p className='flex justify-between'>Company Origin<div></div>{mahasiswa.universitas}</p>
+              <p className='flex justify-between'>Role in the Company<div></div>{mahasiswa.jurusan}</p>
+              <p className='flex justify-between'>Latest Education<div></div>{mahasiswa.angkatan}</p>
+          </div>
+        </>
+        )}
     </div>
   )
 }
