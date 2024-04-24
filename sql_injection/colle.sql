@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Apr 21, 2024 at 12:16 PM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.0.30
+-- Host: localhost:3307
+-- Generation Time: Apr 23, 2024 at 01:42 PM
+-- Server version: 11.2.2-MariaDB
+-- PHP Version: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -38,30 +38,6 @@ CREATE TABLE `dosen` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `follow`
---
-
-CREATE TABLE `follow` (
-  `follow_id` int(11) NOT NULL,
-  `follower_id` int(11) DEFAULT NULL,
-  `followee_id` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `follow`
---
-
-INSERT INTO `follow` (`follow_id`, `follower_id`, `followee_id`) VALUES
-(2, 2, 3),
-(4, 5, 3),
-(5, 16, 3),
-(6, 16, 17),
-(7, 3, 17),
-(8, 5, 17);
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `mahasiswa`
 --
 
@@ -80,7 +56,9 @@ CREATE TABLE `mahasiswa` (
 INSERT INTO `mahasiswa` (`id_mhs`, `jurusan`, `angkatan`, `universitas`, `user_id_user`) VALUES
 (1, 'Teknik Informatika', '2021', 'Politeknik Negeri Bandung', 2),
 (5, 'Teknik Informatika', '2021', 'Politeknik Negeri Bandung', 4),
-(7, 'Teknik Informatika', '2021', 'Politeknik Negeri Bandung', 3);
+(7, 'Teknik Informatika', '2021', 'Politeknik Negeri Bandung', 3),
+(60, 'D4 Teknik Informatika', '2021', 'POLBAN', 84),
+(61, 'S1 Teknik Kimia', '2022', 'ITB', 85);
 
 -- --------------------------------------------------------
 
@@ -92,8 +70,16 @@ CREATE TABLE `praktisi` (
   `id_praktisi` int(11) NOT NULL,
   `asal_perusahaan` varchar(32) DEFAULT NULL,
   `pendidikan_terakhir` varchar(32) DEFAULT NULL,
+  `posisi` varchar(50) DEFAULT NULL,
   `user_id_user` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `praktisi`
+--
+
+INSERT INTO `praktisi` (`id_praktisi`, `asal_perusahaan`, `pendidikan_terakhir`, `posisi`, `user_id_user`) VALUES
+(2, 'GOJEK', 'S1 Teknik Informatika', 'Junior Programmer', 83);
 
 -- --------------------------------------------------------
 
@@ -109,28 +95,28 @@ CREATE TABLE `user` (
   `password` varchar(32) DEFAULT NULL,
   `tanggal_lahir` date DEFAULT NULL,
   `location` varchar(32) DEFAULT NULL,
-  `about` text DEFAULT NULL,
+  `about` text DEFAULT NULL,  
   `token` longtext DEFAULT NULL,
-  `profile_url` varchar(150) DEFAULT NULL,
+  `profile_url` longtext DEFAULT NULL,
   `role` varchar(32) DEFAULT NULL,
   `firstname` varchar(50) DEFAULT NULL,
   `lastname` varchar(50) DEFAULT NULL,
   `username_moodle` varchar(50) DEFAULT NULL,
-  `password_moodle` varchar(50) DEFAULT NULL
+  `password_moodle` varchar(50) DEFAULT NULL,
+  `tanggal_daftar` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`id_user`, `nama`, `username`, `email`, `password`, `tanggal_lahir`, `location`, `about`, `token`, `profile_url`, `role`, `firstname`, `lastname`, `username_moodle`, `password_moodle`) VALUES
-(2, 'Naufal Al Ghani', 'Ghani', 'waw@gmail.com', '123', '2003-05-26', 'Bandung', 'LOREM IPSUM DOLOR SI AMET', NULL, NULL, 'mahasiswa', NULL, NULL, NULL, NULL),
-(3, 'Alya Mikayla Putri', 'Alya', 'wew@gmail.com', '1234', '2010-05-13', 'Bandung', 'LOREM IPSUM DOLOR SI AMET SISISISI', NULL, NULL, 'mahasiswa', NULL, NULL, NULL, NULL),
-(5, 'Test Hapus', 'hapus', 'hapus@gmail.com', '123', '2003-05-26', 'Bandung', 'LOREM IPSUM DOLOR SI HAPUS', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(16, 'Naufal AlGhani', 'Naufal AlGhani', 'alghani63@gmail.com', 'securepassword', '1990-01-01', 'City, Country', 'I am a student.', 'ya29.a0Ad52N38JZl2Ws6wx5_5D0qV37-B_-f2StCx58sk74E2LRDZSEvCSguhzwV0Fwj_LelVT9raKrXhXPbDlIep6clIcBhoEjaKG_L2V7MzSO0zJrQPS-H8ejJx0idN4Kw6oT4OKwD1MVro-xWEa56NWo4P64pNRoGyRu-LNaCgYKAaISARISFQHGX2MixUoGloYBCJF7PSSeT2FKJA0171', 'https://lh3.googleusercontent.com/a/ACg8ocJdfJ97d4YUjWca6k_ho6hehA5xRBgs2AEYpJMEkJm1omrlwNxp=s96-c', NULL, NULL, NULL, NULL, NULL),
-(17, '3A_016_Naufal', '3A_016_Naufal', 'muhamad.naufal.tif421@polban.ac.id', 'securepassword', '1990-01-01', 'City, Country', 'I am a student.', 'ya29.a0Ad52N3_0O4U_D2J_2dR1nW-hxfsusnmEbpiVIcaSM3h2FgQ28zONKcXAwnFGeX088EeB94itv-2xU10RU55wfAw4uObQblKwcPqrmyyLNIkzfrxxLGSkSYef-pYnkBK2to6eyOIYYqsSnz9qnkSy09q1AT8ISWbNt10saCgYKAY8SARASFQHGX2MiwiOweDhj0WfX4gu--Y8XDg0171', 'https://lh3.googleusercontent.com/a/ACg8ocJ0iNTh1Pp8tIZ-T_6hdDb2YBrCH-YsgiCKJhq97ptSkEQeNg=s96-c', NULL, NULL, NULL, NULL, NULL),
-(18, 'Agniva Kamila', 'Agniva Kamila', 'agnivakml13@gmail.com', 'securepassword', '1990-01-01', 'City, Country', 'I am a student.', 'ya29.a0Ad52N39WZeM5Dhz7aYuAn7VrgX77qcINggbOWeHDzKYw7S5Hd1JDva_oEuLCD58fZvPAdTt2AuUjqkHQYJ2ZgJqF5Jjpgteja5wnV_2TYxBtkpUBCOcPNc2BF6mOXODMNF__EmW2ICQSVtxeOOAyA49NhNiQ8saTfiRgaCgYKAQsSARASFQHGX2Mi3HiGatCJCcNqjil8bYs6BQ0171', 'https://lh3.googleusercontent.com/a/ACg8ocJXxhPcQq-EDZbtvWtipvb3BXMli65LZDJ_wpKNuEq7ouCQNqs=s96-c', NULL, NULL, NULL, NULL, NULL),
-(19, '3A_022_Fuad', '3A_022_Fuad', 'raihan.fuad.tif421@polban.ac.id', 'securepassword', NULL, 'Bandung', 'Sabi', 'ya29.a0Ad52N38GST6APMyKf201xClPERDbzC_L1FVIQM6pM3rbd1iNj8t2yjU4sDS8FqhfR3fKSQ9z4gA_MWT5ITPBn62R3WwpsuRfgc0tdC7OdhVKU-HqIYoWtem_N_4uRo3GlZ5Vu1ga5gILrwTYwYt6lHTAK74E0zLeeeQLaCgYKAVwSARMSFQHGX2Mi1grTGayDbuZ9NXtmzxA4oA0171', 'https://lh3.googleusercontent.com/a/ACg8ocLh5Nn0M4QPtnnLjMaA3jpbHReJyj5bCINtlcY3XRWd4hvPSzU=s96-c', NULL, 'Raihan', 'Syakir', 'USERNAMEDUMMY', 'PASSWORDUMMY');
+INSERT INTO `user` (`id_user`, `nama`, `username`, `email`, `password`, `tanggal_lahir`, `location`, `about`, `token`, `profile_url`, `role`, `firstname`, `lastname`, `username_moodle`, `password_moodle`, `tanggal_daftar`) VALUES
+(2, 'Naufal Al Ghani', 'Ghani', 'waw@gmail.com', '123', '2003-05-26', 'Bandung', 'LOREM IPSUM DOLOR SI AMET', NULL, NULL, 'mahasiswa', NULL, NULL, NULL, NULL, NULL),
+(3, 'Alya Mikayla Putri', 'Alya', 'wew@gmail.com', '1234', '2010-05-13', 'Bandung', 'LOREM IPSUM DOLOR SI AMET SISISISI', NULL, NULL, 'mahasiswa', NULL, NULL, NULL, NULL, NULL),
+(5, 'Test Hapus', 'hapus', 'hapus@gmail.com', '123', '2003-05-26', 'Bandung', 'LOREM IPSUM DOLOR SI HAPUS', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(83, 'PKM Beasiswa', 'Doni', 'pkmbeasiswa@gmail.com', 'securepassword', '1995-12-05', 'Bandung', 'Hai Aku Praktisi Doni dari Gojek', 'ya29.a0Ad52N3-Nt86f5xiFZ0Cje1IouR_r9DU4vnpo8oMUbd6oove0Bg58_a4-fiiRm5QRz2lppQQZFk2DX-3d6_UgbBf0NKyYf4kjwv_Y6emuOJSVDnR9ffSGmen_Wv7lRJQLGWzvL_ZpkDPCbnPhIxRqKicV5BthVmMW6JmqaCgYKAdASARISFQHGX2MiBPSI3gM0CjA9sEnjjRm-GQ0171', 'https://lh3.googleusercontent.com/a/ACg8ocLkkAkLahq2ihLm4S5V0Lvx0GHAaZABVOiiWf3k6mlVFTEzSw=s96-c', 'practitioners', 'Doni', 'Salmanan', 'pkmbeasiswa', 'Pkmbeasiswa83.', '2024-04-23'),
+(84, 'Naufal AlGhani', 'Ghani', 'alghani63@gmail.com', 'securepassword', '2003-05-26', 'Bandung', 'Hai Aku Ghani', 'ya29.a0Ad52N39fHFctO4rLUFQ1UyrAD-g8pC1Xu67fZICS-oHUsEtYPP9w_3fxzZZt9ZHoOsqN19M6Pp_SAgFKeYWzm69RcI2Lr_fT2MvJfZQranFeC6mF5M9ifC-fgJMdr0AmgKMaEbOk4gb9nrDhWEp9KONTaZoEWRght1z-aCgYKAVwSARISFQHGX2MiLFo3pbWYmWtOyMPcp8uw1w0171', 'https://lh3.googleusercontent.com/a/ACg8ocJdfJ97d4YUjWca6k_ho6hehA5xRBgs2AEYpJMEkJm1omrlwNxp=s96-c', 'student', 'Naufal', 'Al.Ghani', 'alghani63', 'Alghani6384.', '2024-04-23'),
+(85, 'Agniva Kamila', 'Agniva', 'agnivakml13@gmail.com', 'securepassword', '2004-05-13', 'Cimahi', 'Hai Aku Agni', 'ya29.a0Ad52N3_1t5tleP9H8gFWwaDckNKQBBbf9puPSqhepSU1J9UFGU1jG6jYE70GuArYooG--XyyJ8JJQx_iBnf4Bf7gp2iTNML6_6qI8GoPJwSOKrYPzY6ExAeCG_b8jJIZ71T3IaACaXFo_0j73ZtRX0qZIcOoLnc0RiV5aCgYKAUMSARASFQHGX2MiF5GcznXe_uGAlQlkaE0C6Q0171', 'https://lh3.googleusercontent.com/a/ACg8ocJXxhPcQq-EDZbtvWtipvb3BXMli65LZDJ_wpKNuEq7ouCQNqs=s96-c', 'student', 'Agniva', 'Kamila', 'agnivakml13', 'Agnivakml1385.', '2024-04-23');
 
 --
 -- Indexes for dumped tables
@@ -142,14 +128,6 @@ INSERT INTO `user` (`id_user`, `nama`, `username`, `email`, `password`, `tanggal
 ALTER TABLE `dosen`
   ADD PRIMARY KEY (`id_dosen`),
   ADD UNIQUE KEY `dosen__idx` (`user_id_user`);
-
---
--- Indexes for table `follow`
---
-ALTER TABLE `follow`
-  ADD PRIMARY KEY (`follow_id`),
-  ADD KEY `follower_id` (`follower_id`),
-  ADD KEY `followee_id` (`followee_id`);
 
 --
 -- Indexes for table `mahasiswa`
@@ -182,39 +160,22 @@ ALTER TABLE `dosen`
   MODIFY `id_dosen` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `follow`
---
-ALTER TABLE `follow`
-  MODIFY `follow_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
-
---
 -- AUTO_INCREMENT for table `mahasiswa`
 --
 ALTER TABLE `mahasiswa`
-  MODIFY `id_mhs` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id_mhs` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
 
 --
 -- AUTO_INCREMENT for table `praktisi`
 --
 ALTER TABLE `praktisi`
-  MODIFY `id_praktisi` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_praktisi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
-
---
--- Constraints for dumped tables
---
-
---
--- Constraints for table `follow`
---
-ALTER TABLE `follow`
-  ADD CONSTRAINT `follow_ibfk_1` FOREIGN KEY (`follower_id`) REFERENCES `user` (`id_user`),
-  ADD CONSTRAINT `follow_ibfk_2` FOREIGN KEY (`followee_id`) REFERENCES `user` (`id_user`);
+  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=86;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

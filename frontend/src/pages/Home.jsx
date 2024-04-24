@@ -5,6 +5,7 @@ import DashboardFriendRecommend from '../components/dashboard/DashboardFriendRec
 import DashboardCourseList from  '../components/dashboard/DashboardCourseList'
 import DashboardCommunityList from '../components/dashboard/DashboardCommunityList'
 import DashboardQuizStat from '../components/dashboard/DashboardQuizStat'
+import DashboardPopularCommunity from '../components/dashboard/DashboardPopularCommunity'
 
 const Home = () => {
   return (
@@ -20,7 +21,7 @@ const Home = () => {
           <DashboardCourseList/>
         </div>
         <div className="flex flex-wrap lg:flex-nowrap justify-center my-8">
-          <DashboardFriendRecommend/>
+          <DashboardPopularCommunity/>
         </div>
       </div>
       <div className='col-span-1 ml-12'>

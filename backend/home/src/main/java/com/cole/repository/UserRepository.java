@@ -67,12 +67,12 @@ public class UserRepository {
 			return -1; // Email already registered
 		}
 
-		String sql = "INSERT INTO user(nama, username, email, password, tanggal_lahir, location, about ,token, profile_url, role) VALUES(?,?,?,?,?,?,?,?,?,?)";
+		String sql = "INSERT INTO user(nama, username, email, password, tanggal_lahir, location, about ,token, profile_url, role, tanggal_daftar) VALUES(?,?,?,?,?,?,?,?,?,?,?)";
 
 		return jdbcTemplate.update(sql, user.getNama(), user.getUsername(),
 				user.getEmail(), user.getPassword(),
 				user.getTanggal_lahir(), user.getLocation(), user.getAbout(), 
-				user.getToken(), user.getProfileUrl(), user.getRole());
+				user.getToken(), user.getProfileUrl(), user.getRole(), user.getTanggal_daftar());
 	}
 
 	//UPDATE USER DATA

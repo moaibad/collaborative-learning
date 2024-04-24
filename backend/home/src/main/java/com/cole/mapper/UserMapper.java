@@ -25,6 +25,7 @@ public class UserMapper implements RowMapper<User> {
 		user.setToken(rs.getString("token"));
 		user.setProfileUrl(rs.getString("profile_url"));
 		user.setRole(rs.getString("role"));
+		user.setTanggal_daftar(rs.getDate("tanggal_daftar"));
 		
 		return user;
 

@@ -10,7 +10,7 @@ export function createCookie (cookieName, cookieValue, time, timeUnit) {
     document.cookie = cookieName + " = " + cookieValue + "; expires = " +date.toGMTString();
 }
 
-export const formatTanggalLahir = (tanggal_lahir) => {
+export const formatTanggalMDY = (tanggal_lahir) => {
   const dateOfBirth = new Date(tanggal_lahir);
   const formattedDateOfBirth = dateOfBirth.toLocaleDateString('en-US', {
       year: 'numeric',

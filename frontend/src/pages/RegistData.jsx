@@ -15,6 +15,7 @@ import practitioners from '../data/practitioners-role.png';
 import welcome from '../data/welcome.jpg'
 import { classOptions } from '../data/dummy';
 import { TOKEN_MOODLE, HOST_MOODLE} from "../lib/env";
+import { setTokenToOther } from "../lib/fetchData";
 
 
 const RegistData = ({onLogin}) => {
@@ -39,6 +40,7 @@ const RegistData = ({onLogin}) => {
 
     const cookies = new Cookies();
     const id = cookies.get('userId');
+    const user_token = cookies.get('user_token');
     const emailCookie = cookies.get('userEmail');
     const navigate = useNavigate();
 
@@ -82,6 +84,51 @@ const RegistData = ({onLogin}) => {
             message.error('An error occurred. Please try again later.');
         }
     };
+
+    const academicInfoDosen = async (formData) => {
+        try {
+            console.log(formData.major); // Jurusan
+            console.log(formData.university); // Universitas
+            console.log(formData.education); // Pendidikan Terakhir
+            const response = await axios.post(`http://localhost:8080/dosen`, {
+                jurusan: formData.major,
+                universitas: formData.university,
+                pendidikan_terakhir: formData.education,
+                user_id_user: id // Asumsi id sudah didefinisikan sebelumnya
+            });
+    
+            console.log(response.status);
+            console.log(response.data); // Mengakses data langsung dari respons
+    
+        } catch (error) {
+            // Handle registration errors
+            console.error('Error Add Academic Data Dosen:', error);
+            message.error('An error occurred. Please try again later.');
+        }
+    };
+
+    const academicInfoPraktisi = async (formData) => {
+        try {
+            console.log(formData.education); // Bidang Keahlian
+            console.log(formData.company); // Perusahaan
+            console.log(formData.roleInCompany); // Posisi
+            const response = await axios.post(`http://localhost:8080/praktisi`, {
+                pendidikan_terakhir: formData.education,
+                asal_perusahaan: formData.company,
+                posisi: formData.roleInCompany,
+                user_id_user: id // Asumsi id sudah didefinisikan sebelumnya
+            });
+    
+            console.log(response.status);
+            console.log(response.data); // Mengakses data langsung dari respons
+    
+        } catch (error) {
+            // Handle registration errors
+            console.error('Error Add Academic Data Praktisi:', error);
+            message.error('An error occurred. Please try again later.');
+        }
+    };
+    
 
     const continues = () => {
         setCurrent(current + 1);
@@ -209,12 +256,18 @@ const RegistData = ({onLogin}) => {
                 if (formData.major === '' || formData.university === '' || formData.education === '') {
                     message.error('Please fill in all fields before continuing.');
                     isFormValid = false;
+                }else{
+                    academicInfoDosen(formData);
                 }
+
             } else if (selectedRole === 'practitioners') {
-                if (formData.company === '' || formData.roleInCompany === '' || formData.education === '') {
+                if (formData.education === '' || formData.company=== '' || formData.roleInCompany=== '') {
                     message.error('Please fill in all fields before continuing.');
                     isFormValid = false;
+                }else{
+                    academicInfoPraktisi(formData);
                 }
+
             }
         }
 
@@ -225,6 +278,7 @@ const RegistData = ({onLogin}) => {
             console.log('Form values:', formData);
             registerUserInMoodle(formData); // Add user moodle
             registerUser(formData); // Add data personal
+            setTokenToOther(user_token);
             onLogin();
             navigate('/'); // Redirect to home or any other route
         }
@@ -394,15 +448,21 @@ const RegistData = ({onLogin}) => {
                 <div className='w-5/12 space-y-4'>
                     <div>
                         <label>Major</label>
-                        <input className='block w-full rounded-md border-0 p-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 transition duration-300 outline-none' type="text" name="major" value={formData.major} onChange={handleChange} />
+                        <input className='block w-full rounded-md border-0 p-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 transition duration-300 outline-none' 
+                            type="text" name="major" value={formData.major} onChange={handleChange} placeholder=''
+                        />
                     </div>
                     <div>
                         <label>University</label>
-                        <input className='block w-full rounded-md border-0 p-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 transition duration-300 outline-none' type="text" name="university" value={formData.university} onChange={handleChange} />
+                        <input className='block w-full rounded-md border-0 p-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 transition duration-300 outline-none' 
+                            type="text" name="university" value={formData.university} onChange={handleChange} placeholder=''
+                        />
                     </div>
                     <div>
                         <label>Latest Education</label>
-                        <input className='block w-full rounded-md border-0 p-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 transition duration-300 outline-none' type="text" name="education" value={formData.education} onChange={handleChange} />
+                        <input className='block w-full rounded-md border-0 p-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 transition duration-300 outline-none' 
+                            type="text" name="education" value={formData.education} onChange={handleChange} placeholder='Ex: S2 ITB'
+                        />
                     </div>
                 </div>
                 <div className='w-7/12 flex justify-center'>

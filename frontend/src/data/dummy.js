@@ -5766,7 +5766,7 @@ export const PyramidData = [
   { x: "Bread, Rice, Pasta", y: 930, text: "930 cal" },
 ];
 
-export const dummy_user = {
+export const data_akun = {
   "mhs_id": -1,
   "nama": "John Doe",
   "username": "john_doe",
@@ -5777,5 +5777,6 @@ export const dummy_user = {
   "about": "I am a student.",
   "kampus": "Example University",
   "jurusan": "Computer Science",
-  "semester": 5
+  "semester": 5,
+  "tanggal_daftar" : new Date()
 };
