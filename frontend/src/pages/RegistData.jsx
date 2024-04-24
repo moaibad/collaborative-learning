@@ -276,6 +276,8 @@ const RegistData = ({onLogin}) => {
             // Handle form submission
             message.success('Registration Successful!');
             console.log('Form values:', formData);
+            localStorage.setItem("role", selectedRole);
+            console.log("role : ", localStorage.getItem("role"));
             registerUserInMoodle(formData); // Add user moodle
             registerUser(formData); // Add data personal
             setTokenToOther(user_token);

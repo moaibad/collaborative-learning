@@ -9,8 +9,8 @@ const Sidebar = () => {
   const [profile, setProfile] = useState([]);
   const cookies = new Cookies();
   const navigation = useNavigate();
-  console.log("role : ", JSON.parse(localStorage.getItem("role")));
-  const role = JSON.parse(localStorage.getItem("role"));
+  // console.log("role : ", JSON.parse(localStorage.getItem("role")));
+  const role = localStorage.getItem("role");
 
 
   const logOut = () => {

@@ -9,7 +9,7 @@ const ProfileInfo = () => {
   const [praktisi, setPraktisi] = useState("");
   const UserId = Cookies.get('userId');
   const token = Cookies.get('user_token');
-  const role = JSON.parse(localStorage.getItem("role"));
+  const role = localStorage.getItem("role");
 
   const getInfoUser = async () => {
     try {

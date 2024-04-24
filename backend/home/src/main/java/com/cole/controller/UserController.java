@@ -162,7 +162,7 @@ public class UserController {
 			String email = existingUser.getEmail();
 			String role = existingUser.getRole();
 			// Send a message indicating the account is already registered
-			return ResponseEntity.ok().body(new Result(200, "login successfully", userId, email));
+			return ResponseEntity.ok().body(new Result(200, "login successfully", userId, email, role));
 
 		// register
 		}else {

@@ -71,6 +71,9 @@ const Landing = ({ onLogin }) => {
 
             if (response.status === 200) { // LOGIN 
               setTokenToOther(codeResponse["access_token"]);
+              
+              localStorage.setItem("role", response.data.role);
+              console.log("role : ", localStorage.getItem("role"));
 
               onLogin();
               navigate('/');
