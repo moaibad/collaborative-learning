@@ -21,7 +21,7 @@ const AchievementList = ({ searchQuery }) => {
     { id: 6, name: 'Nama Achievement', date: 'Tanggal diraih', description: 'Detail achievement detail achievement detail achievement detail achievement', image: badge6, status: 'Incomplete' },
     { id: 7, name: 'Nama Achievement', date: 'Tanggal diraih', description: 'Detail achievement detail achievement detail achievement detail achievement', image: badge7, status: 'Incomplete' },
     { id: 8, name: 'Nama Achievement', date: 'Tanggal diraih', description: 'Detail achievement detail achievement detail achievement detail achievement', image: badge8, status: 'Incomplete' },
-    { id: 9, name: 'Nama Achievement', date: 'Tanggal diraih', description: 'Detail achievement detail achievement detail achievement detail achievement', image: badge9, status: 'Incomplete' },
+    // { id: 9, name: 'Nama Achievement', date: 'Tanggal diraih', description: 'Detail achievement detail achievement detail achievement detail achievement', image: badge9, status: 'Incomplete' },
     // other achievements...
   ];
 

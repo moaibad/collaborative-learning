@@ -18,6 +18,10 @@ module.exports = {
         'secondary-dark-bg': '#33373E',
         'light-gray': '#F7F7F7',
         'half-transparent': 'rgba(0, 0, 0, 0.5)',
+        'brown': '#AB8A5C',
+        'silver': '#BEBEBE',
+        'gold': '#E5BC42',
+        'platinum': '#6DA4AE',
       },
       borderWidth: {
         1: '1px',
@@ -31,6 +35,12 @@ module.exports = {
         '78px': '78px',
       },
       width: {
+        84: '21rem',
+        88: '22rem',
+        120: '30rem',
+        160: '40rem',
+        180: '45rem', 
+        200: '50rem',
         400: '400px',
         760: '760px',
         780: '780px',
