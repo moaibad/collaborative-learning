@@ -14,25 +14,25 @@ const ProfileHeader = () => {
 
     const token = Cookies.get('user_token');
 
-    useEffect(() => {
-      const getInfoUser = async () => {
-          try {
-              var response = await axios.get(`http://localhost:8080/user/${UserId}`);
-           
-              const formattedDateOfBirth = formatTanggalMDY(response.data.tanggal_lahir);
-              const formattedDateOfRegister = formatTanggalMDY(response.data.tanggal_daftar);
-            
-              response.data.tanggal_lahir = formattedDateOfBirth;
-              response.data.tanggal_daftar = formattedDateOfRegister;
+    const getInfoUser = async () => {
+        try {
+            var response = await axios.get(`http://localhost:8080/user/${UserId}`);
+         
+            const formattedDateOfBirth = formatTanggalMDY(response.data.tanggal_lahir);
+            const formattedDateOfRegister = formatTanggalMDY(response.data.tanggal_daftar);
+          
+            response.data.tanggal_lahir = formattedDateOfBirth;
+            response.data.tanggal_daftar = formattedDateOfRegister;
 
-              setUser(response.data); 
-            
-              console.log("user : ", JSON.stringify(response));
-          } catch (error) {
-              console.error('Error fetching user data:', error);
-          }
-      };
-  
+            setUser(response.data); 
+          
+            console.log("user : ", JSON.stringify(response));
+        } catch (error) {
+            console.error('Error fetching user data:', error);
+        }
+    };
+
+    useEffect(() => {
       getInfoUser();
     }, []); 
 
