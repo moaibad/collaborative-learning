@@ -13,9 +13,9 @@ const Dosen = ({ searchKeyword }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let url = 'http://localhost:9090/dosens';
+        let url = 'http://localhost:8080/dosens';
         if (searchKeyword) {
-          url = `http://localhost:9090/dosen/search/${searchKeyword}`;
+          url = `http://localhost:8080/dosen/search/${searchKeyword}`;
         }
         const response = await axios.get(url);
         if (response.data) {

@@ -6,7 +6,7 @@ const CardDosen = ({ dosen }) => {
   const [user, setUser] = useState({});
 
   useEffect(() => {
-    axios.get(`http://localhost:9090/user/${dosen.user_id_user}`)
+    axios.get(`http://localhost:8080/user/${dosen.user_id_user}`)
       .then((res) => {
         setUser(res.data);
       })

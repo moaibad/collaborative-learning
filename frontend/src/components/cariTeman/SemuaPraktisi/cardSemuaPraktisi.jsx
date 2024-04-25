@@ -8,7 +8,7 @@ const CardSemuaPraktisi = ({ allpraktisi }) => {
   const [user, setUser] = useState({});
 
   useEffect(() => {
-    axios.get(`http://localhost:9090/user/${allpraktisi.user_id_user}`)
+    axios.get(`http://localhost:8080/user/${allpraktisi.user_id_user}`)
       .then((res) => {
         setUser(res.data);
       })

@@ -13,9 +13,9 @@ const Praktisi = ({ searchKeyword }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let url = 'http://localhost:9090/praktisis';
+        let url = 'http://localhost:8080/praktisis';
         if (searchKeyword) {
-          url = `http://localhost:9090/praktisi/search/${searchKeyword}`;
+          url = `http://localhost:8080/praktisi/search/${searchKeyword}`;
         }
         const response = await axios.get(url);
         if (response.data) {
