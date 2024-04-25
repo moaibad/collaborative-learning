@@ -58,4 +58,10 @@ public class PraktisiRepository {
         String sql = "DELETE FROM praktisi WHERE user_id_user = ?";
         return jdbcTemplate.update(sql, id);
     }
+
+    public List<Praktisi> findByUsername(String username) {
+        String sql = "SELECT * FROM praktisi WHERE username = ?";
+        RowMapper<Praktisi> rowMapper = new PraktisiMapper();
+        return this.jdbcTemplate.query(sql, rowMapper, username);
+    }
 }

@@ -1,23 +1,41 @@
 import React, { useState } from 'react';
-import alldosen from '../../../data/dataSemuaDosen.js';
 import CardSemuaDosen from './cardSemuaDosen.jsx';
+import axios from 'axios';
+import { useEffect } from 'react';
 
 const SemuaDosen = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 12;
-  const totalItems = alldosen.length;
-  const totalPages = Math.ceil(totalItems / itemsPerPage);
+  const [visibleDosenData, setVisibleDosenData] = useState([]);
+  const [totalPages, setTotalPages] = useState(0);
 
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = currentPage * itemsPerPage;
-  const visibleDosenData = alldosen.slice(startIndex, endIndex);
+  const itemsPerPage = 12;
+
+  useEffect(() => {
+    const fetchMahasiswa = async () => {
+      try {
+        const response = await axios.get('http://localhost:8080/dosens');
+        const alldosen = response.data; // Assuming your API returns an array of all mahasiswa
+        const totalItems = alldosen.length;
+        const totalPages = Math.ceil(totalItems / itemsPerPage);
+        setTotalPages(totalPages);
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        const endIndex = currentPage * itemsPerPage;
+        const visibleData = alldosen.slice(startIndex, endIndex);
+        setVisibleDosenData(visibleData);
+      } catch (error) {
+        console.error('Error fetching mahasiswa data:', error);
+      }
+    };
+
+    fetchMahasiswa();
+  }, [currentPage]);
 
   const handlePrevPage = () => {
-    setCurrentPage((prevPage) => prevPage - 1);
+    setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
   };
 
   const handleNextPage = () => {
-    setCurrentPage((prevPage) => prevPage + 1);
+    setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages));
   };
 
   const renderPageNumbers = () => {

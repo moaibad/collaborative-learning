@@ -8,19 +8,37 @@ const Komunitas = ({ searchKeyword }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [communityList, setCommunityList] = useState([]);
 
+  // useEffect(() => {
+  //   const fetchCommunityList = async () => {
+  //     try {
+  //       const datanya = await getDataCTB(`/servers/findallserver/${searchKeyword}`);
+  //       if (datanya) {
+  //         setCommunityList(datanya.servers);
+  //       }
+  //     } catch (error) {
+  //       console.error('Error fetching community list:', error);
+  //     }
+  //   };
+
+  //   fetchCommunityList();
+  // }, [searchKeyword]);
+
   useEffect(() => {
-    const fetchCommunityList = async () => {
+    const fetchData = async () => {
       try {
-        const datanya = await getDataCTB(`/servers/findallserver/${searchKeyword}`);
+        let datanya = await getDataCTB(`/servers/allserver/all`);
+        if (searchKeyword) {
+          datanya = await getDataCTB(`/servers/findallserver/${searchKeyword}`);
+        }
         if (datanya) {
           setCommunityList(datanya.servers);
         }
       } catch (error) {
-        console.error('Error fetching community list:', error);
+        console.error('Error fetching mahasiswa list:', error);
       }
     };
 
-    fetchCommunityList();
+    fetchData();
   }, [searchKeyword]);
 
   const handlePrevClick = () => {

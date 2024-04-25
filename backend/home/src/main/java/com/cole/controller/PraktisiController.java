@@ -92,4 +92,10 @@ public class PraktisiController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    //Search Praktisi by Username
+    @GetMapping("/praktisi/search/{username}")
+    public List<Praktisi> getPraktisiByUsername(@PathVariable("username") String username) {
+        return praktisiService.findByUsername(username);
+    }
 }
