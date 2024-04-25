@@ -12,7 +12,7 @@ const SemuaMahasiswa = () => {
   useEffect(() => {
     const fetchMahasiswa = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/mahasiswas');
+        const response = await axios.get('http://localhost:9090/mahasiswas');
         const allmahasiswa = response.data; // Assuming your API returns an array of all mahasiswa
         const totalItems = allmahasiswa.length;
         const totalPages = Math.ceil(totalItems / itemsPerPage);

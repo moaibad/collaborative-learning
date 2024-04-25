@@ -1,20 +1,48 @@
 import React from 'react';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import communityBronze from '../../../data/communityBronze.jpeg';
+import communitySilver from '../../../data/communitySilver.jpeg';
+import communityGold from '../../../data/communityGold.jpeg';
+import communityPlatinum from '../../../data/communityPlatinum.jpeg';
+import { getDataCTB } from '../../../lib/fetchData';
+
 
 const CardSemuaMahasiswa = ({ allmahasiswa }) => {
   const [user, setUser] = useState({});
+  const [achievementList, setAchievementList] = useState([]);
 
   useEffect(() => {
-    axios.get(`http://localhost:8080/user/${allmahasiswa.user_id_user}`)
-      .then((res) => {
-        setUser(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`http://localhost:9090/user/${allmahasiswa.user_id_user}`);
+        if (response.data) {
+          setUser(response.data);
+        }
+
+        console.log(user);
+        const achievementResponse = await getDataCTB(`/profiles/achievement/${user.username}`);
+        console.log("achievementResponse:", achievementResponse);
+        if (achievementResponse) {
+          setAchievementList(achievementResponse.community);
+          console.log("achievementList:", achievementList);
+        }
+      } catch (error) {
+        console.error('Error fetching allmahasiswa list:', error);
       }
-    );
-  }, [allmahasiswa.user_id_user]);
+    };
+
+    fetchData();
+  }, [allmahasiswa.user_id_user, user.nama]);
+
+  const getCommunityMedal = () => {
+    const count = achievementList;
+    if (count == 0) return communityPlatinum;
+    if (count >= 1) return communityPlatinum;
+    if (count >=5 ) return communityBronze;
+    if (count >= 10) return communitySilver;
+    if (count >= 15) return communityGold;
+  };
   
   return (
     <div className="card w-64 h-150">
@@ -26,7 +54,7 @@ const CardSemuaMahasiswa = ({ allmahasiswa }) => {
                 <p className='text-xs'>Mahasiswa</p>
               </div>
               <div className="absolute top-2 left-2 mt-6 bg-blue-300 text-white px-2 py-1 rounded">
-                <p className='text-xs'>Semester {allmahasiswa.user_id_user}</p>
+              <p className='text-xs'>Angkatan {allmahasiswa.angkatan}</p>
               </div>
               <img
                 className='rounded-lg w-full h-48 object-cover mb-2'
@@ -48,14 +76,14 @@ const CardSemuaMahasiswa = ({ allmahasiswa }) => {
                 <p className='text-xs'>Likes</p>
             </div>
             <div className='flex items-center mr-2 ml-8'>
-              <div className='rounded-full h-4 w-4 bg-red-500 mr-1'></div>
+            <img src={getCommunityMedal()} alt="medal" className="w-7 h-7 mr-1" />
               <div className='rounded-full h-4 w-4 bg-yellow-500 mr-1'></div>
               <div className='rounded-full h-4 w-4 bg-green-500'></div>
-              <p className='text-s font-bold text-gray-600 ml-12'>{allmahasiswa.Likes}</p>
+              <p className="text-xs font-bold text-gray-600 flex-grow text-right mr-2">{achievementList}</p>
             </div>
             <hr className="w-full mx-auto border-gray-400 border-solid border-t-2 mt-2"/>
             <p className='text-xs px-4 py-1 font-bold'>Bergabung</p>
-            <p className='text-xs text-gray-500 px-4 py-1 font-semibold'>{allmahasiswa.Bergabung}</p>
+            <p className='text-xs text-gray-500 px-4 py-1 font-semibold'>{new Date(user.tanggal_daftar).toLocaleDateString()}</p>
           </div>
         </li>
       </ul>
