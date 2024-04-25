@@ -2,11 +2,13 @@ import React, { useEffect, useState } from 'react';
 import CardMahasiswa from './cardMahasiswa.jsx';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { getDataCTB } from '../../lib/fetchData';
 
 const Mahasiswa = ({ searchKeyword }) => {
   const [index, setIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
   const [mahasiswaList, setMahasiswaList] = useState ([]);
+  const [achievementList, setAchievementList] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -26,8 +28,6 @@ const Mahasiswa = ({ searchKeyword }) => {
 
     fetchData();
   }, [searchKeyword]);
-
-  console.log(mahasiswaList);
 
   const handlePrevClick = () => {
     const newIndex = Math.max(0, index - 1);
