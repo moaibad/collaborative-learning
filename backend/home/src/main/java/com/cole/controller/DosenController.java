@@ -92,4 +92,9 @@ public class DosenController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping("/dosen/search/{username}")
+    public List<Dosen> getDosenByname(@PathVariable("username") String username) {
+        return dosenService.findByUsername(username);
+    }
 }
