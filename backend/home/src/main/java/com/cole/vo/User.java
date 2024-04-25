@@ -66,6 +66,12 @@ public class User {
 	@OneToOne(mappedBy = "user")
     private Mahasiswa mahasiswa;
 
+	@OneToOne(mappedBy = "user")
+	private Dosen dosen;
+
+	@OneToOne(mappedBy = "user")
+	private Praktisi praktisi;
+
 	// Constructor
 	public User() {
 	}
