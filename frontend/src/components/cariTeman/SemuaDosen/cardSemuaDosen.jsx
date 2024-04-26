@@ -10,7 +10,7 @@ const CardSemuaDosen = ({ alldosen }) => {
   const [totalReputation, setTotalReputation] = useState(0);
 
   useEffect(() => {
-    axios.get(`http://localhost:9090/user/${alldosen.user_id_user}`)
+    axios.get(`http://localhost:8080/user/${alldosen.user_id_user}`)
       .then((res) => {
         setUser(res.data);
       })

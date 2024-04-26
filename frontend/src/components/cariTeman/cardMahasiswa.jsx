@@ -20,7 +20,7 @@ const CardMahasiswa = ({ mahasiswa }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`http://localhost:9090/user/${mahasiswa.user_id_user}`);
+        const response = await axios.get(`http://localhost:8080/user/${mahasiswa.user_id_user}`);
         if (response.data) {
           setUser(response.data);
         }

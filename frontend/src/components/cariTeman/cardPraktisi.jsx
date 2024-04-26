@@ -8,7 +8,7 @@ const CardPraktisi = ({ praktisi }) => {
   const [totalReputation, setTotalReputation] = useState(0);
 
   useEffect(() => {
-    axios.get(`http://localhost:9090/user/${praktisi.user_id_user}`)
+    axios.get(`http://localhost:8080/user/${praktisi.user_id_user}`)
       .then((res) => {
         setUser(res.data);
       })
