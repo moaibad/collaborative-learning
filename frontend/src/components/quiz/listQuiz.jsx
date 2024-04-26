@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { HOST_MOODLE, TOKEN_MOODLE } from "../../lib/env";
+import Cookies from 'js-cookie';
+
 const ListQuiz = ({ role }) => {
   const [quizzes, setQuizzes] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const userIdMoodle = Cookies.get('userIdMoodle');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -12,7 +15,7 @@ const ListQuiz = ({ role }) => {
         if (role === "student") {
           api = `${HOST_MOODLE}/webservice/rest/server.php?wstoken=${TOKEN_MOODLE}&moodlewsrestformat=json&wsfunction=local_colle_get_all_quiz`;
         } else if (role === "teacher") {
-          api = `${HOST_MOODLE}/webservice/rest/server.php?wstoken=${TOKEN_MOODLE}&moodlewsrestformat=json&wsfunction=local_colle_get_quiz&userid=5`;
+          api = `${HOST_MOODLE}/webservice/rest/server.php?wstoken=${TOKEN_MOODLE}&moodlewsrestformat=json&wsfunction=local_colle_get_quiz&userid=${userIdMoodle}`;
         }
         const response = await fetch(api);
         const data = await response.json();

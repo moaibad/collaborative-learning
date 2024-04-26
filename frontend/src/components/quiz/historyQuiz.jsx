@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { HOST_MOODLE, TOKEN_MOODLE } from "../../lib/env";
+import Cookies from 'js-cookie';
 
 const HistoryQuiz = () => {
   const [histories, setHistories] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const userIdMoodle = Cookies.get('userIdMoodle');
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const api = "http://colle.southeastasia.cloudapp.azure.com/moodle/webservice/rest/server.php?wstoken=1f95ee6650d2e1a6aa6e152f6bf4702c&wsfunction=local_colle_get_all_user_best_grades&moodlewsrestformat=json&userid=4";
+        const api = `${HOST_MOODLE}/webservice/rest/server.php?wstoken=${TOKEN_MOODLE}&wsfunction=local_colle_get_all_user_best_grades&moodlewsrestformat=json&userid=${userIdMoodle}`;
         const response = await fetch(api);
         const data = await response.json();
         setHistories(data);
