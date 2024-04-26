@@ -47,6 +47,56 @@ const Landing = ({ onLogin }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  //LOGIN MOODLE
+  const [formData, setFormData] = useState({
+    username: "",
+    password: "",
+  });
+
+  const formRef = useRef(null); // Ref untuk mengakses form
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Lakukan proses login atau tindakan lainnya di sini dengan formData
+    console.log("Data yang akan dikirim:", formData);
+  };
+
+  const handleHiddenFormSubmit = () => {
+    if (formRef.current) {
+      formRef.current.submit(); // Mengirimkan form tersembunyi
+    }
+  };
+
+  const getDataAccMoodle = async (email) => {
+    const params = new URLSearchParams();
+    params.append('wstoken', '1f95ee6650d2e1a6aa6e152f6bf4702c');
+    params.append('wsfunction', 'core_user_get_users_by_field');
+    params.append('moodlewsrestformat', 'json');
+    params.append('field', 'email');
+    params.append('values[0]', email);
+  
+    const apiUrl = `http://colle.koreacentral.cloudapp.azure.com/moodle/webservice/rest/server.php?${params.toString()}`;
+  
+    try {
+      const response = await axios.get(apiUrl);
+
+      cookies.set('userIdMoodle', response.data[0].id, { path: '/', maxAge: 3600 });
+      return response.data[0].id;
+
+    } catch (error) {
+      console.error('Error fetching data from Moodle API:', error);
+      message.error('Error GET Data Account Moodle.');
+    }
+  };
+  
   const login = useGoogleLogin({
     onSuccess: (codeResponse) => {
         cookies.set('user_token', codeResponse["access_token"], { path: '/', maxAge: 3600 });
@@ -68,10 +118,33 @@ const Landing = ({ onLogin }) => {
             console.log(response.status);
             console.log(response.data.userId);
             console.log(response.data.email);
+            console.log("TOKEN :", codeResponse["access_token"]);
 
-            if (response.status === 200) { // LOGIN 
+            // LOGIN 
+            if (response.status === 200) {  
+              //SET COOKIE FOR USERNAME AND PASSWORD MOODLE
+              cookies.set('userUsernameMoodle', response.data.usernameMoodle, { path: '/', maxAge: 3600 });
+              cookies.set('userPasswordMoodle', response.data.passwordMoodle, { path: '/', maxAge: 3600 });
+
+              setFormData({
+                username: response.data.usernameMoodle,
+                password: response.data.passwordMoodle
+              })
+
+              //Kirim data akun ke fitur TJ dan CTB
               setTokenToOther(codeResponse["access_token"]);
 
+              //Set data role account ke localStorage
+              localStorage.setItem("role", response.data.role);
+              console.log("role : ", localStorage.getItem("role"));
+              
+              //get data account from moodle
+              getDataAccMoodle(response.data.email);
+  
+              //LOGIN MOODLE WITH HIDDEN FORM
+              handleHiddenFormSubmit();
+              
+              //Set login = true dan redirect to dashboard page
               onLogin();
               navigate('/');
 
@@ -193,6 +266,41 @@ const Landing = ({ onLogin }) => {
           </div>
         </div>
       </div>
+      
+      {/* HIDEN FORM MOODLE FOR LOGIN */}
+      <form
+        ref={formRef} // Menggunakan ref untuk mengakses form
+        className="loginform"
+        name="login"
+        method="post"
+        action="http://colle.koreacentral.cloudapp.azure.com/moodle/login/index.php"
+        onSubmit={handleSubmit}
+        style={{ display: "none" }}
+      >
+        <p>
+          Username :
+          <input
+            size="10"
+            name="username"
+            value={formData.username}
+            onChange={handleChange}
+          />
+        </p>
+        <p>
+          Password :
+          <input
+            size="10"
+            name="password"
+            type="password"
+            value={formData.password}
+            onChange={handleChange}
+          />
+        </p>
+        <p>
+          <input name="Submit" value="Login" type="submit" />
+        </p>
+      </form>
+      
     </div>
   );
 };

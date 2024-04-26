@@ -3,24 +3,26 @@ import { Link } from "react-router-dom";
 import { Button, Modal } from "antd";
 import CourseList from "../components/course/courseList";
 import { RiErrorWarningFill } from "react-icons/ri";
+import { HOST_MOODLE, TOKEN_MOODLE } from "../lib/env";
+import Cookies from 'js-cookie';
 
 const Course = () => {
   // console.log("role : ", JSON.parse(localStorage.getItem("role")));
-  const role = JSON.parse(localStorage.getItem("role"));
+  const role = localStorage.getItem("role");
   const [toggle, setToggle] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [courseData, setCourseData] = useState({
     fullname: "",
     shortname: "",
     summary: "",
-    userid: 5,
+    userid: Cookies.get('userIdMoodle'),
   });
   const [coursePrivateData, setCoursePrivateData] = useState({
     fullname: "",
     shortname: "",
     summary: "",
     enrolmentkey: "",
-    userid: 5,
+    userid: Cookies.get('userIdMoodle'),
   });
   const [formErrors, setFormErrors] = useState({});
   const [formErrors2, setFormErrors2] = useState({});
@@ -196,7 +198,7 @@ const Course = () => {
   };
 
   const createCourse = async (courseData) => {
-    const apiUrl = `http://colle.southeastasia.cloudapp.azure.com/moodle/webservice/rest/server.php`;
+    const apiUrl = `${HOST_MOODLE}/webservice/rest/server.php`;
     const token = "1f95ee6650d2e1a6aa6e152f6bf4702c";
     const wsfunction = "local_colle_create_course";
 
@@ -264,7 +266,7 @@ const Course = () => {
   };
 
   const createPrivateCourse = async (coursePrivateData) => {
-    const apiUrl = `http://colle.southeastasia.cloudapp.azure.com/moodle/webservice/rest/server.php`;
+    const apiUrl = `${HOST_MOODLE}/webservice/rest/server.php`;
     const token = "1f95ee6650d2e1a6aa6e152f6bf4702c";
     const wsfunction = "local_colle_create_course";
 

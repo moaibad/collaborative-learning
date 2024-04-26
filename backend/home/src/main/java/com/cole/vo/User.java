@@ -164,6 +164,26 @@ public class User {
 		this.tanggal_daftar = tanggal_daftar;
 	}
 
+	// EDIT CONSTRUCTOR
+	public User(
+			Long id_user,
+			String username,
+			Date tanggal_lahir,
+			String location,
+			String about,
+			// String ProfileUrl,
+			String firstname,
+			String lastname) {
+		this.id_user = id_user;
+		this.username = username;
+		this.tanggal_lahir = tanggal_lahir;
+		this.location = location;
+		this.about = about;
+		// this.ProfileUrl = ProfileUrl;
+		this.firstname = firstname;
+		this.lastname = lastname;
+	}
+
 	// Getter and Setter
 	public Long getId_user() {
 		return id_user;

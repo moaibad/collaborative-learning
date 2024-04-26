@@ -20,3 +20,25 @@ export const formatTanggalMDY = (tanggal_lahir) => {
 
   return formattedDateOfBirth;
 };
+
+// Fungsi untuk mengubah waktu epoch menjadi format tanggal "mm / dd / yyyy"
+export function formatDate(epochTime) {
+  // Membuat objek Date dari epoch time
+  var date = new Date(epochTime * 1000);
+  
+  // Mendapatkan bulan, tanggal, dan tahun
+  var month = date.getMonth() + 1; // Penambahan 1 karena bulan dimulai dari 0
+  var day = date.getDate();
+  var year = date.getFullYear();
+  
+  // Menambahkan leading zero jika diperlukan
+  if (month < 10) {
+    month = '0' + month;
+  }
+  if (day < 10) {
+    day = '0' + day;
+  }
+  
+  // Mengembalikan tanggal yang diformat
+  return month + '/' + day + '/' + year;
+}
