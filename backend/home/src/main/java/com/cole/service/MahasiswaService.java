@@ -43,7 +43,20 @@ public class MahasiswaService {
     }
 
     public int updateByUserId(Mahasiswa mahasiswa) {
-        return mahasiswaRepository.updateByUserId(mahasiswa);
+
+        Mahasiswa result = mahasiswaRepository.findOne(mahasiswa.getId_mhs());
+
+        if(mahasiswa.getAngkatan() != null){
+            result.setAngkatan(mahasiswa.getAngkatan());
+        }
+        if(mahasiswa.getJurusan() != null){
+            result.setJurusan(mahasiswa.getJurusan());
+        }
+        if(mahasiswa.getUniversitas() != null){
+            result.setUniversitas(mahasiswa.getUniversitas());
+        }
+        
+        return mahasiswaRepository.updateByUserId(result);
     }
     
     public int delete(Long id_mhs) {
