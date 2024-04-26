@@ -165,8 +165,11 @@ public class UserController {
 			Long userId = existingUser.getId_user();
 			String email = existingUser.getEmail();
 			String role = existingUser.getRole();
+			String usernameMoodle = existingUser.getUsername_moodle();
+			String passwordMoodle = existingUser.getPassword_moodle();
+
 			// Send a message indicating the account is already registered
-			return ResponseEntity.ok().body(new Result(200, "login successfully", userId, email, role));
+			return ResponseEntity.ok().body(new Result(200, "login successfully", userId, email, role, usernameMoodle, passwordMoodle));
 
 		// register
 		}else {
@@ -174,16 +177,12 @@ public class UserController {
 					userTokenInfo.getEmail(), userParam.getPassword(),
 					userParam.getTanggal_lahir(), userParam.getLocation(), userParam.getAbout(),
 					userToken, userTokenInfo.getPicture(), userParam.getRole(), userParam.getTanggal_daftar());
+			
+			// Add data akun to database
 			int saveResult = userService.saveUser(user);
 			
 			// Check if the email exists
 			User RegisteredUser = userService.getUserByEmail(userTokenInfo.getEmail());
-
-			// Email exists, return the data
-			// boolean updateUser = userService.updateUser(RegisteredUser);
-			// if (updateUser) {
-			// 	System.out.println(RegisteredUser.getToken());
-			// }
 
 			Long userId = RegisteredUser.getId_user();
 			String email = RegisteredUser.getEmail();

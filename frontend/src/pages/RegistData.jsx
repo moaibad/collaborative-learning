@@ -229,7 +229,12 @@ const RegistData = ({onLogin}) => {
                 usernameMoodle: usernameMoodle,
                 passwordMoodle: passwordMoodle
             });
-            console.log("User Moodle Created")
+            console.log("User Moodle Created");
+
+            //SET COOKIE FOR USERNAME AND PASSWORD MOODLE
+            cookies.set('userUsernameMoodle', usernameMoodle, { path: '/', maxAge: 3600 });
+            cookies.set('userPasswordMoodle', passwordMoodle, { path: '/', maxAge: 3600 });
+
         } catch (error) {
             // Tangani kesalahan saat pendaftaran pengguna di Moodle
             message.error('Failed to register user in Moodle. Please try again later.');

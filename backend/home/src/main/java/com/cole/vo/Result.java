@@ -6,7 +6,8 @@ public class Result {
 	Long userId; 
 	String email;
 	String role;
-
+	String usernameMoodle;
+	String passwordMoodle;
 
 	public Result() {
 	}
@@ -22,6 +23,7 @@ public class Result {
         this.userId = userId;
     }
 
+	// Result buat register akun
 	public Result(int result, String message, Long userId, String email) {
         this.result = result;
         this.message = message;
@@ -29,12 +31,15 @@ public class Result {
 		this.email = email;
     }
 
-	public Result(int result, String message, Long userId, String email, String role) {
+	// Result buat login akun
+	public Result(int result, String message, Long userId, String email, String role, String usernameMoodle, String passwordMoodle) {
         this.result = result;
         this.message = message;
         this.userId = userId;
 		this.email = email;
 		this.role = role;
+		this.usernameMoodle = usernameMoodle;
+		this.passwordMoodle = passwordMoodle;
     }
 		
 	public int getResult() {
@@ -76,5 +81,20 @@ public class Result {
 		this.role = role;
 	}
 
+	public String getUsernameMoodle() {
+		return usernameMoodle;
+	}
+
+	public void setUsernameMoodle(String usernameMoodle) {
+		this.usernameMoodle = usernameMoodle;
+	}
+
+	public String getPasswordMoodle() {
+		return passwordMoodle;
+	}
+
+	public void setPasswordMoodle(String passwordMoodle) {
+		this.passwordMoodle = passwordMoodle;
+	}
 
 }

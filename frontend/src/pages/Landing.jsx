@@ -124,7 +124,12 @@ const Landing = ({ onLogin }) => {
             console.log(response.data.email);
             console.log("TOKEN :", codeResponse["access_token"]);
 
-            if (response.status === 200) { // LOGIN 
+            // LOGIN 
+            if (response.status === 200) {  
+              //SET COOKIE FOR USERNAME AND PASSWORD MOODLE
+              cookies.set('userUsernameMoodle', response.data.usernameMoodle, { path: '/', maxAge: 3600 });
+              cookies.set('userPasswordMoodle', response.data.passwordMoodle, { path: '/', maxAge: 3600 });
+
               //Kirim data akun ke fitur TJ dan CTB
               setTokenToOther(codeResponse["access_token"]);
 
@@ -134,7 +139,7 @@ const Landing = ({ onLogin }) => {
 
               //get data account from moodle
               const akunMoodle = getDataAccMoodle();
-              console.log("AKU MODLE", akunMoodle);
+              console.log("AKUN MODLE", akunMoodle);
               
               //LOGIN MOODLE WITH HIIDEN FORM
               handleHiddenFormSubmit();
