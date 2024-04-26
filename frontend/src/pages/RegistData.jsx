@@ -183,93 +183,98 @@ const RegistData = ({onLogin}) => {
         });
     };
 
-    const createUserInMoodle = async (userData) => {
+    const createUserInMoodle = (userData) => {
         const params = new URLSearchParams();
-        params.append('wstoken', TOKEN_MOODLE);
-        params.append('wsfunction', 'core_user_create_users');
-        params.append('moodlewsrestformat', 'json');
-        params.append('users[0][username]', userData.usernameMoodle);
-        params.append('users[0][password]', userData.passwordMoodle);
-        params.append('users[0][firstname]', userData.firstname);
-        params.append('users[0][lastname]', userData.lastname);
-        params.append('users[0][email]', userData.email);
+        params.append("wstoken", TOKEN_MOODLE);
+        params.append("wsfunction", "core_user_create_users");
+        params.append("moodlewsrestformat", "json");
+        params.append("users[0][username]", userData.usernameMoodle);
+        params.append("users[0][password]", userData.passwordMoodle);
+        params.append("users[0][firstname]", userData.firstname);
+        params.append("users[0][lastname]", userData.lastname);
+        params.append("users[0][email]", userData.email);
     
         const url = `${HOST_MOODLE}/webservice/rest/server.php?${params.toString()}`;
     
-        try {
-            const response = await axios.post(url);
-            
-            console.log("berhasil hit api moodle register");
-            console.log(response);
-            console.log(response.data);
-            return response.data;
-        } catch (error) {
-            console.error('Error creating user in Moodle:', error);
-            throw new Error('Failed to create user in Moodle');
-        }
-    };
-    
-    const registerUserInMoodle = async (formData) => {
-        try {
-            // Ambil email dari cookie
-            const userEmail = emailCookie;
-    
-            const usernameMoodle = userEmail.split('@')[0]; // Mengambil bagian sebelum '@' dari alamat email sebagai nama pengguna Moodle
-            const passwordMoodle = usernameMoodle.charAt(0).toUpperCase()  + usernameMoodle.slice(1) + id + "."; // Menggabungkan username dengan id_user untuk membuat kata sandi Moodle
-            // const passwordMoodle = "Bibbidibobbidiboo123.";
+        return axios
+            .post(url)
+            .then((response) => {
+                console.log("Berhasil Hit API Moodle Register");
+                console.log(response.data);
 
-            console.log("USERNAME MOODLE : ", usernameMoodle);
-            console.log("PASSWORD MOODLE : ", passwordMoodle);
+                getDataAccMoodle(emailCookie); // Get user moodle
 
-            //SET COOKIE FOR USERNAME AND PASSWORD MOODLE
-            cookies.set('userUsernameMoodle', usernameMoodle, { path: '/', maxAge: 3600 });
-            cookies.set('userPasswordMoodle', passwordMoodle, { path: '/', maxAge: 3600 });
-
-            // Kirim data pengguna ke Moodle
-            await createUserInMoodle({
-                id_user: formData.id_user,
-                email: userEmail,
-                firstname: formData.firstname,
-                lastname: formData.lastname,
-                usernameMoodle: usernameMoodle,
-                passwordMoodle: passwordMoodle
+                return response.data;
+            })
+            .catch((error) => {
+                console.error("Error creating user in Moodle:", error);
+                throw new Error("Failed to create user in Moodle");
             });
-            console.log("User Moodle Created");
-
-        } catch (error) {
-            // Tangani kesalahan saat pendaftaran pengguna di Moodle
-            message.error('Failed to register user in Moodle. Please try again later.');
-            console.error('Error registering user in Moodle:', error);
-        }
     };
     
-    // const getDataAccMoodle = async (email)
-    const getDataAccMoodle = async () => {
+    const registerUserInMoodle = (formData) => {
+        // Ambil email dari cookie
+        const userEmail = emailCookie;
+    
+        const usernameMoodle = userEmail.split('@')[0]; // Mengambil bagian sebelum '@' dari alamat email sebagai nama pengguna Moodle
+        const passwordMoodle =
+            usernameMoodle.charAt(0).toUpperCase() +
+            usernameMoodle.slice(1) +
+            id +
+            "."; // Menggabungkan username dengan id_user untuk membuat kata sandi Moodle
+        // const passwordMoodle = "Bibbidibobbidiboo123.";
+    
+        console.log("USERNAME MOODLE : ", usernameMoodle);
+        console.log("PASSWORD MOODLE : ", passwordMoodle);
+    
+        //SET COOKIE FOR USERNAME AND PASSWORD MOODLE
+        cookies.set("userUsernameMoodle", usernameMoodle, { path: "/", maxAge: 3600 });
+        cookies.set("userPasswordMoodle", passwordMoodle, { path: "/", maxAge: 3600 });
+    
+        // Kirim data pengguna ke Moodle
+        createUserInMoodle({
+            id_user: formData.id_user,
+            email: userEmail,
+            firstname: formData.firstname,
+            lastname: formData.lastname,
+            usernameMoodle: usernameMoodle,
+            passwordMoodle: passwordMoodle,
+        })
+            .then(() => {
+                console.log("User Moodle Created");
+            })
+            .catch((error) => {
+                // Tangani kesalahan saat pendaftaran pengguna di Moodle
+                message.error("Failed to register user in Moodle. Please try again later.");
+                console.error("Error registering user in Moodle:", error);
+            });
+    };
+    
+    const getDataAccMoodle = async (email) => {
         const params = new URLSearchParams();
         params.append('wstoken', '1f95ee6650d2e1a6aa6e152f6bf4702c');
         params.append('wsfunction', 'core_user_get_users_by_field');
         params.append('moodlewsrestformat', 'json');
         params.append('field', 'email');
-        params.append('values[0]', "lolanjing1122@gmail.com");
-        // params.append('values[0]', emailCookie);
-    
+        params.append('values[0]', email);
+      
         const apiUrl = `http://colle.koreacentral.cloudapp.azure.com/moodle/webservice/rest/server.php?${params.toString()}`;
-    
+      
         try {
-        const response = await axios.get(apiUrl);
+          const response = await axios.get(apiUrl);
     
-        console.log("berhasil GET DATA AKUN API Moodle");
-        console.log(response.data);
-        return response.data;
-
+          cookies.set('userIdMoodle', response.data[0].id, { path: '/', maxAge: 3600 });
+          enrollUserInCourse(response.data[0].id);
+          return response.data[0].id;
+    
         } catch (error) {
-        console.error('Error fetching data from Moodle API:', error);
-        message.error('Error GET Data Account Moodle.');
+          console.error('Error fetching data from Moodle API:', error);
+          message.error('Error GET Data Account Moodle.');
         }
-    };
+      };
 
     //ENROLL COURSE in Moodle
-    const enrollUserInCourse = async (userId) => {
+    const enrollUserInCourse = async (userIdMoodle) => {
         const apiUrl = `http://colle.koreacentral.cloudapp.azure.com/moodle/webservice/rest/server.php`;
       
         try {
@@ -279,14 +284,14 @@ const RegistData = ({onLogin}) => {
           params.append('wsfunction', 'enrol_manual_enrol_users');
           params.append('moodlewsrestformat', 'json');
           params.append('enrolments[0][roleid]', '5');
-          params.append('enrolments[0][userid]', userId.toString());
+          params.append('enrolments[0][userid]', userIdMoodle.toString());
           params.append('enrolments[0][courseid]', '2');
       
           // Lakukan permintaan POST menggunakan axios
           const response = await axios.post(apiUrl, params);
       
-          console.log("Berhasil melakukan enrol user in course");
-          console.log(response.data);
+          console.log("Berhasil melakukan enrol user in course dengan id: ", userIdMoodle);
+
           return response.data;
         } catch (error) {
           console.error('Error enrolling user in course:', error);
@@ -338,9 +343,6 @@ const RegistData = ({onLogin}) => {
 
             //Kebutuhan akun moodle
             registerUserInMoodle(formData); // Add user moodle
-            const akunMoodle = getDataAccMoodle(); // Get user moodle
-            console.log("Akun Moodle :", akunMoodle);
-            enrollUserInCourse(akunMoodle.id);
 
             //Kirim data akun ke fitur CTB dan TJ setelah register
             setTokenToOther(user_token);
