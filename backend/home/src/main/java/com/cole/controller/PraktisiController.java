@@ -74,8 +74,7 @@ public class PraktisiController {
         existingPraktisi.setAsal_perusahaan(praktisi.getAsal_perusahaan());
         existingPraktisi.setPendidikan_terakhir(praktisi.getPendidikan_terakhir());
         existingPraktisi.setPosisi(praktisi.getPosisi());
-        existingPraktisi.setUser_id_user(praktisi.getUser_id_user());
-
+    
         // Memanggil metode service untuk melakukan pembaruan
         praktisiService.updateByUserId(existingPraktisi);
 
