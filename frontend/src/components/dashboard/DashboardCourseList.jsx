@@ -14,13 +14,18 @@ import Cookies from 'js-cookie';
 const DashboardCourseList = () => {
     const navigate = useNavigate();
     const [courses, setCourses] = useState([]);
-    const userIdMoodle = Cookies.get('userIdMoodle');
+    let userIdMoodle = Cookies.get('userIdMoodle');
 
     const handleClick = () => {
       navigate('/all-course');
     };
 
     const fetchData = async () => {
+      
+      if(userIdMoodle == null){
+        userIdMoodle = '4'
+      }
+
       const params = new URLSearchParams();
       params.append('wstoken', "1f95ee6650d2e1a6aa6e152f6bf4702c");
       params.append('wsfunction', 'core_enrol_get_users_courses');

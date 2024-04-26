@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { HOST_MOODLE, TOKEN_MOODLE } from "../../lib/env";
-import Cookies from 'js-cookie';
+import Cookies from "js-cookie";
 
 const HistoryQuiz = () => {
   const [histories, setHistories] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const userIdMoodle = Cookies.get('userIdMoodle');
+  const userIdMoodle = Cookies.get("userIdMoodle");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -39,7 +39,7 @@ const HistoryQuiz = () => {
       <div className="flex justify-between items-center my-5 mx-5">
         <p className="text-2xl font-bold">History Quiz</p>
       </div>
-     
+
       <div className="relative">
         {/* Search input */}
         <div className="relative m-[2px] mb-3 mr-5 float-left bg-blue">
@@ -96,26 +96,29 @@ const HistoryQuiz = () => {
             </tr>
           </thead>
           <tbody>
-            {histories
-              .filter((history) =>
-                history.name.toLowerCase().includes(searchTerm.toLowerCase())
-              )
-              .map((history, index) => (
-                <tr key={index} className="border-b dark:border-neutral-600">
-                  <td className="px-6 py-4 text-center">{history.name}</td>
-                  <td className="px-6 py-4 text-center">{history.status}</td>
-                  <td className="px-6 py-4 text-center">{history.grade}</td>
-                  <td className="px-6 py-4 text-center">{history.timefinish}</td>
-                  <td className="px-6 py-4 text-center">
-                    <Link
-                      to={history.url}
-                      className="text-blue-500 hover:underline"
-                    >
-                      View Details
-                    </Link>
-                  </td>
-                </tr>
-              ))}
+            {Array.isArray(histories) &&
+              histories
+                .filter((history) =>
+                  history.name.toLowerCase().includes(searchTerm.toLowerCase())
+                )
+                .map((history, index) => (
+                  <tr key={index} className="border-b dark:border-neutral-600">
+                    <td className="px-6 py-4 text-center">{history.name}</td>
+                    <td className="px-6 py-4 text-center">{history.status}</td>
+                    <td className="px-6 py-4 text-center">{history.grade}</td>
+                    <td className="px-6 py-4 text-center">
+                      {history.timefinish}
+                    </td>
+                    <td className="px-6 py-4 text-center">
+                      <Link
+                        to={history.url}
+                        className="text-blue-500 hover:underline"
+                      >
+                        View Details
+                      </Link>
+                    </td>
+                  </tr>
+                ))}
           </tbody>
         </table>
       </div>
