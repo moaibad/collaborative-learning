@@ -43,7 +43,7 @@ const Praktisi = ({ searchKeyword }) => {
 
   return (
     <div
-      className="w-1100 overflow-hidden mx-19 my-5"
+      className="w-300 overflow-hidden mx-19"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -53,7 +53,7 @@ const Praktisi = ({ searchKeyword }) => {
           Lihat Semua &gt;
         </Link>
       </div>
-      <div className="flex relative">
+      <div className="flex gap-5 relative justify-center">
       {visiblepraktisiData.length === 0 ? (
           <p>Tidak ada praktisi yang sesuai</p>
         ) : (
@@ -63,9 +63,9 @@ const Praktisi = ({ searchKeyword }) => {
             ))}
           </>
         )}
-        <div className={`absolute top-28 left-0 right-3 flex justify-between items-center px-4 py-2 ${isHovered ? 'opacity-100' : 'opacity-0'}`} style={{ transition: 'opacity 0.3s ease-in-out' }}>
-          <button className='bg-orange-400 opacity-65 hover:opacity-80 h-16 w-16 rounded-full text-4xl' onClick={handlePrevClick} disabled={index === 0}>{'<'}</button>
-          <button className='bg-orange-400 opacity-65 hover:opacity-80 h-16 w-16 rounded-full text-4xl' onClick={handleNextClick} disabled={index >= praktisiList.length - 5}>{'>'}</button>
+        <div className="absolute top-36 left-0 right-0 flex justify-between items-center px-4 py-2" style={{ transition: 'opacity 0.3s ease-in-out' }}>
+          <button className='bg-white border-2 border-slate-500 h-12 w-12 rounded-full text-2xl text-slate-500' onClick={handlePrevClick} disabled={index === 0}>{'<'}</button>
+          <button className='bg-white border-2 border-slate-500 h-12 w-12 rounded-full text-2xl text-slate-500' onClick={handleNextClick} disabled={index >= praktisiList.length - 5}>{'>'}</button>
         </div>
       </div>
     </div>
