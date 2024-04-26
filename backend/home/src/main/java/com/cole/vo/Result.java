@@ -7,6 +7,7 @@ public class Result {
 	String email;
 	String role;
 
+
 	public Result() {
 	}
 		
@@ -26,6 +27,14 @@ public class Result {
         this.message = message;
         this.userId = userId;
 		this.email = email;
+    }
+
+	public Result(int result, String message, Long userId, String email, String role) {
+        this.result = result;
+        this.message = message;
+        this.userId = userId;
+		this.email = email;
+		this.role = role;
     }
 		
 	public int getResult() {
@@ -58,5 +67,14 @@ public class Result {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+
 
 }

@@ -41,6 +41,9 @@ public class UserController {
 	@GetMapping("/user/{id}")
 	public User getUser(@PathVariable("id") Long id_user) {
 		User user = userService.getUserById(id_user);
+
+		System.out.println("user : " + user);
+		
 		return user;
 	}
 
@@ -103,7 +106,7 @@ public class UserController {
 		// Memastikan data user ada
 		User existingUser = userService.getUserById(id_user);
 		if (existingUser == null) {
-			return new ResponseEntity<>("Failed to update mahasiswa, Mahasiswa not found", HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>("Failed to add data Personal user, User not found", HttpStatus.NOT_FOUND);
 		}
 
 		// Set data request ke object user
@@ -162,7 +165,7 @@ public class UserController {
 			String email = existingUser.getEmail();
 			String role = existingUser.getRole();
 			// Send a message indicating the account is already registered
-			return ResponseEntity.ok().body(new Result(200, "login successfully", userId, email));
+			return ResponseEntity.ok().body(new Result(200, "login successfully", userId, email, role));
 
 		// register
 		}else {
@@ -190,10 +193,14 @@ public class UserController {
 	@PutMapping("/user/{id}")
 	public Object modifyUser(HttpServletResponse response, @PathVariable("id") Long id_user,
 			@RequestBody User userParam) {
-		User user = new User(id_user, userParam.getNama(), userParam.getUsername(),
-				userParam.getEmail(), userParam.getPassword(),
+				
+		// User user = new User(id_user, userParam.getUsername(),
+		// 		userParam.getTanggal_lahir(), userParam.getLocation(), userParam.getAbout(),
+		// 		userParam.getProfileUrl(), userParam.getFirstname(), userParam.getLastname());
+		
+		User user = new User(id_user, userParam.getUsername(),
 				userParam.getTanggal_lahir(), userParam.getLocation(), userParam.getAbout(),
-				userParam.getToken(), userParam.getProfileUrl(), userParam.getRole(), userParam.getTanggal_daftar());
+				 userParam.getFirstname(), userParam.getLastname());
 
 		boolean isSuccess = userService.updateUser(user);
 		if (isSuccess) {

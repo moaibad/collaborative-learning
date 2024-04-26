@@ -17,20 +17,15 @@ const DashboardCommunityList = () => {
 
         const fetchProfileAndCommunityList = async () => {
             try {
-                const allCommunityListResponse = await getDataCTB(`/servers/findallservers`);
-                console.log(allCommunityListResponse);
                 const profileResponse = await getDataCTB(`/profiles/findidbyemail/${email}`);
                 if (profileResponse && profileResponse.user && profileResponse.user.id) {
                     const profileId = profileResponse.user.id;
                     setProfile(profileId);
-                    console.log(profileId);
                     
                     const communityListResponse = await getDataCTB(`/profiles/findallserver/${profileId}`);
                     if (communityListResponse && communityListResponse.community) {
                         setCommunityList(communityListResponse.community);
                     }
-
-                    console.log(communityListResponse);
                 }
             } catch (error) {
                 console.error('Error fetching profile and community list:', error);
@@ -41,12 +36,6 @@ const DashboardCommunityList = () => {
             fetchProfileAndCommunityList();
         }
     }, [email]);
-
-    console.log(communityList);
-    console.log(profile);
-    console.log(email);
-
-    
 
     return (
         <div>
@@ -75,7 +64,7 @@ const DashboardCommunityList = () => {
                     )}
                 </div>
                 {/* Else statement */}
-                {!showAllCommunities && communityList.length <= 3 && (
+                {!showAllCommunities && communityList.length < 1 && (
                     <div className='text-slate-400 text-center p-8 gap-4 grid grid-cols-1'>
                         <div className='place-self-center'>
                           <MdGroupOff size={72} />

@@ -8,6 +8,7 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Column;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties; 
+import jakarta.persistence.CascadeType;
 
 @Entity
 @Table(name = "praktisi")
@@ -26,7 +27,7 @@ public class Praktisi {
     @Column(name = "posisi")
     private String posisi;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id_user", referencedColumnName = "id_user")
     private User user;
 

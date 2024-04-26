@@ -129,7 +129,6 @@ const RegistData = ({onLogin}) => {
         }
     };
     
-
     const continues = () => {
         setCurrent(current + 1);
     }
@@ -238,8 +237,57 @@ const RegistData = ({onLogin}) => {
         }
     };
     
+    // const getDataAccMoodle = async (email)
+    const getDataAccMoodle = async () => {
+        const params = new URLSearchParams();
+        params.append('wstoken', '1f95ee6650d2e1a6aa6e152f6bf4702c');
+        params.append('wsfunction', 'core_user_get_users_by_field');
+        params.append('moodlewsrestformat', 'json');
+        params.append('field', 'email');
+        params.append('values[0]', "lolanjing1122@gmail.com");
+        // params.append('values[0]', emailCookie);
     
+        const apiUrl = `http://colle.koreacentral.cloudapp.azure.com/moodle/webservice/rest/server.php?${params.toString()}`;
     
+        try {
+        const response = await axios.get(apiUrl);
+    
+        console.log("berhasil GET DATA AKUN API Moodle");
+        console.log(response.data);
+        return response.data;
+
+        } catch (error) {
+        console.error('Error fetching data from Moodle API:', error);
+        message.error('Error GET Data Account Moodle.');
+        }
+    };
+
+    //ENROLL COURSE in Moodle
+    const enrollUserInCourse = async (userId) => {
+        const apiUrl = `http://colle.koreacentral.cloudapp.azure.com/moodle/webservice/rest/server.php`;
+      
+        try {
+          // Parameter yang diperlukan untuk permintaan
+          const params = new URLSearchParams();
+          params.append('wstoken', '1f95ee6650d2e1a6aa6e152f6bf4702c');
+          params.append('wsfunction', 'enrol_manual_enrol_users');
+          params.append('moodlewsrestformat', 'json');
+          params.append('enrolments[0][roleid]', '5');
+          params.append('enrolments[0][userid]', userId.toString());
+          params.append('enrolments[0][courseid]', '2');
+      
+          // Lakukan permintaan POST menggunakan axios
+          const response = await axios.post(apiUrl, params);
+      
+          console.log("Berhasil melakukan enrol user in course");
+          console.log(response.data);
+          return response.data;
+        } catch (error) {
+          console.error('Error enrolling user in course:', error);
+          message.error('Error Enroll Course in MOODLE.');
+        }
+    };
+
     const onFinish = () => {
         let isFormValid = true;
 
@@ -250,14 +298,14 @@ const RegistData = ({onLogin}) => {
                     message.error('Please fill in all fields before continuing.');
                     isFormValid = false;
                 }else{
-                    academicInfoMHS(formData); // Add data Academic
+                    academicInfoMHS(formData); // Add data Academic Mahasiswa
                 }
             } else if (selectedRole === 'teacher') {
                 if (formData.major === '' || formData.university === '' || formData.education === '') {
                     message.error('Please fill in all fields before continuing.');
                     isFormValid = false;
                 }else{
-                    academicInfoDosen(formData);
+                    academicInfoDosen(formData); // Add data Academic DOSEN
                 }
 
             } else if (selectedRole === 'practitioners') {
@@ -265,7 +313,7 @@ const RegistData = ({onLogin}) => {
                     message.error('Please fill in all fields before continuing.');
                     isFormValid = false;
                 }else{
-                    academicInfoPraktisi(formData);
+                    academicInfoPraktisi(formData); // Add data Academic PRAKTISI
                 }
 
             }
@@ -274,11 +322,24 @@ const RegistData = ({onLogin}) => {
         // Jika semua input diisi, maka lanjutkan ke langkah berikutnya
         if (isFormValid) {
             // Handle form submission
-            message.success('Registration Successful!');
             console.log('Form values:', formData);
+
+            registerUser(formData); // Add data personal account to DB dashboard
+
+            //SET data role to localStorage
+            localStorage.setItem("role", selectedRole);
+            console.log("role : ", localStorage.getItem("role"));
+
+            //Kebutuhan akun moodle
             registerUserInMoodle(formData); // Add user moodle
-            registerUser(formData); // Add data personal
+            const akunMoodle = getDataAccMoodle(); // Get user moodle
+            console.log("Akun Moodle :", akunMoodle);
+            enrollUserInCourse(akunMoodle.id);
+
+            //Kirim data akun ke fitur CTB dan TJ setelah register
             setTokenToOther(user_token);
+
+            message.success('Registration Successful!');
             onLogin();
             navigate('/'); // Redirect to home or any other route
         }

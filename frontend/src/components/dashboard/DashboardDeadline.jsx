@@ -22,7 +22,6 @@ const DashboardQuestion = () => {
       );
       const data = await response.json();
       data.sort((a, b) => b.upvotes.length - a.upvotes.length);
-      console.log("DATA TJ DASHBOARD", data);
       setQuestions(data);
     } catch (error) {
       console.error("Error fetching question data:", error);
