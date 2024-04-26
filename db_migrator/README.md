@@ -5,4 +5,5 @@ DATABASE_URL="mysql://root:@localhost:3307/colle"
 ```
 
 # migrate to database
++ run ```npm install -g prisma```
 + run ```npx prisma migrate dev --name init```
