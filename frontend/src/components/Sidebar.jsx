@@ -5,6 +5,8 @@ import { googleLogout, useGoogleLogin } from "@react-oauth/google";
 import { links } from "../data/dummy";
 import Cookies from "universal-cookie";
 import { getUserInfo } from "../lib/fetchData";
+import { HOST_MOODLE, TOKEN_MOODLE } from "../lib/env";
+
 const Sidebar = () => {
   const [profile, setProfile] = useState([]);
   const cookies = new Cookies();
@@ -20,10 +22,11 @@ const Sidebar = () => {
     cookies.remove("userEmail");
     cookies.remove("userUsernameMoodle");
     cookies.remove("userPasswordMoodle");
+    cookies.remove("userIdMoodle");
     localStorage.removeItem("role");
     googleLogout();
     setProfile(null);
-    window.location.href = "/landing";
+    window.location.href = `${HOST_MOODLE}/colle/logout.php`;
   };
 
   useEffect(() => {
