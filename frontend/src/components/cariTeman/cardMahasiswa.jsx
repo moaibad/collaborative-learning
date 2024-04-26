@@ -8,16 +8,19 @@ import communitySilver from '../../data/communitySilver.jpeg';
 import communityGold from '../../data/communityGold.jpeg';
 import communityPlatinum from '../../data/communityPlatinum.jpeg';
 import { getDataCTB } from '../../lib/fetchData';
+import Cookies from 'universal-cookie';
 
 
 const CardMahasiswa = ({ mahasiswa }) => {
   const [user, setUser] = useState({});
-  const [achievementList, setAchievementList] = useState([]);
+  const [achievementListCommunity, setAchievementListCommunity] = useState([]);
+  const [reputation, setReputation] = useState([]);
+  const [totalReputation, setTotalReputation] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/user/${mahasiswa.user_id_user}`);
+        const response = await axios.get(`http://localhost:9090/user/${mahasiswa.user_id_user}`);
         if (response.data) {
           setUser(response.data);
         }
@@ -26,26 +29,31 @@ const CardMahasiswa = ({ mahasiswa }) => {
         const achievementResponse = await getDataCTB(`/profiles/achievement/${user.username}`);
         console.log("achievementResponse:", achievementResponse);
         if (achievementResponse) {
-          setAchievementList(achievementResponse.community);
-          console.log("achievementList:", achievementList);
+          setAchievementListCommunity(achievementResponse.community);
+          console.log("achievementListCommunity:", achievementListCommunity);
         }
+
+        //set user reputation
+        const userReputation =  await axios.get(`http://localhost:3001/api/user?email=${user.email}`);
+        setReputation(userReputation.data);
+        setTotalReputation(reputation.reputation);
       } catch (error) {
-        console.error('Error fetching mahasiswa list:', error);
+        console.error('Error fetching reputation list:', error);
       }
     };
 
     fetchData();
-  }, [mahasiswa.user_id_user, user.nama]);
+  }, [mahasiswa.user_id_user, user.nama, totalReputation, achievementListCommunity]);
 
   const getCommunityMedal = () => {
-    const count = achievementList;
-    if (count == 0) return communityPlatinum;
+    const count = achievementListCommunity;
+    if (count === 0) return communityPlatinum;
     if (count >= 1) return communityPlatinum;
     if (count >=5 ) return communityBronze;
     if (count >= 10) return communitySilver;
     if (count >= 15) return communityGold;
   };
-
+  
   return (
     <div className="card w-64 h-150">
       <ul className="flex flex-wrap -mx-1 overflow-hidden sm:-mx-1 md:justify-center lg:justify-start">
@@ -74,7 +82,7 @@ const CardMahasiswa = ({ mahasiswa }) => {
             <div className="flex flex-col mt-4">
               <div className="flex justify-between items-center px-4 font-bold">
                 <p className="text-xs">Achievement</p>
-                <p className="text-xs mr-1">Likes</p>
+                <p className="text-xs mr-1">Reputasi</p>
               </div>
               <div className="flex items-center px-4 mt-1">
                 <div className="flex mr-1">
@@ -84,7 +92,7 @@ const CardMahasiswa = ({ mahasiswa }) => {
                   <div className="rounded-full h-7 w-7 bg-green-500 mr-1"></div>
                   <div className="rounded-full h-7 w-7 bg-blue-500 mr-1"></div>
                 </div>
-                <p className="text-xs font-bold text-gray-600 flex-grow text-right mr-2">{achievementList}</p>
+                <p className="text-xs font-bold text-gray-600 flex-grow text-right mr-2">{totalReputation}</p>
               </div>
             </div>
             <hr className="w-full mx-auto border-gray-400 border-solid border-t-2 mt-2" />

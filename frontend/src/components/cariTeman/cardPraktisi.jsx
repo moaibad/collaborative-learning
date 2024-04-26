@@ -4,17 +4,33 @@ import axios from 'axios';
 
 const CardPraktisi = ({ praktisi }) => {
   const [user, setUser] = useState({});
+  const [reputation, setReputation] = useState([]);
+  const [totalReputation, setTotalReputation] = useState(0);
 
   useEffect(() => {
-    axios.get(`http://localhost:8080/user/${praktisi.user_id_user}`)
+    axios.get(`http://localhost:9090/user/${praktisi.user_id_user}`)
       .then((res) => {
         setUser(res.data);
       })
       .catch((err) => {
         console.log(err);
       }
-    );
+      );
   }, [praktisi.user_id_user]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const userReputation = await axios.get(`http://localhost:3001/api/user?email=${user.email}`);
+        setReputation(userReputation.data);
+        setTotalReputation(reputation.reputation);
+      } catch (error) {
+        console.error('Error fetching allmahasiswa list:', error);
+      }
+    }
+  
+    fetchData();
+  }, [totalReputation]);
 
   return (
     <div className="card w-64">
@@ -34,21 +50,21 @@ const CardPraktisi = ({ praktisi }) => {
               <p className='text-xs text-center text-gray-500'>{praktisi.asal_perusahaan}</p>
               <p className='text-xs text-center text-gray-500'>{user.location}</p>
             </div>
-            <hr className="w-full mx-auto border-gray-400 border-solid border-t-2 mt-2"/>
+            <hr className="w-full mx-auto border-gray-400 border-solid border-t-2 mt-2" />
             <div className="bg-blue-500 text-white px-2 py-1 rounded mt-2 w-2/3 mx-auto">
-                <p className='text-xs text-center'>{praktisi.posisi}</p>
-              </div>
-              <hr className="w-full mx-auto border-gray-400 border-solid border-t-2 mt-2"/>
+              <p className='text-xs text-center'>{praktisi.posisi}</p>
+            </div>
+            <hr className="w-full mx-auto border-gray-400 border-solid border-t-2 mt-2" />
             <div className="flex flex-col mt-4">
               <div className="flex justify-between items-center px-4 font-bold">
                 <p className="text-xs">Bergabung</p>
-                <p className="text-xs mr-1">Likes</p>
+                <p className="text-xs mr-1">Reputasi</p>
               </div>
               <div className="flex items-center px-4">
                 <div className="flex mr-1">
-                <p className='text-xs text-gray-500 py-1 font-semibold'>{new Date().toLocaleDateString()}</p>
+                  <p className='text-xs text-gray-500 py-1 font-semibold'>{new Date().toLocaleDateString()}</p>
                 </div>
-                <p className="text-xs font-bold text-gray-600 flex-grow text-right mr-2">1</p>
+                <p className="text-xs font-bold text-gray-600 flex-grow text-right mr-2">{totalReputation}</p>
               </div>
             </div>
           </div>

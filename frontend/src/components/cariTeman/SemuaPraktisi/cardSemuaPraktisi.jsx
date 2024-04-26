@@ -6,9 +6,11 @@ import { useEffect, useState } from 'react';
 
 const CardSemuaPraktisi = ({ allpraktisi }) => {
   const [user, setUser] = useState({});
+  const [reputation, setReputation] = useState([]);
+  const [totalReputation, setTotalReputation] = useState(0);
 
   useEffect(() => {
-    axios.get(`http://localhost:8080/user/${allpraktisi.user_id_user}`)
+    axios.get(`http://localhost:9090/user/${allpraktisi.user_id_user}`)
       .then((res) => {
         setUser(res.data);
       })
@@ -17,6 +19,20 @@ const CardSemuaPraktisi = ({ allpraktisi }) => {
       }
       );
   }, [allpraktisi.user_id_user]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const userReputation = await axios.get(`http://localhost:3001/api/user?email=${user.email}`);
+        setReputation(userReputation.data);
+        setTotalReputation(reputation.reputation);
+      } catch (error) {
+        console.error('Error reputation list:', error);
+      }
+    }
+  
+    fetchData();
+  }, [totalReputation]);
 
   return (
     <div className="card w-64 h-150">
@@ -44,13 +60,13 @@ const CardSemuaPraktisi = ({ allpraktisi }) => {
             <div className="flex flex-col mt-4">
               <div className="flex justify-between items-center px-4 font-bold">
                 <p className="text-xs">Bergabung</p>
-                <p className="text-xs mr-1">Likes</p>
+                <p className="text-xs mr-1">Reputasi</p>
               </div>
               <div className="flex items-center px-4">
                 <div className="flex mr-1">
-                  <p className='text-xs text-gray-500 py-1 font-semibold'>{new Date().toLocaleDateString()}</p>
+                  <p className='text-xs text-gray-500 py-1 font-semibold'>{new Date(user.tanggal_daftar).toLocaleDateString()}</p>
                 </div>
-                <p className="text-xs font-bold text-gray-600 flex-grow text-right mr-2">1</p>
+                <p className="text-xs font-bold text-gray-600 flex-grow text-right mr-2">{totalReputation}</p>
               </div>
             </div>
           </div>
