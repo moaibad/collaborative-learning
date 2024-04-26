@@ -49,9 +49,8 @@ const Landing = ({ onLogin }) => {
 
   //LOGIN MOODLE
   const [formData, setFormData] = useState({
-    // user Lecturer
-    username: "cinderella",
-    password: "Bibbidibobbidiboo123.",
+    username: "",
+    password: "",
   });
 
   const formRef = useRef(null); // Ref untuk mengakses form
@@ -88,12 +87,9 @@ const Landing = ({ onLogin }) => {
   
     try {
       const response = await axios.get(apiUrl);
-  
-      console.log("Berhasil Get Data Akun Moodle");
-      console.log(JSON.stringify(response.data));
-      console.log("ID Akun Moodle : ", JSON.stringify(response.data[0].id));
-      cookies.set('userMoodle', response.data[0].id, { path: '/', maxAge: 3600 });
-      return response.data;
+
+      cookies.set('userIdMoodle', response.data[0].id, { path: '/', maxAge: 3600 });
+      return response.data[0].id;
 
     } catch (error) {
       console.error('Error fetching data from Moodle API:', error);
@@ -130,6 +126,11 @@ const Landing = ({ onLogin }) => {
               cookies.set('userUsernameMoodle', response.data.usernameMoodle, { path: '/', maxAge: 3600 });
               cookies.set('userPasswordMoodle', response.data.passwordMoodle, { path: '/', maxAge: 3600 });
 
+              setFormData({
+                username: response.data.usernameMoodle,
+                password: response.data.passwordMoodle
+              })
+
               //Kirim data akun ke fitur TJ dan CTB
               setTokenToOther(codeResponse["access_token"]);
 
@@ -139,8 +140,8 @@ const Landing = ({ onLogin }) => {
               
               //get data account from moodle
               getDataAccMoodle(response.data.email);
-
-              //LOGIN MOODLE WITH HIIDEN FORM
+  
+              //LOGIN MOODLE WITH HIDDEN FORM
               handleHiddenFormSubmit();
               
               //Set login = true dan redirect to dashboard page
@@ -272,7 +273,7 @@ const Landing = ({ onLogin }) => {
         className="loginform"
         name="login"
         method="post"
-        action="http://colle.southeastasia.cloudapp.azure.com/moodle/login/index.php"
+        action="http://colle.koreacentral.cloudapp.azure.com/moodle/login/index.php"
         onSubmit={handleSubmit}
         style={{ display: "none" }}
       >
