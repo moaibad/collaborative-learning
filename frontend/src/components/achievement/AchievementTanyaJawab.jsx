@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 
 import achievement_1_1 from '../../data/achievementTanyaJawab-1-1.png';
 import achievement_1_2 from '../../data/achievementTanyaJawab-1-2.png';
@@ -8,12 +8,40 @@ import achievement_2_1 from '../../data/achievementTanyaJawab-2-1.png';
 import achievement_2_2 from '../../data/achievementTanyaJawab-2-2.png';
 import achievement_2_3 from '../../data/achievementTanyaJawab-2-3.png';
 import achievement_2_4 from '../../data/achievementTanyaJawab-2-4.png';
+import achievement_3_1 from '../../data/achievementTanyaJawab-3-1.png';
+import achievement_3_2 from '../../data/achievementTanyaJawab-3-2.png';
+import achievement_3_3 from '../../data/achievementTanyaJawab-3-3.png';
+import achievement_3_4 from '../../data/achievementTanyaJawab-3-4.png';
 
 const AchievementTanyaJawab = () => {
+    const [user, setUser] = useState([]);
+    
+    // useEffect(() => {
+    //     // const cookies = new Cookies();
+    //     // const userEmail = cookies.get('email'); // Retrieve email from cookies
+    //     // setEmail(userEmail);
+    //     // console.log("email: ", userEmail);
+    //     const fetchData = async () => {
+    //       try {
+    //         // const response = await fetch(
+    //         //   `http://localhost:3001/api/questions?authorId=${authorId}`
+    //         // );
+    //         const response = await fetch(
+    //           `http://localhost:3001/api/user?email=deoprasistha@gmail.com `
+    //         );
+    //         const data = await response.json();
+    //         setUser(data);
+    //       } catch (error) {
+    //         console.error("Error fetching question data:", error);
+    //       }
+    //     };
+    
+    //     fetchData();
+    //   }, []);
 
     const membuatPertanyaan = 20
-    const menjawabPertanyaan = 10
-    const upvote = 0
+    const menjawabPertanyaan = 20
+    const upvote = 20
 
     const blank = 
     <div className='border-4 border-slate-300 border-dashed rounded-xl'>
@@ -158,11 +186,11 @@ const AchievementTanyaJawab = () => {
                 ?   <div className='ring ring-slate-300 ring-offset-0 rounded-xl'>
                         <div className="bg-brown py-2 rounded-t-xl">
                             <div className='h-20 m-4 flex justify-center'>
-                                <img className='' src={achievement_1_1} alt="" />
+                                <img className='' src={achievement_3_1} alt="" />
                             </div>
                         </div>
                         <div className='mx-4 my-4'>
-                            <p className='font-bold text-lg mb-2'>Upvote Recognition</p>
+                            <p className='font-bold text-lg mb-2'>Recognition</p>
                             <p className='font-semibold text-slate-400'>Mendapat 1 Upvote</p>
                         </div>
                     </div>
@@ -172,11 +200,11 @@ const AchievementTanyaJawab = () => {
                 ?   <div className='ring ring-slate-300 ring-offset-0 rounded-xl'>
                         <div className="bg-silver py-2 rounded-t-xl">
                             <div className='h-20 m-4 flex justify-center'>
-                                <img className='' src={achievement_1_2} alt="" />
+                                <img className='' src={achievement_3_2} alt="" />
                             </div>
                         </div>
                         <div className='mx-4 my-4'>
-                            <p className='font-bold text-lg mb-2'>Upvote Recognition</p>
+                            <p className='font-bold text-lg mb-2'>Recognition</p>
                             <p className='font-semibold text-slate-400'>Mendapat 5 Upvote</p>
                         </div>
                     </div>
@@ -186,11 +214,11 @@ const AchievementTanyaJawab = () => {
                 ?   <div className='ring ring-slate-300 ring-offset-0 rounded-xl'>
                         <div className="bg-gold py-2 rounded-t-xl">
                             <div className='h-20 m-4 flex justify-center'>
-                                <img className='' src={achievement_1_3} alt="" />
+                                <img className='' src={achievement_3_3} alt="" />
                             </div>
                         </div>
                         <div className='mx-4 my-4'>
-                            <p className='font-bold text-lg mb-2'>Upvote Recognition</p>
+                            <p className='font-bold text-lg mb-2'>Recognition</p>
                             <p className='font-semibold text-slate-400'>Mendapat 10 Upvote</p>
                         </div>
                     </div>
@@ -200,11 +228,11 @@ const AchievementTanyaJawab = () => {
                 ?   <div className='ring ring-slate-300 ring-offset-0 rounded-xl'>
                         <div className="bg-platinum py-2 rounded-t-xl">
                             <div className='h-20 m-4 flex justify-center'>
-                                <img className='' src={achievement_1_4} alt="" />
+                                <img className='' src={achievement_3_4} alt="" />
                             </div>
                         </div>
                         <div className='mx-4 my-4'>
-                            <p className='font-bold text-lg mb-2'>Upvote Recognition</p>
+                            <p className='font-bold text-lg mb-2'>Recognition</p>
                             <p className='font-semibold text-slate-400'>Mendapat 20 Upvote</p>
                         </div>
                     </div>

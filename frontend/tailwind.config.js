@@ -10,6 +10,7 @@ module.exports = {
     },
     extend: {
       fontSize: {
+        xxs: ['0.625rem', '0.75rem'],
         14: '14px',
       },
       backgroundColor: {
@@ -41,7 +42,8 @@ module.exports = {
         160: '40rem',
         180: '45rem', 
         200: '50rem',
-        400: '400px',
+        300: '75rem',
+        400: '100rem',
         760: '760px',
         780: '780px',
         800: '800px',
@@ -49,6 +51,10 @@ module.exports = {
         1000: '1000px',
         1200: '1200px',
         1400: '1400px',
+      },
+      top: {
+        30: '7.5rem',
+        34: '8.5rem'
       },
       height: {
         84: '21rem',

@@ -1,17 +1,13 @@
 import React from 'react'
 
-import achievement_1_1 from '../../data/achievementTanyaJawab-1-1.png';
-import achievement_1_2 from '../../data/achievementTanyaJawab-1-2.png';
-import achievement_1_3 from '../../data/achievementTanyaJawab-1-3.png';
-import achievement_1_4 from '../../data/achievementTanyaJawab-1-4.png';
-import achievement_2_1 from '../../data/achievementTanyaJawab-2-1.png';
-import achievement_2_2 from '../../data/achievementTanyaJawab-2-2.png';
-import achievement_2_3 from '../../data/achievementTanyaJawab-2-3.png';
-import achievement_2_4 from '../../data/achievementTanyaJawab-2-4.png';
+import achievement_1_1 from '../../data/achievementQuiz-1-1.png';
+import achievement_1_2 from '../../data/achievementQuiz-1-2.png';
+import achievement_1_3 from '../../data/achievementQuiz-1-3.png';
+import achievement_1_4 from '../../data/achievementQuiz-1-4.png';
 
 const AchievementQuiz = () => {
 
-    const doQuiz = 3;
+    const doQuiz = 20;
 
     const blank = 
     <div className='border-4 border-slate-300 border-dashed rounded-xl'>

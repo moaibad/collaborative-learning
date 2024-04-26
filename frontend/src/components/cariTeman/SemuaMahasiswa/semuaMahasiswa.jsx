@@ -56,8 +56,8 @@ const SemuaMahasiswa = () => {
   };
 
   return (
-    <div className="w-1100 overflow-hidden mx-19">
-      <div className="flex flex-wrap">
+    <div className="w-300 overflow-hidden mx-6">
+      <div className="grid grid-cols-4 gap-4 ">
         {visibleMahasiswaData.map((mahasiswa) => (
           <CardSemuaMahasiswa key={mahasiswa.id} allmahasiswa={mahasiswa} />
         ))}

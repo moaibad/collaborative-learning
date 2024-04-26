@@ -1,18 +1,18 @@
 import React from 'react'
 
-import achievement_1_1 from '../../data/achievementTanyaJawab-1-1.png';
-import achievement_1_2 from '../../data/achievementTanyaJawab-1-2.png';
-import achievement_1_3 from '../../data/achievementTanyaJawab-1-3.png';
-import achievement_1_4 from '../../data/achievementTanyaJawab-1-4.png';
-import achievement_2_1 from '../../data/achievementTanyaJawab-2-1.png';
-import achievement_2_2 from '../../data/achievementTanyaJawab-2-2.png';
-import achievement_2_3 from '../../data/achievementTanyaJawab-2-3.png';
-import achievement_2_4 from '../../data/achievementTanyaJawab-2-4.png';
+import achievement_1_1 from '../../data/achievementCariTeman-1-1.png';
+import achievement_1_2 from '../../data/achievementCariTeman-1-2.png';
+import achievement_1_3 from '../../data/achievementCariTeman-1-3.png';
+import achievement_1_4 from '../../data/achievementCariTeman-1-4.png';
+import achievement_2_1 from '../../data/achievementCariTeman-2-1.png';
+import achievement_2_2 from '../../data/achievementCariTeman-2-2.png';
+import achievement_2_3 from '../../data/achievementCariTeman-2-3.png';
+import achievement_2_4 from '../../data/achievementCariTeman-2-4.png';
 
 const AchievementCariTeman = () => {
 
-    const community = 4;
-    const level = 1;
+    const community = 20;
+    const level = 4;
 
 
     const blank = 
@@ -97,7 +97,7 @@ const AchievementCariTeman = () => {
                     ?   <div className='ring ring-slate-300 ring-offset-0 rounded-xl'>
                             <div className="bg-brown py-2 rounded-t-xl">
                                 <div className='h-20 m-4 flex justify-center'>
-                                    <img className='' src={achievement_1_1} alt="" />
+                                    <img className='' src={achievement_2_1} alt="" />
                                 </div>
                             </div>
                             <div className='mx-4 my-4'>
@@ -111,7 +111,7 @@ const AchievementCariTeman = () => {
                     ?   <div className='ring ring-slate-300 ring-offset-0 rounded-xl'>
                             <div className="bg-silver py-2 rounded-t-xl">
                                 <div className='h-20 m-4 flex justify-center'>
-                                    <img className='' src={achievement_1_2} alt="" />
+                                    <img className='' src={achievement_2_2} alt="" />
                                 </div>
                             </div>
                             <div className='mx-4 my-4'>
@@ -125,7 +125,7 @@ const AchievementCariTeman = () => {
                     ?   <div className='ring ring-slate-300 ring-offset-0 rounded-xl'>
                             <div className="bg-gold py-2 rounded-t-xl">
                                 <div className='h-20 m-4 flex justify-center'>
-                                    <img className='' src={achievement_1_3} alt="" />
+                                    <img className='' src={achievement_2_3} alt="" />
                                 </div>
                             </div>
                             <div className='mx-4 my-4'>
@@ -139,7 +139,7 @@ const AchievementCariTeman = () => {
                 ?   <div className='ring ring-slate-300 ring-offset-0 rounded-xl'>
                         <div className="bg-platinum py-2 rounded-t-xl">
                             <div className='h-20 m-4 flex justify-center'>
-                                <img className='' src={achievement_1_4} alt="" />
+                                <img className='' src={achievement_2_4} alt="" />
                             </div>
                         </div>
                         <div className='mx-4 my-4'>
