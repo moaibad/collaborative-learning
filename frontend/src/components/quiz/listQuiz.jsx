@@ -30,6 +30,10 @@ const ListQuiz = ({ role }) => {
 
   // Fungsi untuk melakukan pencarian kuis berdasarkan nama
   const searchQuizzes = (term) => {
+    if (!Array.isArray(quizzes)) {
+      console.error("courses is not an array");
+      return [];
+    }
     return quizzes.filter((quiz) =>
       quiz.name.toLowerCase().includes(term.toLowerCase())
     );

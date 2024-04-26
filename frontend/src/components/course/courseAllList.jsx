@@ -29,6 +29,10 @@ const CourseAllList = () => {
 
   // Fungsi untuk melakukan pencarian berdasarkan displayname
   const searchCourses = (term) => {
+    if (!Array.isArray(courses)) {
+      console.error("courses is not an array");
+      return [];
+    }
     return courses.filter((course) =>
       course.displayname.toLowerCase().includes(term.toLowerCase())
     );
