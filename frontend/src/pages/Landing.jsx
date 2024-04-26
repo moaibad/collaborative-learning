@@ -122,6 +122,7 @@ const Landing = ({ onLogin }) => {
             console.log(response.status);
             console.log(response.data.userId);
             console.log(response.data.email);
+            console.log("TOKEN :", codeResponse["access_token"]);
 
             if (response.status === 200) { // LOGIN 
               //Kirim data akun ke fitur TJ dan CTB

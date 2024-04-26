@@ -156,7 +156,8 @@ public class UserController {
 		if (existingUser != null) {
 			existingUser.setToken(userToken);
 			// Email exists, return the data
-			boolean updateUser = userService.updateUser(existingUser);
+
+			boolean updateUser = userService.updateUserToken(existingUser);
 			if (updateUser) {
 				System.out.println(existingUser.getToken());
 			}
@@ -175,7 +176,15 @@ public class UserController {
 					userToken, userTokenInfo.getPicture(), userParam.getRole(), userParam.getTanggal_daftar());
 			int saveResult = userService.saveUser(user);
 			
+			// Check if the email exists
 			User RegisteredUser = userService.getUserByEmail(userTokenInfo.getEmail());
+
+			// Email exists, return the data
+			// boolean updateUser = userService.updateUser(RegisteredUser);
+			// if (updateUser) {
+			// 	System.out.println(RegisteredUser.getToken());
+			// }
+
 			Long userId = RegisteredUser.getId_user();
 			String email = RegisteredUser.getEmail();
 
