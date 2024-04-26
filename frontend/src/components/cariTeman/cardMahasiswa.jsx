@@ -3,10 +3,19 @@
 import React from 'react';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import communityBronze from '../../data/communityBronze.jpeg';
-import communitySilver from '../../data/communitySilver.jpeg';
-import communityGold from '../../data/communityGold.jpeg';
-import communityPlatinum from '../../data/communityPlatinum.jpeg';
+import communityBronze from '../../data/achievementCariTeman-1-1.png';
+import communitySilver from '../../data/achievementCariTeman-1-2.png';
+import communityGold from '../../data/achievementCariTeman-1-3.png';
+import communityPlatinum from '../../data/achievementCariTeman-1-4.png';
+import upvoteBronze from '../../data/achievementTanyaJawab-3-1.png';
+import upvoteSilver from '../../data/achievementTanyaJawab-3-2.png';
+import upvoteGold from '../../data/achievementTanyaJawab-3-3.png';
+import upvotePlatinum from '../../data/achievementTanyaJawab-3-4.png';
+import quizBronze from '../../data/achievementQuiz-1-1.png';
+import quizSilver from '../../data/achievementQuiz-1-2.png';
+import quizGold from '../../data/achievementQuiz-1-3.png';
+import quizPlatinum from '../../data/achievementQuiz-1-4.png';
+
 import { getDataCTB } from '../../lib/fetchData';
 import Cookies from 'universal-cookie';
 
@@ -14,10 +23,14 @@ import Cookies from 'universal-cookie';
 const CardMahasiswa = ({ mahasiswa }) => {
   const [user, setUser] = useState({});
   const [achievementListCommunity, setAchievementListCommunity] = useState([]);
-  const [reputation, setReputation] = useState([]);
-  const [totalReputation, setTotalReputation] = useState(0);
+  const [tanyajawabData, setTanyajawabData] = useState([]);
+  const [totalUpvote, setTotalUpvote] = useState(0);
+  const [totalQuiz, setTotalQuiz] = useState(0);
 
   useEffect(() => {
+    const cookies = new Cookies();
+    const userId = cookies.get('userId');
+
     const fetchData = async () => {
       try {
         const response = await axios.get(`http://localhost:8080/user/${mahasiswa.user_id_user}`);
@@ -25,35 +38,58 @@ const CardMahasiswa = ({ mahasiswa }) => {
           setUser(response.data);
         }
 
-        console.log(user);
         const achievementResponse = await getDataCTB(`/profiles/achievement/${user.username}`);
-        console.log("achievementResponse:", achievementResponse);
         if (achievementResponse) {
           setAchievementListCommunity(achievementResponse.community);
-          console.log("achievementListCommunity:", achievementListCommunity);
         }
 
         //set user reputation
-        const userReputation =  await axios.get(`http://localhost:3001/api/user?email=${user.email}`);
-        setReputation(userReputation.data);
-        setTotalReputation(reputation.reputation);
+        const userReputation = await axios.get(`http://localhost:3001/api/user?email=${user.email}`);
+        setTanyajawabData(userReputation.data);
+        setTotalUpvote(userReputation.data.totalUpvotes);
+
+        //set quiz achievement
+        const quizResponse = await axios.get(`http://colle.koreacentral.cloudapp.azure.com/moodle/webservice/rest/server.php?wstoken=1f95ee6650d2e1a6aa6e152f6bf4702c&wsfunction=local_colle_get_all_user_best_grades&moodlewsrestformat=json&userid=${userId}`);
+        if (quizResponse && quizResponse.data[0].status != "Student has not finished any quiz.") {
+          setTotalQuiz(quizResponse.data.length);
+        }
+
       } catch (error) {
         console.error('Error fetching reputation list:', error);
       }
     };
 
     fetchData();
-  }, [mahasiswa.user_id_user, user.nama, totalReputation, achievementListCommunity]);
+  }, [mahasiswa.user_id_user, user.nama, totalUpvote, achievementListCommunity, totalQuiz]);
 
   const getCommunityMedal = () => {
     const count = achievementListCommunity;
-    if (count === 0) return communityPlatinum;
-    if (count >= 1) return communityPlatinum;
-    if (count >=5 ) return communityBronze;
-    if (count >= 10) return communitySilver;
-    if (count >= 15) return communityGold;
+    if (count === 0) return 0;
+    if (count >= 1) return communityBronze;
+    if (count >= 5) return communitySilver;
+    if (count >= 10) return communityGold;
+    if (count >= 20) return communityPlatinum;
   };
-  
+
+  const getQuizMedal = () => {
+    const count = totalQuiz;
+    if (count === 0) return 0;
+    if (count >= 1) return quizBronze;
+    if (count >= 5) return quizSilver;
+    if (count >= 10) return quizGold;
+    if (count >= 20) return quizPlatinum;
+  };
+
+  const getUpvoteMedal = () => {
+    const count = totalUpvote;
+    if (count === 0) return 0;
+    if (count >= 1) return upvoteBronze;
+    if (count >= 5) return upvoteSilver;
+    if (count >= 10) return upvoteGold;
+    if (count >= 20) return upvotePlatinum;
+  };
+
+
   return (
     <div className="card max-w-52 h-150">
       <ul className="flex flex-wrap -mx-1 overflow-hidden sm:-mx-1 md:justify-center lg:justify-start">
@@ -74,14 +110,22 @@ const CardMahasiswa = ({ mahasiswa }) => {
                 <div className='-ml-1.5'>
                   <p>Achievement</p>
                   <div className='flex mt-1'>
-                    <img src={getCommunityMedal()} alt="medal" className="w-6 h-6 mr-1" />
-                    <div className="rounded-full h-6 w-6 bg-yellow-500 mr-1"></div>
-                    <div className="rounded-full h-6 w-6 bg-green-500 mr-1"></div>
+                    {getCommunityMedal() === 0 && getQuizMedal() === 0 && getUpvoteMedal() === 0 ? (
+                      <>
+                      <p className='text-xs m-1'>Belum ada</p>
+                      </>
+                    ) : (
+                      <>
+                        {getCommunityMedal() !== 0 && <img src={getCommunityMedal()} alt="medal" className="w-6 h-6 mr-1" />}
+                        {getQuizMedal() !== 0 && <img src={getQuizMedal()} alt="medal" className="w-6 h-6 mr-1" />}
+                        {getUpvoteMedal() !== 0 && <img src={getUpvoteMedal()} alt="medal" className="w-6 h-6 mr-1" />}
+                      </>
+                    )}
                   </div>
                 </div>
                 <div className='text-center'>
                   <p className=''>Upvote</p>
-                  <p className='text-lg'>120</p>
+                  <p className='text-lg'>{totalUpvote}</p>
                 </div>
               </div>
               <div className='my-2 mx-2 max-h-0.5 min-h-0.5 border-0 bg-gradient-to-r from-purple-500 to-white'></div>

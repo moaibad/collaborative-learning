@@ -43,7 +43,7 @@ const Dosen = ({ searchKeyword }) => {
 
   return (
     <div
-      className="w-300 overflow-hidden mx-19"
+      className="md:w-300 overflow-hidden mx-19"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >

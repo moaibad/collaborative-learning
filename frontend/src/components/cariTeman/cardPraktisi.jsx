@@ -4,8 +4,8 @@ import axios from 'axios';
 
 const CardPraktisi = ({ praktisi }) => {
   const [user, setUser] = useState({});
-  const [reputation, setReputation] = useState([]);
-  const [totalReputation, setTotalReputation] = useState(0);
+  const [tanyajawabData, setTanyajawabData] = useState([]);
+  const [totalUpvote, setTotalUpvote] = useState(0);
 
   useEffect(() => {
     axios.get(`http://localhost:8080/user/${praktisi.user_id_user}`)
@@ -22,15 +22,15 @@ const CardPraktisi = ({ praktisi }) => {
     const fetchData = async () => {
       try {
         const userReputation = await axios.get(`http://localhost:3001/api/user?email=${user.email}`);
-        setReputation(userReputation.data);
-        setTotalReputation(reputation.reputation);
+        setTanyajawabData(userReputation.data);
+        setTotalUpvote(userReputation.data.totalUpvotes);
       } catch (error) {
-        console.error('Error fetching allmahasiswa list:', error);
+        console.error('Error fetching upvote:', error);
       }
     }
   
     fetchData();
-  }, [totalReputation]);
+  }, [totalUpvote]);
 
   return (
     <div className="card w-64">
@@ -50,7 +50,7 @@ const CardPraktisi = ({ praktisi }) => {
               <hr className='my-2 mx-2 h-0.5 bg-gradient-to-r from-purple-500 to-white'/>
                 <div className='text-center font-bold'>
                   <p className='text-xs'>Upvote</p>
-                  <p className='text-lg'>120</p>
+                  <p className='text-lg'>{totalUpvote}</p>
                 </div>
               <hr className='my-2 mx-2 h-0.5 bg-gradient-to-r from-purple-500 to-white'/>
               <div className='flex w-full'>
