@@ -8,11 +8,13 @@ import courses from '../../data/dataCourse';
 import coursePage2 from "../../data/online-course.png";
 import dummyLecturePic from "../../data/lecturer-role.png";
 import { message } from 'antd';
-
+import { HOST_MOODLE, TOKEN_MOODLE } from "../../lib/env";
+import Cookies from 'js-cookie';
 
 const DashboardCourseList = () => {
     const navigate = useNavigate();
     const [courses, setCourses] = useState([]);
+    const userIdMoodle = Cookies.get('userIdMoodle');
 
     const handleClick = () => {
       navigate('/all-course');
@@ -20,12 +22,12 @@ const DashboardCourseList = () => {
 
     const fetchData = async () => {
       const params = new URLSearchParams();
-      params.append('wstoken', '1f95ee6650d2e1a6aa6e152f6bf4702c');
+      params.append('wstoken', "1f95ee6650d2e1a6aa6e152f6bf4702c");
       params.append('wsfunction', 'core_enrol_get_users_courses');
       params.append('moodlewsrestformat', 'json');
-      params.append('userid', "4");
+      params.append('userid', userIdMoodle.toString());
 
-      const apiUrl = `http://colle.southeastasia.cloudapp.azure.com/moodle/webservice/rest/server.php?${params.toString()}`;
+      const apiUrl = `${HOST_MOODLE}/webservice/rest/server.php?${params.toString()}`;
 
       try {
         const response = await axios.get(apiUrl);
@@ -78,7 +80,7 @@ const DashboardCourseList = () => {
           <div className='flex gap-4'>
               {coursesToShow.map((course, index) => (
                   <div key={index} className='rounded-lg bg-white shadow-md h-82 w-72'>
-                      <Link to={`http://colle.southeastasia.cloudapp.azure.com/moodle/course/view.php?id=${course.id}`}>
+                      <Link to={`${HOST_MOODLE}/course/view.php?id=${course.id}`}>
                           <img className='m-0 p-0 w-72 h-36 object-cover rounded-t-lg' src={coursePage2} alt="" />
                           {/* <img className='m-0 p-0 w-72 h-36 object-cover rounded-t-lg' src={course.courseimage} alt="" /> */}
                           <div className='p-3'>
@@ -90,7 +92,7 @@ const DashboardCourseList = () => {
                                       <p>Dummy Nama Dosen</p>
                                   </div>
                                   {/* Menggunakan Link untuk mengelilingi judul kursus */}
-                                  <Link to={`http://colle.southeastasia.cloudapp.azure.com/moodle/course/view.php?id=${course.id}`}>
+                                  <Link to={`${HOST_MOODLE}/course/view.php?id=${course.id}`}>
                                       <p className='font-bold text-xl'>{course.displayname}</p>
                                   </Link>
                                   {/* <p className='font-bold text-xl'>awe</p> */}

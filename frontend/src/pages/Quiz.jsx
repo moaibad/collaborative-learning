@@ -4,6 +4,7 @@ import ListQuiz from "../components/quiz/listQuiz";
 import { useNavigate } from "react-router-dom";
 import { Button, Modal, Input } from "antd";
 import { HOST_MOODLE, TOKEN_MOODLE } from "../lib/env";
+import Cookies from 'js-cookie';
 
 const Quiz = () => {
   const navigate = useNavigate();
@@ -17,10 +18,12 @@ const Quiz = () => {
     intro: "",
   });
 
+  const userIdMoodle = Cookies.get('userIdMoodle');
+
   const handleCreateQuiz = async () => {
     try {
       const response = await fetch(
-        `${HOST_MOODLE}/webservice/rest/server.php?wstoken=${TOKEN_MOODLE}&moodlewsrestformat=json&wsfunction=local_colle_create_quiz&courseid=2&quizname=${quizData.quizname}&intro=${quizData.intro}&userid=5`
+        `${HOST_MOODLE}/webservice/rest/server.php?wstoken=${TOKEN_MOODLE}&moodlewsrestformat=json&wsfunction=local_colle_create_quiz&courseid=2&quizname=${quizData.quizname}&intro=${quizData.intro}&userid=${userIdMoodle}`
       );
 
       // Handle response
