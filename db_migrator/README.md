@@ -7,9 +7,9 @@ for example username="root" password=""
 ```.env
 DATABASE_URL="mysql://root:@localhost:3307/colle"
 ```
-
-
-
++ run + run ```npm install -g prisma```
 # migrate to database
-+ run ```npm install -g prisma```
 + run ```npx prisma migrate dev --name init```
+
+# migrate from database to schema.prisma
++ run ```prisma db pull```
