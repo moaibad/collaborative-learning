@@ -41,11 +41,14 @@ const ProfileEdit = () => {
     const role = localStorage.getItem("role");
     
     const [personalInfo, setPersonalInfo] = useState('');
-    const [academicInfoMHS, setAcademicInfoMHS] = useState('');
-    const [academicInfoDSN, setAcademicInfoDSN] = useState('');
-    const [academicInfoPraktisi, setAcademicInfoPraktisi] = useState('');
 
     const updateDataPersonal = async (formData) => {
+        console.log("MAU TEST Form Data username : ", formData.username);
+        console.log("MAU TEST Form Data tanggal_lahir : ", formData.tanggal_lahir);
+        console.log("MAU TEST Form Data location : ", formData.location);
+        console.log("MAU TEST Form Data about : ", formData.about);
+        console.log("MAU TEST Form Data firstname : ", formData.firstname);
+        console.log("MAU TEST Form Data lastname : ", formData.lastname);
         try {
             const response = await axios.put(`http://localhost:8080/user/${UserId}`, {
                 username : formData.username,
@@ -67,6 +70,9 @@ const ProfileEdit = () => {
     };
 
     const updateDataMHS = async (formData) => {
+        console.log("MAU TEST Form Data jurusan : ", formData.major);
+        console.log("MAU TEST Form Data angkatan : ", formData.class);
+        console.log("MAU TEST Form Data universitas : ", formData.university);
         try {
             const response = await axios.put(`http://localhost:8080/mahasiswa/${UserId}`, {
                 jurusan : formData.major,
@@ -103,6 +109,9 @@ const ProfileEdit = () => {
     };
 
     const updateDataPraktisi = async (formData) => {
+        console.log("MAU TEST Form Data asal perusahaan : ", formData.company);
+        console.log("MAU TEST Form Data pendidikan terakhir : ", formData.education);
+        console.log("MAU TEST Form Data posisi : ", formData.roleInCompany);
         try {
             const response = await axios.put(`http://localhost:8080/praktisi/${UserId}`, {
                 asal_perusahaan : formData.company,
