@@ -6,11 +6,14 @@ import communitySilver from '../../../data/communitySilver.jpeg';
 import communityGold from '../../../data/communityGold.jpeg';
 import communityPlatinum from '../../../data/communityPlatinum.jpeg';
 import { getDataCTB } from '../../../lib/fetchData';
+import Cookies from 'universal-cookie';
 
 
 const CardSemuaMahasiswa = ({ allmahasiswa }) => {
   const [user, setUser] = useState({});
   const [achievementList, setAchievementList] = useState([]);
+  const [reputation, setReputation] = useState([]);
+  const [totalReputation, setTotalReputation] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -27,23 +30,29 @@ const CardSemuaMahasiswa = ({ allmahasiswa }) => {
           setAchievementList(achievementResponse.community);
           console.log("achievementList:", achievementList);
         }
+
+        //set user reputation
+        const userReputation = await axios.get(`http://localhost:3001/api/user?email=${user.email}`);
+        setReputation(userReputation.data);
+        setTotalReputation(reputation.reputation);
+        console.log("totalReputation:", totalReputation);
       } catch (error) {
         console.error('Error fetching allmahasiswa list:', error);
       }
     };
 
     fetchData();
-  }, [allmahasiswa.user_id_user, user.nama]);
+  }, [allmahasiswa.user_id_user, user.nama, totalReputation]);
 
   const getCommunityMedal = () => {
     const count = achievementList;
     if (count == 0) return communityPlatinum;
     if (count >= 1) return communityPlatinum;
-    if (count >=5 ) return communityBronze;
+    if (count >= 5) return communityBronze;
     if (count >= 10) return communitySilver;
     if (count >= 15) return communityGold;
   };
-  
+
   return (
     <div className="card w-64 h-150">
       <ul className="flex flex-wrap -mx-1 overflow-hidden sm:-mx-1 md:justify-center lg:justify-start">

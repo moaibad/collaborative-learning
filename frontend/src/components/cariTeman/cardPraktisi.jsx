@@ -4,6 +4,8 @@ import axios from 'axios';
 
 const CardPraktisi = ({ praktisi }) => {
   const [user, setUser] = useState({});
+  const [reputation, setReputation] = useState([]);
+  const [totalReputation, setTotalReputation] = useState(0);
 
   useEffect(() => {
     axios.get(`http://localhost:8080/user/${praktisi.user_id_user}`)
@@ -13,8 +15,22 @@ const CardPraktisi = ({ praktisi }) => {
       .catch((err) => {
         console.log(err);
       }
-    );
+      );
   }, [praktisi.user_id_user]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const userReputation = await axios.get(`http://localhost:3001/api/user?email=${user.email}`);
+        setReputation(userReputation.data);
+        setTotalReputation(reputation.reputation);
+      } catch (error) {
+        console.error('Error fetching allmahasiswa list:', error);
+      }
+    }
+  
+    fetchData();
+  }, [totalReputation]);
 
   return (
     <div className="card w-64">

@@ -8,11 +8,14 @@ import communitySilver from '../../data/communitySilver.jpeg';
 import communityGold from '../../data/communityGold.jpeg';
 import communityPlatinum from '../../data/communityPlatinum.jpeg';
 import { getDataCTB } from '../../lib/fetchData';
+import Cookies from 'universal-cookie';
 
 
 const CardMahasiswa = ({ mahasiswa }) => {
   const [user, setUser] = useState({});
-  const [achievementList, setAchievementList] = useState([]);
+  const [achievementListCommunity, setAchievementListCommunity] = useState([]);
+  const [reputation, setReputation] = useState([]);
+  const [totalReputation, setTotalReputation] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -26,26 +29,31 @@ const CardMahasiswa = ({ mahasiswa }) => {
         const achievementResponse = await getDataCTB(`/profiles/achievement/${user.username}`);
         console.log("achievementResponse:", achievementResponse);
         if (achievementResponse) {
-          setAchievementList(achievementResponse.community);
-          console.log("achievementList:", achievementList);
+          setAchievementListCommunity(achievementResponse.community);
+          console.log("achievementListCommunity:", achievementListCommunity);
         }
+
+        //set user reputation
+        const userReputation =  await axios.get(`http://localhost:3001/api/user?email=${user.email}`);
+        setReputation(userReputation.data);
+        setTotalReputation(reputation.reputation);
       } catch (error) {
-        console.error('Error fetching mahasiswa list:', error);
+        console.error('Error fetching reputation list:', error);
       }
     };
 
     fetchData();
-  }, [mahasiswa.user_id_user, user.nama]);
+  }, [mahasiswa.user_id_user, user.nama, totalReputation, achievementListCommunity]);
 
   const getCommunityMedal = () => {
-    const count = achievementList;
-    if (count == 0) return communityPlatinum;
+    const count = achievementListCommunity;
+    if (count === 0) return communityPlatinum;
     if (count >= 1) return communityPlatinum;
     if (count >=5 ) return communityBronze;
     if (count >= 10) return communitySilver;
     if (count >= 15) return communityGold;
   };
-
+  
   return (
     <div className="card max-w-52 h-150">
       <ul className="flex flex-wrap -mx-1 overflow-hidden sm:-mx-1 md:justify-center lg:justify-start">

@@ -33,7 +33,7 @@ import { getDataCTB } from '../../lib/fetchData';
               <img className='m-0 p-0 w-72 h-36 object-cover rounded-2xl border' src={komunitas.imageUrl} alt="" />
               <div className='flex justify-between py-3'>
                 <div className='bottom-2 leading-6'>
-                  <p className='font-bold text-xl ml-1'>{komunitas.name}</p>
+                  <p className='font-bold text-md ml-1 mr-2'>{komunitas.name}</p>
                   <div className='flex gap-1 items-center font-semibold text-slate-500 text-sm ml-1'>
                     <IoMdPeople/>
                     <p>{komunitas.totalMembers}</p>
