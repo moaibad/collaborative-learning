@@ -220,6 +220,11 @@ const RegistData = ({onLogin}) => {
 
             console.log("USERNAME MOODLE : ", usernameMoodle);
             console.log("PASSWORD MOODLE : ", passwordMoodle);
+
+            //SET COOKIE FOR USERNAME AND PASSWORD MOODLE
+            cookies.set('userUsernameMoodle', usernameMoodle, { path: '/', maxAge: 3600 });
+            cookies.set('userPasswordMoodle', passwordMoodle, { path: '/', maxAge: 3600 });
+
             // Kirim data pengguna ke Moodle
             await createUserInMoodle({
                 id_user: formData.id_user,
@@ -230,10 +235,6 @@ const RegistData = ({onLogin}) => {
                 passwordMoodle: passwordMoodle
             });
             console.log("User Moodle Created");
-
-            //SET COOKIE FOR USERNAME AND PASSWORD MOODLE
-            cookies.set('userUsernameMoodle', usernameMoodle, { path: '/', maxAge: 3600 });
-            cookies.set('userPasswordMoodle', passwordMoodle, { path: '/', maxAge: 3600 });
 
         } catch (error) {
             // Tangani kesalahan saat pendaftaran pengguna di Moodle

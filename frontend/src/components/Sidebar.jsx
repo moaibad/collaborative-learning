@@ -17,6 +17,9 @@ const Sidebar = () => {
     cookies.remove("user_token");
     cookies.remove("userId");
     cookies.remove("email");
+    cookies.remove("userEmail");
+    cookies.remove("userUsernameMoodle");
+    cookies.remove("userPasswordMoodle");
     localStorage.removeItem("role");
     googleLogout();
     setProfile(null);
