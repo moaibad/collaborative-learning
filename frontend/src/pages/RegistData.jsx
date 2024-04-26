@@ -15,6 +15,7 @@ import practitioners from '../data/practitioners-role.png';
 import welcome from '../data/welcome.jpg'
 import { classOptions } from '../data/dummy';
 import { TOKEN_MOODLE, HOST_MOODLE} from "../lib/env";
+import { setTokenToOther } from "../lib/fetchData";
 
 
 const RegistData = ({onLogin}) => {
@@ -39,6 +40,7 @@ const RegistData = ({onLogin}) => {
 
     const cookies = new Cookies();
     const id = cookies.get('userId');
+    const user_token = cookies.get('user_token');
     const emailCookie = cookies.get('userEmail');
     const navigate = useNavigate();
 
@@ -83,6 +85,50 @@ const RegistData = ({onLogin}) => {
         }
     };
 
+    const academicInfoDosen = async (formData) => {
+        try {
+            console.log(formData.major); // Jurusan
+            console.log(formData.university); // Universitas
+            console.log(formData.education); // Pendidikan Terakhir
+            const response = await axios.post(`http://localhost:8080/dosen`, {
+                jurusan: formData.major,
+                universitas: formData.university,
+                pendidikan_terakhir: formData.education,
+                user_id_user: id // Asumsi id sudah didefinisikan sebelumnya
+            });
+    
+            console.log(response.status);
+            console.log(response.data); // Mengakses data langsung dari respons
+    
+        } catch (error) {
+            // Handle registration errors
+            console.error('Error Add Academic Data Dosen:', error);
+            message.error('An error occurred. Please try again later.');
+        }
+    };
+
+    const academicInfoPraktisi = async (formData) => {
+        try {
+            console.log(formData.education); // Bidang Keahlian
+            console.log(formData.company); // Perusahaan
+            console.log(formData.roleInCompany); // Posisi
+            const response = await axios.post(`http://localhost:8080/praktisi`, {
+                pendidikan_terakhir: formData.education,
+                asal_perusahaan: formData.company,
+                posisi: formData.roleInCompany,
+                user_id_user: id // Asumsi id sudah didefinisikan sebelumnya
+            });
+    
+            console.log(response.status);
+            console.log(response.data); // Mengakses data langsung dari respons
+    
+        } catch (error) {
+            // Handle registration errors
+            console.error('Error Add Academic Data Praktisi:', error);
+            message.error('An error occurred. Please try again later.');
+        }
+    };
+    
     const continues = () => {
         setCurrent(current + 1);
     }
@@ -191,8 +237,57 @@ const RegistData = ({onLogin}) => {
         }
     };
     
+    // const getDataAccMoodle = async (email)
+    const getDataAccMoodle = async () => {
+        const params = new URLSearchParams();
+        params.append('wstoken', '1f95ee6650d2e1a6aa6e152f6bf4702c');
+        params.append('wsfunction', 'core_user_get_users_by_field');
+        params.append('moodlewsrestformat', 'json');
+        params.append('field', 'email');
+        params.append('values[0]', "lolanjing1122@gmail.com");
+        // params.append('values[0]', emailCookie);
     
+        const apiUrl = `http://colle.koreacentral.cloudapp.azure.com/moodle/webservice/rest/server.php?${params.toString()}`;
     
+        try {
+        const response = await axios.get(apiUrl);
+    
+        console.log("berhasil GET DATA AKUN API Moodle");
+        console.log(response.data);
+        return response.data;
+
+        } catch (error) {
+        console.error('Error fetching data from Moodle API:', error);
+        message.error('Error GET Data Account Moodle.');
+        }
+    };
+
+    //ENROLL COURSE in Moodle
+    const enrollUserInCourse = async (userId) => {
+        const apiUrl = `http://colle.koreacentral.cloudapp.azure.com/moodle/webservice/rest/server.php`;
+      
+        try {
+          // Parameter yang diperlukan untuk permintaan
+          const params = new URLSearchParams();
+          params.append('wstoken', '1f95ee6650d2e1a6aa6e152f6bf4702c');
+          params.append('wsfunction', 'enrol_manual_enrol_users');
+          params.append('moodlewsrestformat', 'json');
+          params.append('enrolments[0][roleid]', '5');
+          params.append('enrolments[0][userid]', userId.toString());
+          params.append('enrolments[0][courseid]', '2');
+      
+          // Lakukan permintaan POST menggunakan axios
+          const response = await axios.post(apiUrl, params);
+      
+          console.log("Berhasil melakukan enrol user in course");
+          console.log(response.data);
+          return response.data;
+        } catch (error) {
+          console.error('Error enrolling user in course:', error);
+          message.error('Error Enroll Course in MOODLE.');
+        }
+    };
+
     const onFinish = () => {
         let isFormValid = true;
 
@@ -203,28 +298,48 @@ const RegistData = ({onLogin}) => {
                     message.error('Please fill in all fields before continuing.');
                     isFormValid = false;
                 }else{
-                    academicInfoMHS(formData); // Add data Academic
+                    academicInfoMHS(formData); // Add data Academic Mahasiswa
                 }
             } else if (selectedRole === 'teacher') {
                 if (formData.major === '' || formData.university === '' || formData.education === '') {
                     message.error('Please fill in all fields before continuing.');
                     isFormValid = false;
+                }else{
+                    academicInfoDosen(formData); // Add data Academic DOSEN
                 }
+
             } else if (selectedRole === 'practitioners') {
-                if (formData.company === '' || formData.roleInCompany === '' || formData.education === '') {
+                if (formData.education === '' || formData.company=== '' || formData.roleInCompany=== '') {
                     message.error('Please fill in all fields before continuing.');
                     isFormValid = false;
+                }else{
+                    academicInfoPraktisi(formData); // Add data Academic PRAKTISI
                 }
+
             }
         }
 
         // Jika semua input diisi, maka lanjutkan ke langkah berikutnya
         if (isFormValid) {
             // Handle form submission
-            message.success('Registration Successful!');
             console.log('Form values:', formData);
+
+            registerUser(formData); // Add data personal account to DB dashboard
+
+            //SET data role to localStorage
+            localStorage.setItem("role", selectedRole);
+            console.log("role : ", localStorage.getItem("role"));
+
+            //Kebutuhan akun moodle
             registerUserInMoodle(formData); // Add user moodle
-            registerUser(formData); // Add data personal
+            const akunMoodle = getDataAccMoodle(); // Get user moodle
+            console.log("Akun Moodle :", akunMoodle);
+            enrollUserInCourse(akunMoodle.id);
+
+            //Kirim data akun ke fitur CTB dan TJ setelah register
+            setTokenToOther(user_token);
+
+            message.success('Registration Successful!');
             onLogin();
             navigate('/'); // Redirect to home or any other route
         }
@@ -394,15 +509,21 @@ const RegistData = ({onLogin}) => {
                 <div className='w-5/12 space-y-4'>
                     <div>
                         <label>Major</label>
-                        <input className='block w-full rounded-md border-0 p-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 transition duration-300 outline-none' type="text" name="major" value={formData.major} onChange={handleChange} />
+                        <input className='block w-full rounded-md border-0 p-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 transition duration-300 outline-none' 
+                            type="text" name="major" value={formData.major} onChange={handleChange} placeholder=''
+                        />
                     </div>
                     <div>
                         <label>University</label>
-                        <input className='block w-full rounded-md border-0 p-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 transition duration-300 outline-none' type="text" name="university" value={formData.university} onChange={handleChange} />
+                        <input className='block w-full rounded-md border-0 p-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 transition duration-300 outline-none' 
+                            type="text" name="university" value={formData.university} onChange={handleChange} placeholder=''
+                        />
                     </div>
                     <div>
                         <label>Latest Education</label>
-                        <input className='block w-full rounded-md border-0 p-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 transition duration-300 outline-none' type="text" name="education" value={formData.education} onChange={handleChange} />
+                        <input className='block w-full rounded-md border-0 p-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 transition duration-300 outline-none' 
+                            type="text" name="education" value={formData.education} onChange={handleChange} placeholder='Ex: S2 ITB'
+                        />
                     </div>
                 </div>
                 <div className='w-7/12 flex justify-center'>

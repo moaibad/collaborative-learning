@@ -4,8 +4,11 @@ import java.util.Date;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Column;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "user")
@@ -56,6 +59,18 @@ public class User {
 	@Column (name = "password_moodle")
 	private String password_moodle;
 
+	@Column (name = "tanggal_daftar")
+	private Date tanggal_daftar;
+
+
+	@OneToOne(mappedBy = "user")
+    private Mahasiswa mahasiswa;
+
+	@OneToOne(mappedBy = "user")
+	private Dosen dosen;
+
+	@OneToOne(mappedBy = "user")
+	private Praktisi praktisi;
 
 	// Constructor
 	public User() {
@@ -73,7 +88,8 @@ public class User {
 			String about,
 			String token,
 			String ProfileUrl,
-			String role) {
+			String role,
+			Date tanggal_daftar) {
 		this.id_user = id_user;
 		this.nama = nama;
 		this.username = username;
@@ -83,6 +99,7 @@ public class User {
 		this.location = location;
 		this.ProfileUrl = ProfileUrl;
 		this.role = role;
+		this.tanggal_daftar = tanggal_daftar;
 	}
 
 	// Constructor without id
@@ -96,7 +113,8 @@ public class User {
 			String about,
 			String token,
 			String ProfileUrl,
-			String role) {
+			String role,
+			Date tanggal_daftar) {
 		this.nama = nama;
 		this.username = username;
 		this.email = email;
@@ -107,6 +125,7 @@ public class User {
 		this.token = token;
 		this.ProfileUrl = ProfileUrl;
 		this.role = role;
+		this.tanggal_daftar = tanggal_daftar;
 	}
 
 	// Constructor MOODLE with id
@@ -125,7 +144,8 @@ public class User {
 			String firstname,
 			String lastname,
 			String username_moodle,
-			String password_moodle) {
+			String password_moodle,
+			Date tanggal_daftar) {
 		this.id_user = id_user;
 		this.nama = nama;
 		this.username = username;
@@ -141,6 +161,27 @@ public class User {
 		this.lastname = lastname;
 		this.username_moodle = username_moodle;
 		this.password_moodle = password_moodle;
+		this.tanggal_daftar = tanggal_daftar;
+	}
+
+	// EDIT CONSTRUCTOR
+	public User(
+			Long id_user,
+			String username,
+			Date tanggal_lahir,
+			String location,
+			String about,
+			// String ProfileUrl,
+			String firstname,
+			String lastname) {
+		this.id_user = id_user;
+		this.username = username;
+		this.tanggal_lahir = tanggal_lahir;
+		this.location = location;
+		this.about = about;
+		// this.ProfileUrl = ProfileUrl;
+		this.firstname = firstname;
+		this.lastname = lastname;
 	}
 
 	// Getter and Setter
@@ -262,5 +303,13 @@ public class User {
 
 	public void setPassword_moodle(String password_moodle) {
 		this.password_moodle = password_moodle;
+	}
+
+	public Date getTanggal_daftar() {
+		return tanggal_daftar;
+	}
+
+	public void setTanggal_daftar(Date tanggal_daftar) {
+		this.tanggal_daftar = tanggal_daftar;
 	}
 }

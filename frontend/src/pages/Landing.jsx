@@ -11,7 +11,7 @@ import { loginMahasiswa, setTokenToOther } from "../lib/fetchData";
 import { FcGoogle } from "react-icons/fc";
 import gsap from 'gsap';
 import { message  } from 'antd';
-import { dummy_user } from '../data/dummy';
+import { data_akun } from '../data/dummy';
 
 import avatar from "../data/landing-profile.png";
 import SplitType from "split-type";
@@ -47,11 +47,65 @@ const Landing = ({ onLogin }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  //LOGIN MOODLE
+  const [formData, setFormData] = useState({
+    // user Lecturer
+    username: "cinderella",
+    password: "Bibbidibobbidiboo123.",
+  });
+
+  const formRef = useRef(null); // Ref untuk mengakses form
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Lakukan proses login atau tindakan lainnya di sini dengan formData
+    console.log("Data yang akan dikirim:", formData);
+  };
+
+  const handleHiddenFormSubmit = () => {
+    if (formRef.current) {
+      formRef.current.submit(); // Mengirimkan form tersembunyi
+    }
+  };
+
+  // const getDataAccMoodle = async (email)
+  const getDataAccMoodle = async () => {
+    const params = new URLSearchParams();
+    params.append('wstoken', '1f95ee6650d2e1a6aa6e152f6bf4702c');
+    params.append('wsfunction', 'core_user_get_users_by_field');
+    params.append('moodlewsrestformat', 'json');
+    params.append('field', 'email');
+    params.append('values[0]', "lolanjing1122@gmail.com");
+    // params.append('values[0]', email);
+  
+    const apiUrl = `http://colle.koreacentral.cloudapp.azure.com/moodle/webservice/rest/server.php?${params.toString()}`;
+  
+    try {
+      const response = await axios.get(apiUrl);
+  
+      console.log("berhasil GET DATA AKUN API Moodle");
+      console.log(response.data);
+      return response.data;
+
+    } catch (error) {
+      console.error('Error fetching data from Moodle API:', error);
+      message.error('Error GET Data Account Moodle.');
+    }
+  };
+  
   const login = useGoogleLogin({
     onSuccess: (codeResponse) => {
         cookies.set('user_token', codeResponse["access_token"], { path: '/', maxAge: 3600 });
         setUser(codeResponse);
-        axios.post("http://localhost:8080/oauth/user", dummy_user, {
+        axios.post("http://localhost:8080/oauth/user", data_akun, {
             headers: {
                 Accept: "*/*",
                 Authorization: `Bearer ${codeResponse["access_token"]}`,
@@ -68,11 +122,23 @@ const Landing = ({ onLogin }) => {
             console.log(response.status);
             console.log(response.data.userId);
             console.log(response.data.email);
-            // const test = "halo"
-            // console.log(test.charAt(0).toUpperCase() + test.slice(1));
 
             if (response.status === 200) { // LOGIN 
-              // setTokenToOther(codeResponse["access_token"]);
+              //Kirim data akun ke fitur TJ dan CTB
+              setTokenToOther(codeResponse["access_token"]);
+
+              //Set data role account ke localStorage
+              localStorage.setItem("role", response.data.role);
+              console.log("role : ", localStorage.getItem("role"));
+
+              //get data account from moodle
+              const akunMoodle = getDataAccMoodle();
+              console.log("AKU MODLE", akunMoodle);
+              
+              //LOGIN MOODLE WITH HIIDEN FORM
+              handleHiddenFormSubmit();
+              
+              //Set login = true dan redirect to dashboard page
               onLogin();
               navigate('/');
 
@@ -194,6 +260,41 @@ const Landing = ({ onLogin }) => {
           </div>
         </div>
       </div>
+      
+      {/* HIDEN FORM MOODLE FOR LOGIN */}
+      <form
+        ref={formRef} // Menggunakan ref untuk mengakses form
+        className="loginform"
+        name="login"
+        method="post"
+        action="http://colle.southeastasia.cloudapp.azure.com/moodle/login/index.php"
+        onSubmit={handleSubmit}
+        style={{ display: "none" }}
+      >
+        <p>
+          Username :
+          <input
+            size="10"
+            name="username"
+            value={formData.username}
+            onChange={handleChange}
+          />
+        </p>
+        <p>
+          Password :
+          <input
+            size="10"
+            name="password"
+            type="password"
+            value={formData.password}
+            onChange={handleChange}
+          />
+        </p>
+        <p>
+          <input name="Submit" value="Login" type="submit" />
+        </p>
+      </form>
+      
     </div>
   );
 };

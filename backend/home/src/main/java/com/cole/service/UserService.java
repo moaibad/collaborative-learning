@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cole.repository.UserRepository;
+import com.cole.vo.Mahasiswa;
 import com.cole.vo.User;
 
 @Service
@@ -57,15 +58,15 @@ public class UserService {
 			return false;
 
 		// Update fields that are allowed to be updated
-		if (user.getNama() != null) {
-			result.setNama(user.getNama());
-		}
+		// if (user.getNama() != null) {
+		// 	result.setNama(user.getNama());
+		// }
 		if (user.getUsername() != null) {
 			result.setUsername(user.getUsername());
 		}
-		if (user.getEmail() != null) {
-			result.setEmail(user.getEmail());
-		}
+		// if (user.getEmail() != null) {
+		// 	result.setEmail(user.getEmail());
+		// }
 		if (user.getTanggal_lahir() != null) {
 			result.setTanggal_lahir(user.getTanggal_lahir());
 		}
@@ -75,22 +76,46 @@ public class UserService {
 		if (user.getAbout() != null) {
 			result.setAbout(user.getAbout());
 		}
-		if (user.getToken() != null) {
-			result.setToken(user.getToken());
+		// if (user.getToken() != null) {
+		// 	result.setToken(user.getToken());
+		// }
+		// if (user.getProfileUrl() != null) {
+		// 	result.setProfileUrl(user.getProfileUrl());
+		// }
+		if (user.getFirstname() != null) {
+			result.setFirstname(user.getFirstname());
 		}
-		if (user.getProfileUrl() != null) {
-			result.setProfileUrl(user.getProfileUrl());
+		if (user.getLastname() != null) {
+			result.setLastname(user.getLastname());
 		}
 
 		// Check if password is provided and update it if necessary
-		String newPassword = user.getPassword();
-		if (newPassword != null && !newPassword.isEmpty()) {
-			result.setPassword(newPassword);
-		}
+		// String newPassword = user.getPassword();
+		// if (newPassword != null && !newPassword.isEmpty()) {
+		// 	result.setPassword(newPassword);
+		// }
 
 		// Save the updated User object
 		userRepository.updateUser(result);
 		return true;
+	}
+
+	//find mahasiswa by username
+	public List<Mahasiswa> getMahasiswaByUsername(String username) {
+		List<Mahasiswa> user = userRepository.findMahasiswa(username);
+		return user;
+	}
+
+	//find dosen by username
+	public List<User> getDosenByUsername(String username) {
+		List<User> user = userRepository.findDosen(username);
+		return user;
+	}
+
+	//find praktisi by username
+	public List<User> getPraktisiByUsername(String username) {
+		List<User> user = userRepository.findPraktisi(username);
+		return user;
 	}
 
 	public int addPersonalInfo(User user) {

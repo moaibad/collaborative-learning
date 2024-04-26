@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cole.service.UserService;
+import com.cole.repository.UserRepoJPA;
 import com.cole.service.UserProfileService;
 import com.cole.vo.User;
+import com.cole.vo.Mahasiswa;
 import com.cole.vo.Result;
 import com.cole.vo.UserTokenInfo;
 import jakarta.servlet.http.HttpServletResponse;
@@ -31,10 +33,17 @@ public class UserController {
 	@Autowired
 	UserProfileService userProfileService;
 
-	// GET USER BY ID API
+
+	@Autowired UserRepoJPA userRepoJPA;
+
+	// GET User BY ID API
+
 	@GetMapping("/user/{id}")
 	public User getUser(@PathVariable("id") Long id_user) {
 		User user = userService.getUserById(id_user);
+
+		System.out.println("user : " + user);
+		
 		return user;
 	}
 
@@ -74,7 +83,7 @@ public class UserController {
 		User user = new User(userParam.getNama(), userParam.getUsername(),
 				userParam.getEmail(), userParam.getPassword(),
 				userParam.getTanggal_lahir(), userParam.getLocation(), userParam.getAbout(),
-				userParam.getToken(), userParam.getProfileUrl(), userParam.getRole());
+				userParam.getToken(), userParam.getProfileUrl(), userParam.getRole(), userParam.getTanggal_daftar());
 
 		int saveResult = userService.saveUser(user);
 
@@ -97,7 +106,7 @@ public class UserController {
 		// Memastikan data user ada
 		User existingUser = userService.getUserById(id_user);
 		if (existingUser == null) {
-			return new ResponseEntity<>("Failed to update mahasiswa, Mahasiswa not found", HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>("Failed to add data Personal user, User not found", HttpStatus.NOT_FOUND);
 		}
 
 		// Set data request ke object user
@@ -154,15 +163,16 @@ public class UserController {
 
 			Long userId = existingUser.getId_user();
 			String email = existingUser.getEmail();
+			String role = existingUser.getRole();
 			// Send a message indicating the account is already registered
-			return ResponseEntity.ok().body(new Result(200, "login successfully", userId, email));
+			return ResponseEntity.ok().body(new Result(200, "login successfully", userId, email, role));
 
 		// register
 		}else {
 			User user = new User(userTokenInfo.getName(), userTokenInfo.getName(),
 					userTokenInfo.getEmail(), userParam.getPassword(),
 					userParam.getTanggal_lahir(), userParam.getLocation(), userParam.getAbout(),
-					userToken, userTokenInfo.getPicture(), userParam.getRole());
+					userToken, userTokenInfo.getPicture(), userParam.getRole(), userParam.getTanggal_daftar());
 			int saveResult = userService.saveUser(user);
 			
 			User RegisteredUser = userService.getUserByEmail(userTokenInfo.getEmail());
@@ -183,10 +193,14 @@ public class UserController {
 	@PutMapping("/user/{id}")
 	public Object modifyUser(HttpServletResponse response, @PathVariable("id") Long id_user,
 			@RequestBody User userParam) {
-		User user = new User(id_user, userParam.getNama(), userParam.getUsername(),
-				userParam.getEmail(), userParam.getPassword(),
+				
+		// User user = new User(id_user, userParam.getUsername(),
+		// 		userParam.getTanggal_lahir(), userParam.getLocation(), userParam.getAbout(),
+		// 		userParam.getProfileUrl(), userParam.getFirstname(), userParam.getLastname());
+		
+		User user = new User(id_user, userParam.getUsername(),
 				userParam.getTanggal_lahir(), userParam.getLocation(), userParam.getAbout(),
-				userParam.getToken(), userParam.getProfileUrl(), userParam.getRole());
+				 userParam.getFirstname(), userParam.getLastname());
 
 		boolean isSuccess = userService.updateUser(user);
 		if (isSuccess) {
@@ -197,6 +211,33 @@ public class UserController {
 		}
 	}
 
+	//Find mahasiswa by username
+	@GetMapping("/user/search/mahasiswa/{username}")
+	public List<Mahasiswa> getMahasiswaByUsername(@PathVariable("username") String username) {
+		List<Mahasiswa> user = userService.getMahasiswaByUsername(username);
+		return user;
+	}
+
+	//find dosen by username
+	@GetMapping("/user/search/dosen/{username}")
+	public List<User> getDosenByUsername(@PathVariable("username") String username) {
+		List<User> user = userService.getDosenByUsername(username);
+		return user;
+	}
+
+	//find prakrisi by username
+	@GetMapping("/user/search/prakrisi/{username}")
+	public List<User> getPraktisiByUsername(@PathVariable("username") String username) {
+		List<User> user = userService.getPraktisiByUsername(username);
+		return user;
+	}
+
+	//find user by username
+	@GetMapping("/user/search/{username}")
+	public User getUserByUsername(@PathVariable("username") String username) {
+		User user = userRepoJPA.findByUsername(username);
+		return user;
+	}
 	// Metode untuk mendapatkan username Moodle dari email
 	private String getMoodleUsername(String email) {
 		int atIndex = email.indexOf('@');
@@ -211,5 +252,6 @@ public class UserController {
 		String username = getMoodleUsername(email);
 		// Format password baru sesuai kebutuhan
 		return  username.substring(0, 1).toUpperCase() + username.substring(1) + id_user + ".";
+
 	}
 }

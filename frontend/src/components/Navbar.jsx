@@ -9,7 +9,7 @@ import { RiNotification3Line } from "react-icons/ri";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import { SearchOutlined, BellOutlined } from "@ant-design/icons";
 import { Input, Progress, Dropdown, Space } from "antd";
-import { getDataDashboard } from "../lib/fetchData";
+import { getDataDashboard, getGoogleUserProfile} from "../lib/fetchData";
 import NotificationDropdown from "../components/navbar/NotificationDropdown"; // Import the NotificationDropdown component
 
 // Required CSS import, unless you're overriding the styling
@@ -74,7 +74,7 @@ const Navbar = () => {
   // const notifButtonRef = useRef(null);
   const [showDropdown, setShowDropdown] = useState(true);
   const [profile, setProfile] = useState([]);
-  const [mahasiswa, setMahasiswa] = useState("");
+  const [user, setUser] = useState("");
   const UserId = Cookies.get("userId");
   const token = Cookies.get("user_token");
 
@@ -82,20 +82,33 @@ const Navbar = () => {
     setShowDropdown(!showDropdown);
   };
 
-  useEffect(() => {
-    const getInfoMahasiswa = async () => {
-      try {
-        var response = await axios.get(`http://localhost:8080/user/${UserId}`);
-        setMahasiswa(response.data);
-        localStorage.setItem("role", JSON.stringify(response.data.role));
-        console.log("role : ", JSON.parse(localStorage.getItem("role")));
-        // console.log("user : ", JSON.stringify(response));
-      } catch (error) {
-        console.error("Error fetching mahasiswa data:", error);
-      }
-    };
+  // const getInfoUser = async () => {
+  //   try {
+  //     var response = await axios.get(`http://localhost:8080/user/${UserId}`);
+  //     setUser(response.data);
+  //     // localStorage.setItem("role", JSON.stringify(response.data.role));
+  //     // console.log("role : ", JSON.parse(localStorage.getItem("role")));
+  //     // console.log("user : ", JSON.stringify(response));
+  //   } catch (error) {
+  //     console.error("Error fetching user data:", error);
+  //   }
+  // };
 
-    getInfoMahasiswa();
+  const getInfoUser = async () => {
+    try {
+      var response = await getGoogleUserProfile();
+      
+      setUser(response);
+      console.log(response);
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  };
+
+  useEffect(() => {
+
+
+    getInfoUser();
   }, []);
 
   return (
@@ -166,16 +179,20 @@ const Navbar = () => {
         >
           <img
             className="rounded-full w-8 h-8"
-            src={mahasiswa.profileUrl ? mahasiswa.profileUrl : avatar}
+            // src={user.profileUrl ? user.profileUrl : avatar}
+            src={user.picture ? user.picture : avatar}
             alt="user-profile"
           />
           <div className="w-40">
             <p>
               <span className="text-gray-400 text-14">Hi,</span>{" "}
               <span className="text-gray-400 font-bold ml-1 text-14">
-                {mahasiswa.nama
-                  ? mahasiswa.nama.split(" ")[0]
-                  : mahasiswa.username}
+                {/* {user.nama
+                  ? user.nama.split(" ")[0]
+                  : user.username} */}
+                {user.name
+                  ? user.name.split(" ")[0]
+                  : user.username}
               </span>
             </p>
             <div className="flex w-full">

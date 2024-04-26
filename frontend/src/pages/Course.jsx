@@ -6,21 +6,21 @@ import { RiErrorWarningFill } from "react-icons/ri";
 
 const Course = () => {
   // console.log("role : ", JSON.parse(localStorage.getItem("role")));
-  const role = JSON.parse(localStorage.getItem("role"));
+  const role = localStorage.getItem("role");
   const [toggle, setToggle] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [courseData, setCourseData] = useState({
     fullname: "",
     shortname: "",
     summary: "",
-    userid: 4,
+    userid: 5,
   });
   const [coursePrivateData, setCoursePrivateData] = useState({
     fullname: "",
     shortname: "",
     summary: "",
     enrolmentkey: "",
-    userid: 4,
+    userid: 5,
   });
   const [formErrors, setFormErrors] = useState({});
   const [formErrors2, setFormErrors2] = useState({});
@@ -196,8 +196,8 @@ const Course = () => {
   };
 
   const createCourse = async (courseData) => {
-    const apiUrl = `http://moaibad.southeastasia.cloudapp.azure.com/moodle/webservice/rest/server.php`;
-    const token = "5aa6c5a9f9e54193407b3dcd6ec9ab4b";
+    const apiUrl = `http://colle.southeastasia.cloudapp.azure.com/moodle/webservice/rest/server.php`;
+    const token = "1f95ee6650d2e1a6aa6e152f6bf4702c";
     const wsfunction = "local_colle_create_course";
 
     const fullUrl = `${apiUrl}?moodlewsrestformat=json&wstoken=${token}&wsfunction=${wsfunction}&fullname=${encodeURIComponent(
@@ -264,8 +264,8 @@ const Course = () => {
   };
 
   const createPrivateCourse = async (coursePrivateData) => {
-    const apiUrl = `http://moaibad.southeastasia.cloudapp.azure.com/moodle/webservice/rest/server.php`;
-    const token = "5aa6c5a9f9e54193407b3dcd6ec9ab4b";
+    const apiUrl = `http://colle.southeastasia.cloudapp.azure.com/moodle/webservice/rest/server.php`;
+    const token = "1f95ee6650d2e1a6aa6e152f6bf4702c";
     const wsfunction = "local_colle_create_course";
 
     const fullUrl = `${apiUrl}?moodlewsrestformat=json&wstoken=${token}&wsfunction=${wsfunction}&fullname=${encodeURIComponent(

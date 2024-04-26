@@ -9,10 +9,15 @@ const Sidebar = () => {
   const [profile, setProfile] = useState([]);
   const cookies = new Cookies();
   const navigation = useNavigate();
+  // console.log("role : ", JSON.parse(localStorage.getItem("role")));
+  const role = localStorage.getItem("role");
+
 
   const logOut = () => {
     cookies.remove("user_token");
     cookies.remove("userId");
+    cookies.remove("email");
+    localStorage.removeItem("role");
     googleLogout();
     setProfile(null);
     window.location.href = "/landing";
@@ -24,10 +29,18 @@ const Sidebar = () => {
       if (user) {
         console.log(user);
         setProfile(user);
+
+        // Tambahkan pengecekan role di sini
+        const username = role === "teacher" ? "anastasia" : "cinderella";
+        setFormData((prevData) => ({
+          ...prevData,
+          username: username,
+        }));
       }
     };
     get_user();
-  }, []);
+  }, [role]); // Pastikan useEffect dipanggil ulang saat role berubah
+
   const activeMenu = true;
   const activeLink =
     "flex items-center gap-5 pl-8 -ml-3 pt-3 pb-2.5 text-orange-400 border-l-4 border-l-orange-400 font-semibold text-md m-2";
@@ -123,7 +136,7 @@ const Sidebar = () => {
         className="loginform"
         name="login"
         method="post"
-        action="http://moaibad.southeastasia.cloudapp.azure.com/moodle/login/index.php"
+        action="http://colle.southeastasia.cloudapp.azure.com/moodle/login/index.php"
         onSubmit={handleSubmit}
         style={{ display: "none" }}
       >

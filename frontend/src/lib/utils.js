@@ -10,7 +10,7 @@ export function createCookie (cookieName, cookieValue, time, timeUnit) {
     document.cookie = cookieName + " = " + cookieValue + "; expires = " +date.toGMTString();
 }
 
-export const formatTanggalLahir = (tanggal_lahir) => {
+export const formatTanggalMDY = (tanggal_lahir) => {
   const dateOfBirth = new Date(tanggal_lahir);
   const formattedDateOfBirth = dateOfBirth.toLocaleDateString('en-US', {
       year: 'numeric',
@@ -20,3 +20,25 @@ export const formatTanggalLahir = (tanggal_lahir) => {
 
   return formattedDateOfBirth;
 };
+
+// Fungsi untuk mengubah waktu epoch menjadi format tanggal "mm / dd / yyyy"
+export function formatDate(epochTime) {
+  // Membuat objek Date dari epoch time
+  var date = new Date(epochTime * 1000);
+  
+  // Mendapatkan bulan, tanggal, dan tahun
+  var month = date.getMonth() + 1; // Penambahan 1 karena bulan dimulai dari 0
+  var day = date.getDate();
+  var year = date.getFullYear();
+  
+  // Menambahkan leading zero jika diperlukan
+  if (month < 10) {
+    month = '0' + month;
+  }
+  if (day < 10) {
+    day = '0' + day;
+  }
+  
+  // Mengembalikan tanggal yang diformat
+  return month + '/' + day + '/' + year;
+}
