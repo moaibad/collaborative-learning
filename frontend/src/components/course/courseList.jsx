@@ -15,7 +15,7 @@ const CourseList = ({ role }) => {
     // Fetch course data from the appropriate endpoint based on role
     const fetchData = async () => {
       try {
-        const endpoint = `${HOST_MOODLE}/webservice/rest/server.php?moodlewsrestformat=json&wstoken=${TOKEN_MOODLE}&wsfunction=core_enrol_get_users_courses&userid=${userIdMoodle}`;;
+        const endpoint = `${HOST_MOODLE}/webservice/rest/server.php?moodlewsrestformat=json&wstoken=${TOKEN_MOODLE}&wsfunction=core_enrol_get_users_courses&userid=${userIdMoodle}`;
 
         const response = await fetch(endpoint);
         const data = await response.json();
@@ -30,6 +30,10 @@ const CourseList = ({ role }) => {
 
   // Fungsi untuk melakukan pencarian berdasarkan displayname
   const searchCourses = (term) => {
+    if (!Array.isArray(courses)) {
+      console.error("courses is not an array");
+      return [];
+    }
     return courses.filter((course) =>
       course.displayname.toLowerCase().includes(term.toLowerCase())
     );
