@@ -76,23 +76,23 @@ const Landing = ({ onLogin }) => {
     }
   };
 
-  // const getDataAccMoodle = async (email)
-  const getDataAccMoodle = async () => {
+  const getDataAccMoodle = async (email) => {
     const params = new URLSearchParams();
     params.append('wstoken', '1f95ee6650d2e1a6aa6e152f6bf4702c');
     params.append('wsfunction', 'core_user_get_users_by_field');
     params.append('moodlewsrestformat', 'json');
     params.append('field', 'email');
-    params.append('values[0]', "lolanjing1122@gmail.com");
-    // params.append('values[0]', email);
+    params.append('values[0]', email);
   
     const apiUrl = `http://colle.koreacentral.cloudapp.azure.com/moodle/webservice/rest/server.php?${params.toString()}`;
   
     try {
       const response = await axios.get(apiUrl);
   
-      console.log("berhasil GET DATA AKUN API Moodle");
-      console.log(response.data);
+      console.log("Berhasil Get Data Akun Moodle");
+      console.log(JSON.stringify(response.data));
+      console.log("ID Akun Moodle : ", JSON.stringify(response.data[0].id));
+      cookies.set('userMoodle', response.data[0].id, { path: '/', maxAge: 3600 });
       return response.data;
 
     } catch (error) {
@@ -131,11 +131,10 @@ const Landing = ({ onLogin }) => {
               //Set data role account ke localStorage
               localStorage.setItem("role", response.data.role);
               console.log("role : ", localStorage.getItem("role"));
-
-              //get data account from moodle
-              const akunMoodle = getDataAccMoodle();
-              console.log("AKU MODLE", akunMoodle);
               
+              //get data account from moodle
+              getDataAccMoodle(response.data.email);
+
               //LOGIN MOODLE WITH HIIDEN FORM
               handleHiddenFormSubmit();
               
