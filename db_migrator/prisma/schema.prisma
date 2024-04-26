@@ -1,0 +1,51 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model dosen {
+  id_dosen            Int     @id @default(autoincrement())
+  jurusan             String? @db.VarChar(32)
+  universitas         String? @db.VarChar(50)
+  pendidikan_terakhir String? @db.VarChar(32)
+  user_id_user        Int     @unique(map: "dosen__idx")
+}
+
+model mahasiswa {
+  id_mhs       Int     @id @default(autoincrement())
+  jurusan      String? @db.VarChar(32)
+  angkatan     String? @db.VarChar(10)
+  universitas  String? @db.VarChar(50)
+  user_id_user Int     @unique(map: "mahasiswa__idx")
+}
+
+model praktisi {
+  id_praktisi         Int     @id @default(autoincrement())
+  asal_perusahaan     String? @db.VarChar(32)
+  pendidikan_terakhir String? @db.VarChar(32)
+  posisi              String? @db.VarChar(50)
+  user_id_user        Int     @unique(map: "praktisi__idx")
+}
+
+model user {
+  id_user         Int       @id @default(autoincrement())
+  nama            String?   @db.VarChar(50)
+  username        String?   @db.VarChar(50)
+  email           String?   @db.VarChar(100)
+  password        String?   @db.VarChar(32)
+  tanggal_lahir   DateTime? @db.Date
+  location        String?   @db.VarChar(32)
+  about           String?   @db.Text
+  token           String?   @db.LongText
+  profile_url     String?   @db.LongText
+  role            String?   @db.VarChar(32)
+  firstname       String?   @db.VarChar(50)
+  lastname        String?   @db.VarChar(50)
+  username_moodle String?   @db.VarChar(50)
+  password_moodle String?   @db.VarChar(50)
+  tanggal_daftar  DateTime? @db.Date
+}
