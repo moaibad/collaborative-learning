@@ -12,36 +12,41 @@ import achievement_3_1 from '../../data/achievementTanyaJawab-3-1.png';
 import achievement_3_2 from '../../data/achievementTanyaJawab-3-2.png';
 import achievement_3_3 from '../../data/achievementTanyaJawab-3-3.png';
 import achievement_3_4 from '../../data/achievementTanyaJawab-3-4.png';
+import axios from 'axios';
+import Cookies from 'universal-cookie';
 
 const AchievementTanyaJawab = () => {
     const [user, setUser] = useState([]);
-    
-    // useEffect(() => {
-    //     // const cookies = new Cookies();
-    //     // const userEmail = cookies.get('email'); // Retrieve email from cookies
-    //     // setEmail(userEmail);
-    //     // console.log("email: ", userEmail);
-    //     const fetchData = async () => {
-    //       try {
-    //         // const response = await fetch(
-    //         //   `http://localhost:3001/api/questions?authorId=${authorId}`
-    //         // );
-    //         const response = await fetch(
-    //           `http://localhost:3001/api/user?email=deoprasistha@gmail.com `
-    //         );
-    //         const data = await response.json();
-    //         setUser(data);
-    //       } catch (error) {
-    //         console.error("Error fetching question data:", error);
-    //       }
-    //     };
-    
-    //     fetchData();
-    //   }, []);
+    const [tanyaJawabData, setTanyaJawabData] = useState([]);
+    const [totalUpvote, setTotalUpvote] = useState(0);
+    const [totalAnswer, setTotalAnswer] = useState(0);
+    const [totalQuestion, setTotalQuestion] = useState(0);
 
-    const membuatPertanyaan = 20
-    const menjawabPertanyaan = 20
-    const upvote = 20
+    useEffect(() => {
+        const cookies = new Cookies();
+        const userId = cookies.get('userId');
+
+        const fetchData = async () => {
+            try {
+                const response = await axios.get(`http://localhost:8080/user/${userId}`);
+                if (response.data) {
+                    setUser(response.data);
+                }
+
+                //get list upvote achievement
+                const userReputation = await axios.get(`http://localhost:3001/api/user?email=${user.email}`);
+                setTanyaJawabData(userReputation.data);
+                setTotalUpvote(userReputation.data.totalUpvotes);
+                setTotalAnswer(userReputation.data.totalAnswers);
+                setTotalQuestion(userReputation.data.totalQuestions);
+            } catch (error) {
+                console.error('Error fetching list:', error);
+            }
+        };
+
+        fetchData();
+    }, [user.nama, totalUpvote, totalAnswer, totalQuestion, tanyaJawabData]);
+
 
     const blank = 
     <div className='border-4 border-slate-300 border-dashed rounded-xl'>
@@ -60,7 +65,7 @@ const AchievementTanyaJawab = () => {
             {/* Start Achievement 1 */}
             <p className='m-4 mb-1 font-semibold text-xl'>Membuat Pertanyaan</p>
             <div className='grid grid-cols-4 gap-x-6 gap-y-8 text-center p-4'>
-                {membuatPertanyaan >=1
+                {totalQuestion >=1
                 ?   <div className='ring ring-slate-300 ring-offset-0 rounded-xl'>
                         <div className="bg-brown py-2 rounded-t-xl">
                             <div className='h-20 m-4 flex justify-center'>
@@ -74,7 +79,7 @@ const AchievementTanyaJawab = () => {
                     </div>
                 :   blank
                 }
-                {membuatPertanyaan >=5
+                {totalQuestion >=5
                 ?   <div className='ring ring-slate-300 ring-offset-0 rounded-xl'>
                         <div className="bg-silver py-2 rounded-t-xl">
                             <div className='h-20 m-4 flex justify-center'>
@@ -88,7 +93,7 @@ const AchievementTanyaJawab = () => {
                     </div>
                 :   blank
                 }
-                {membuatPertanyaan >=10
+                {totalQuestion >=10
                 ?   <div className='ring ring-slate-300 ring-offset-0 rounded-xl'>
                         <div className="bg-gold py-2 rounded-t-xl">
                             <div className='h-20 m-4 flex justify-center'>
@@ -102,7 +107,7 @@ const AchievementTanyaJawab = () => {
                     </div>
                 :   blank
                 }
-                {membuatPertanyaan >=20
+                {totalQuestion >=20
                 ?   <div className='ring ring-slate-300 ring-offset-0 rounded-xl'>
                         <div className="bg-platinum py-2 rounded-t-xl">
                             <div className='h-20 m-4 flex justify-center'>
@@ -121,7 +126,7 @@ const AchievementTanyaJawab = () => {
             {/* Start Achievement 2 */}
             <p className='m-4 mb-1 font-semibold text-xl'>Menjawab Pertanyaan</p>
             <div className='grid grid-cols-4 gap-x-6 gap-y-8 text-center p-4'>
-                {menjawabPertanyaan >=1
+                {totalAnswer >=1
                 ?   <div className='ring ring-slate-300 ring-offset-0 rounded-xl'>
                         <div className="bg-brown py-2 rounded-t-xl">
                             <div className='h-20 m-4 flex justify-center'>
@@ -135,7 +140,7 @@ const AchievementTanyaJawab = () => {
                     </div>
                 :   blank
                 }
-                {menjawabPertanyaan >=5
+                {totalAnswer >=5
                 ?   <div className='ring ring-slate-300 ring-offset-0 rounded-xl'>
                         <div className="bg-silver py-2 rounded-t-xl">
                             <div className='h-20 m-4 flex justify-center'>
@@ -149,7 +154,7 @@ const AchievementTanyaJawab = () => {
                     </div>
                 :   blank
                 }
-                {menjawabPertanyaan >=10
+                {totalAnswer >=10
                 ?   <div className='ring ring-slate-300 ring-offset-0 rounded-xl'>
                         <div className="bg-gold py-2 rounded-t-xl">
                             <div className='h-20 m-4 flex justify-center'>
@@ -163,7 +168,7 @@ const AchievementTanyaJawab = () => {
                     </div>
                 :   blank
                 }
-                {menjawabPertanyaan >=20
+                {totalAnswer >=20
                 ?   <div className='ring ring-slate-300 ring-offset-0 rounded-xl'>
                         <div className="bg-platinum py-2 rounded-t-xl">
                             <div className='h-20 m-4 flex justify-center'>
@@ -182,7 +187,7 @@ const AchievementTanyaJawab = () => {
             {/* Start Achievement 3 */}
             <p className='m-4 mb-1 font-semibold text-xl'>Mendapat Upvote</p>
             <div className='grid grid-cols-4 gap-x-6 gap-y-8 text-center p-4'>
-                {upvote >=1
+                {totalUpvote >=1
                 ?   <div className='ring ring-slate-300 ring-offset-0 rounded-xl'>
                         <div className="bg-brown py-2 rounded-t-xl">
                             <div className='h-20 m-4 flex justify-center'>
@@ -196,7 +201,7 @@ const AchievementTanyaJawab = () => {
                     </div>
                 :   blank
                 }
-                {upvote >=5
+                {totalUpvote >=5
                 ?   <div className='ring ring-slate-300 ring-offset-0 rounded-xl'>
                         <div className="bg-silver py-2 rounded-t-xl">
                             <div className='h-20 m-4 flex justify-center'>
@@ -210,7 +215,7 @@ const AchievementTanyaJawab = () => {
                     </div>
                 :   blank
                 }
-                {upvote >=10
+                {totalUpvote >=10
                 ?   <div className='ring ring-slate-300 ring-offset-0 rounded-xl'>
                         <div className="bg-gold py-2 rounded-t-xl">
                             <div className='h-20 m-4 flex justify-center'>
@@ -224,7 +229,7 @@ const AchievementTanyaJawab = () => {
                     </div>
                 :   blank
                 }
-                {upvote >=20
+                {totalUpvote >=20
                 ?   <div className='ring ring-slate-300 ring-offset-0 rounded-xl'>
                         <div className="bg-platinum py-2 rounded-t-xl">
                             <div className='h-20 m-4 flex justify-center'>
