@@ -524,6 +524,7 @@ export const links = [
       {
         name: "Dashboard",
         url: "#",
+        dosen: "dosen",
         icon: <FiShoppingBag />,
       },
     ],
@@ -535,21 +536,25 @@ export const links = [
       {
         name: "Cari Teman",
         url: "cari-teman",
+        dosen: "cari-teman",
         icon: <HiChatBubbleLeftRight />,
       },
       {
         name: "Tanya Jawab",
         url: "tanya-jawab",
+        dosen: "tanya-jawab",
         icon: <IoMdContacts />,
       },
       {
         name: "Quiz",
         url: "quiz",
+        dosen: "quiz",
         icon: <GrTask />,
       },
       {
         name: "Course",
         url: "course",
+        dosen: "course",
         icon: <GiOpenBook />,
       },
     ],
