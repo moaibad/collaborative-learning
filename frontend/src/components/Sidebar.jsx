@@ -88,6 +88,7 @@ const Sidebar = () => {
             </button>
           </div>
           }
+          {role === "student" ?
           <div className="">
             {links.map((item) => (
               <div key={item.title}>
@@ -114,6 +115,34 @@ const Sidebar = () => {
               </button>
             </div>
           </div>
+          :
+          <div className="">
+            {links.map((item) => (
+              <div key={item.title}>
+                {item.links.map((link) => (
+                  <NavLink
+                    to={`/${link.dosen}`}
+                    key={link.name}
+                    className={({ isActive }) =>
+                      isActive ? activeLink : normalLink
+                    }
+                  >
+                    {link.icon}
+                    <span className="capitalize">{link.name}</span>
+                  </NavLink>
+                ))}
+              </div>
+            ))}
+            <div className="">
+              <button
+                onClick={logOut}
+                className="w-11/12 bg-slate-950 text-orange-400 border-2 border-orange-400 font-bold py-2 px-4 ml-1 rounded-2xl hover:bg-orange-400 hover:text-black"
+              >
+                Log Out
+              </button>
+            </div>
+          </div>
+          }
         </>
       )}
     </div>
