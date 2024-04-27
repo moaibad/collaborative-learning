@@ -345,11 +345,16 @@ const RegistData = ({onLogin}) => {
             registerUserInMoodle(formData); // Add user moodle
 
             //Kirim data akun ke fitur CTB dan TJ setelah register
-            setTokenToOther(user_token);
+            // setTokenToOther(user_token);
 
-            message.success('Registration Successful!');
-            onLogin();
-            navigate('/'); // Redirect to home or any other route
+            message.success('Registration Successful!, Please Login!');
+            // onLogin();
+
+            cookies.remove("user_token");
+            cookies.remove("userId");
+            cookies.remove("userEmail");
+
+            navigate('/landing'); // Redirect to home or any other route
         }
     };
 
