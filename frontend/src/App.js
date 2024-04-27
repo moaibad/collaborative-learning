@@ -33,6 +33,7 @@ const App = () => {
   const [user, setUser] = useState(null);
   const navigate = useNavigate(); // Add this line for navigation
   const cookies = new Cookies();
+  const role = localStorage.getItem("role");
 
   // Function to handle login
   const handleLogin = () => {
@@ -121,7 +122,11 @@ const App = () => {
                 <Route path="/materi-course/:id" element={<MateriCourse />} />
                 <Route path="/quiz/histories" element={<HistoryQuiz />} />
                 {/* Add a default route to redirect to Home if no route matches */}
-                <Route path="*" element={<Navigate to="/course" />} />
+                { role==='student' ?
+                  <Route path="*" element={<Navigate to="/" />} />
+                  :
+                  <Route path="*" element={<Navigate to="/dosen" />} />
+                }   
               </Routes>
             </div>
           </div>

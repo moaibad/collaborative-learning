@@ -1,5 +1,6 @@
 import React from 'react'
 import DashboardChartQuiz from '../chart/DashboardChartQuiz'
+const role = localStorage.getItem("role");
 
 const DashboardQuizStat = () => {
   return (
@@ -10,14 +11,12 @@ const DashboardQuizStat = () => {
             <DashboardChartQuiz/>
             </div>
             <div className='ml-8'>
-                <div className='mt-6 '>
-                    <p className='font-semibold text-slate-400 text-sm'>Quiz Taken</p>
-                    <p className='font-bold text-md'>12</p>
-                </div>
+                {role === "student" &&
                 <div className='mt-6 '>
                     <p className='font-semibold text-slate-400 text-sm'>Quiz Completed</p>
                     <p className='font-bold text-md'>8</p>
                 </div>
+                }
                 <div className='mt-6 '>
                     <p className='font-semibold text-slate-400 text-sm'>Score Average</p>
                     <p className='font-bold text-md'>75.3%</p>
