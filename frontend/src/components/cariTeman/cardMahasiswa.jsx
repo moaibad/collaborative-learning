@@ -1,8 +1,9 @@
-// cardMahasiswa.js
-
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import Cookies from 'universal-cookie';
+
+// Importing images and functions from local directories
+import { getDataCTB } from '../../lib/fetchData';
 import communityBronze from '../../data/achievementCariTeman-1-1.png';
 import communitySilver from '../../data/achievementCariTeman-1-2.png';
 import communityGold from '../../data/achievementCariTeman-1-3.png';
@@ -16,76 +17,114 @@ import quizSilver from '../../data/achievementQuiz-1-2.png';
 import quizGold from '../../data/achievementQuiz-1-3.png';
 import quizPlatinum from '../../data/achievementQuiz-1-4.png';
 
-import { getDataCTB } from '../../lib/fetchData';
-import Cookies from 'universal-cookie';
-
-
 const CardMahasiswa = ({ mahasiswa }) => {
   const [user, setUser] = useState({});
   const [achievementListCommunity, setAchievementListCommunity] = useState([]);
-  const [tanyajawabData, setTanyajawabData] = useState([]);
   const [totalUpvote, setTotalUpvote] = useState(0);
   const [totalQuiz, setTotalQuiz] = useState(0);
+  let idmoodle = 4;
 
+  const cookies = new Cookies();
+  const userId = cookies.get('userId');
+
+  // Fetch user details
+  // Fetch user details
   useEffect(() => {
-    const cookies = new Cookies();
-    const userId = cookies.get('userId');
-
-    const fetchData = async () => {
+    const fetchUser = async () => {
       try {
         const response = await axios.get(`http://localhost:8080/user/${mahasiswa.user_id_user}`);
         if (response.data) {
           setUser(response.data);
         }
-
-        const achievementResponse = await getDataCTB(`/profiles/achievement/${user.username}`);
-        if (achievementResponse) {
-          setAchievementListCommunity(achievementResponse.community);
-        }
-
-        //set user reputation
-        const userReputation = await axios.get(`http://localhost:3001/api/user?email=${user.email}`);
-        setTanyajawabData(userReputation.data);
-        setTotalUpvote(userReputation.data.totalUpvotes);
-
-        //set quiz achievement
-        const quizResponse = await axios.get(`http://colle.koreacentral.cloudapp.azure.com/moodle/webservice/rest/server.php?wstoken=1f95ee6650d2e1a6aa6e152f6bf4702c&wsfunction=local_colle_get_all_user_best_grades&moodlewsrestformat=json&userid=${userId}`);
-        if (quizResponse && quizResponse.data[0].status != "Student has not finished any quiz.") {
-          setTotalQuiz(quizResponse.data.length);
-        }
-
       } catch (error) {
-        console.error('Error fetching reputation list:', error);
+        console.error('Failed to fetch user:', error);
+        if (error.response && error.response.status === 500) {
+          // Handle specific error case here, e.g., notify user, retry logic, etc.
+          console.error('Internal Server Error');
+        }
       }
     };
 
-    fetchData();
-  }, [mahasiswa.user_id_user, user.nama, totalUpvote, achievementListCommunity, totalQuiz]);
+    fetchUser();
+  }, [mahasiswa.user_id_user]);
+
+  // Fetch Moodle ID and Quiz data after user is fetched
+  useEffect(() => {
+    const fetchMoodleData = async () => {
+      if (user.email) {
+        try {
+          const quizResponseId = await axios.get(`http://colle.koreacentral.cloudapp.azure.com/moodle/webservice/rest/server.php?wstoken=1f95ee6650d2e1a6aa6e152f6bf4702c&wsfunction=core_user_get_users_by_field&moodlewsrestformat=json&field=email&values[0]=${user.email}`);
+          idmoodle = quizResponseId.data.length ? quizResponseId.data[0].id : 4;
+
+          const quizResponse = await axios.get(`http://colle.koreacentral.cloudapp.azure.com/moodle/webservice/rest/server.php?wstoken=1f95ee6650d2e1a6aa6e152f6bf4702c&wsfunction=local_colle_get_all_user_best_grades&moodlewsrestformat=json&userid=${idmoodle}`);
+          if (quizResponse.data.length && quizResponse.data[0].status !== "Student has not finished any quiz.") {
+            setTotalQuiz(quizResponse.data.length);
+          }
+        } catch (error) {
+          console.error('Failed to fetch Moodle data:', error);
+          if (error.response && error.response.status === 500) {
+            // Handle specific error case here
+            console.error('Internal Server Error');
+          }
+        }
+      }
+    };
+
+    fetchMoodleData();
+  }, [user.email]);
+
+  // Fetch other data based on user
+  useEffect(() => {
+    const fetchOtherData = async () => {
+      if (user.username) {
+        try {
+          const achievementResponse = await getDataCTB(`/profiles/achievement/${user.username}`);
+          if (achievementResponse) {
+            setAchievementListCommunity(achievementResponse.community);
+          }
+
+          const userReputation = await axios.get(`http://localhost:3001/api/user?email=${user.email}`);
+          if (userReputation.data) {
+            setTotalUpvote(userReputation.data.totalUpvotes);
+          }
+        } catch (error) {
+          console.error('Failed to fetch additional user data:', error);
+          if (error.response && error.response.status === 500) {
+            // Handle specific error case here
+            console.error('Internal Server Error');
+          }
+        }
+      }
+    };
+
+    fetchOtherData();
+  }, [user.username]);
+
 
   const getCommunityMedal = () => {
     const count = achievementListCommunity;
     if (count === 0) return 0;
-    if (count >= 1) return communityBronze;
-    if (count >= 5) return communitySilver;
-    if (count >= 10) return communityGold;
+    if (count >= 1 && count < 5) return communityBronze;
+    if (count >= 5 && count < 10) return communitySilver;
+    if (count >= 10 && count < 20) return communityGold;
     if (count >= 20) return communityPlatinum;
   };
 
   const getQuizMedal = () => {
     const count = totalQuiz;
     if (count === 0) return 0;
-    if (count >= 1) return quizBronze;
-    if (count >= 5) return quizSilver;
-    if (count >= 10) return quizGold;
+    if (count >= 1 && count < 5) return quizBronze;
+    if (count >= 5 && count < 10) return quizSilver;
+    if (count >= 10 && count < 20) return quizGold;
     if (count >= 20) return quizPlatinum;
   };
 
   const getUpvoteMedal = () => {
     const count = totalUpvote;
     if (count === 0) return 0;
-    if (count >= 1) return upvoteBronze;
-    if (count >= 5) return upvoteSilver;
-    if (count >= 10) return upvoteGold;
+    if (count >= 1 && count < 5) return upvoteBronze;
+    if (count >= 5 && count < 10) return upvoteSilver;
+    if (count >= 10 && count < 20) return upvoteGold;
     if (count >= 20) return upvotePlatinum;
   };
 
@@ -112,7 +151,7 @@ const CardMahasiswa = ({ mahasiswa }) => {
                   <div className='flex mt-1'>
                     {getCommunityMedal() === 0 && getQuizMedal() === 0 && getUpvoteMedal() === 0 ? (
                       <>
-                      <p className='text-xs m-1'>Belum ada</p>
+                        <p className='text-xs m-1'>Belum ada</p>
                       </>
                     ) : (
                       <>
