@@ -354,8 +354,7 @@ const RegistData = ({onLogin}) => {
             cookies.remove("userId");
             cookies.remove("userEmail");
 
-            window.location.href = `/landing`;
-            // navigate('/landing'); // Redirect to home or any other route
+            navigate('/landing'); // Redirect to home or any other route
         }
     };
 

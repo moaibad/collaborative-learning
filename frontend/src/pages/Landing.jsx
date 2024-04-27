@@ -149,8 +149,7 @@ const Landing = ({ onLogin }) => {
 
             } else if (response.status === 201) { // REGISTER
               // Redirect to registration page
-              window.location.href = `/regisData`;
-              // navigate("/registData");
+              navigate("/registData");
             } else {
               message.error('Error bro.');
             }
