@@ -148,12 +148,12 @@ const Landing = ({ onLogin }) => {
               onLogin();
 
               if (response.data.role === "student"){
-                window.location.href = `/`;
-                // navigate ('/')
+                // window.location.href = `/`;
+                navigate ('/')
               }
               else {
-                window.location.href = `/dosen`;
-                // navigate ('/dosen')
+                // window.location.href = `/dosen`;
+                navigate ('/dosen')
               }
 
             } else if (response.status === 201) { // REGISTER
