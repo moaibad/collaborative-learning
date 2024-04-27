@@ -55,7 +55,7 @@ const DashboardCourseList = () => {
     },[]); 
 
       // Menampilkan pesan jika tidak ada kursus atau kurang dari 3 kursus
-      if (!Array.isArray(courses) || courses.length === 0) {
+      if (!Array.isArray(courses) || courses.length === 1) {
         return (
             <div className="w-full">
                 <p className='text-xl font-bold mb-6'>Course List</p>
@@ -72,7 +72,7 @@ const DashboardCourseList = () => {
     }
 
     // Menampilkan maksimal 3 kursus
-    const coursesToShow = courses.slice(0, 3);
+    const coursesToShow = courses.slice(1, 4);
 
     return (
       <div className="w-full">

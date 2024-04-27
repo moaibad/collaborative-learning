@@ -9,14 +9,14 @@ import { Button } from 'antd';
 
 const CariTeman = () => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [userRole, setUserRole] = useState("mahasiswa"); //Defaultnya mahasiswa
-
+  // const [userRole, setUserRole] = useState("mahasiswa"); //Defaultnya mahasiswa
+  const role = localStorage.getItem("role");
 
   const handleSearch = (searchTerm) => {
     setSearchTerm(searchTerm);
   };
 
-  const shouldShowKomunitas = userRole !== "Dosen";
+  const shouldShowKomunitas = role !== "teacher" && role !== "practitioners";
 
   return (
     <>
@@ -34,7 +34,7 @@ const CariTeman = () => {
           )}
         </div>
       </div>
-      <div className='flex my-5 mx-3'>
+      {/* <div className='flex my-5 mx-3'>
         <Button onClick={() => setUserRole("Dosen")} className="mx-2" style={{
           backgroundColor: userRole === 'Dosen' ? '#008CBA' : undefined,
           color: userRole === 'Dosen' ? 'white' : undefined,
@@ -49,7 +49,7 @@ const CariTeman = () => {
         }}>
           Mahasiswa View
         </Button>
-      </div>
+      </div> */}
     </>
   );
 };

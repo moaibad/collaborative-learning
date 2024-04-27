@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { IoMdPeople } from "react-icons/io";
 import { useEffect } from 'react';
 import { getDataCTB } from '../../lib/fetchData';
-
+import { MdGroupOff } from "react-icons/md";
   
   const DashboardPopularCommunity = () => {
     const [komunitas, setKomunitas] = useState([]);
@@ -20,7 +20,24 @@ import { getDataCTB } from '../../lib/fetchData';
       fetchProfileAndCommunityList();
     }, []);
 
-        
+    
+      // Menampilkan pesan jika tidak ada kursus atau kurang dari 3 kursus
+      if (!Array.isArray(komunitas) || komunitas.length === 0) {
+        return (
+            <div className="w-full">
+                <p className='text-xl font-bold mb-6'>Popular Community</p>
+                <div className='w-full rounded-lg bg-white text-center h-82 border-4 border-dashed'>
+                    <div className='text-slate-400 text-center p-8 gap-4 grid grid-cols-1'>
+                        <div className='place-self-center'>
+                            <MdGroupOff size={72} />
+                        </div>
+                        <p className='font-semibold'>Belum ada komunitas yang tersedia</p>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
     return (
       <div className="w-full">
         <div className='flex justify-between'>
