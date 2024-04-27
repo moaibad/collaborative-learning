@@ -11,10 +11,6 @@ const DashboardQuizStat = () => {
             </div>
             <div className='ml-8'>
                 <div className='mt-6 '>
-                    <p className='font-semibold text-slate-400 text-sm'>Quiz Taken</p>
-                    <p className='font-bold text-md'>12</p>
-                </div>
-                <div className='mt-6 '>
                     <p className='font-semibold text-slate-400 text-sm'>Quiz Completed</p>
                     <p className='font-bold text-md'>8</p>
                 </div>
