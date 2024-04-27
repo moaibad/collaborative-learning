@@ -8,7 +8,7 @@ import { BsFillPersonVcardFill } from "react-icons/bs";
 import { MdRecommend, MdGroups, MdReduceCapacity } from "react-icons/md";
 import { BiSolidCustomize } from "react-icons/bi";
 import { ConfigProvider, message, Steps } from 'antd';
-
+import logo_transparant from "../data/logo-transparant.png"
 import student from '../data/student-role.png';
 import lecturer from '../data/lecturer-role.png';
 import practitioners from '../data/practitioners-role.png';
@@ -586,8 +586,9 @@ const RegistData = ({onLogin}) => {
         }}
         >
             <div class='bg-orange-100 min-h-screen'>
-                <div className='flex pt-5 px-10 pb-5'>
-                    <AiOutlineSlackSquare style={{ fontSize: '40px' }} /><h1 className='font-extrabold text-4xl'>Colle</h1>
+                <div className='flex pt-5 px-10 pb-5 gap-1'>
+                    {/* <AiOutlineSlackSquare style={{ fontSize: '40px' }} /><h1 className='font-extrabold text-4xl'>Colle</h1> */}
+                    <img className='w-10' src={logo_transparant} alt="" /><h1 className='font-extrabold text-4xl'>Colle</h1>
                     <Link to="/landing" className="ml-auto">
                         <button className="bg-orange-400 text-white font-bold py-2 px-6 rounded-lg focus:outline-none focus:shadow-outline">
                             Back

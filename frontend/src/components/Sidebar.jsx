@@ -6,6 +6,7 @@ import { links } from "../data/dummy";
 import Cookies from "universal-cookie";
 import { getUserInfo } from "../lib/fetchData";
 import { HOST_MOODLE, TOKEN_MOODLE } from "../lib/env";
+import logo from "../data/logo.png"
 
 const Sidebar = () => {
   const [profile, setProfile] = useState([]);
@@ -58,7 +59,8 @@ const Sidebar = () => {
               onClick={() => {}}
               className="items-center ml-4 flex text-xl tracking-tight gap-3 mt-8 font-extrabold text-orange-400"
             >
-              <AiOutlineSlackSquare style={{ fontSize: "40px" }} />
+              <img className="w-10 rounded-full" src={logo} alt="logo-colle" />
+              {/* <AiOutlineSlackSquare style={{ fontSize: "40px" }} /> */}
               <span className="text-white text-2xl">Colle</span>
             </Link>
             <button
@@ -76,7 +78,8 @@ const Sidebar = () => {
               onClick={() => {}}
               className="items-center ml-4 flex text-xl tracking-tight gap-3 mt-8 font-extrabold text-orange-400"
             >
-              <AiOutlineSlackSquare style={{ fontSize: "40px" }} />
+              <img className="w-10 rounded-lg" src={logo} alt="logo-colle" />
+              {/* <AiOutlineSlackSquare style={{ fontSize: "40px" }} /> */}
               <span className="text-white text-2xl">Colle</span>
             </Link>
             <button
