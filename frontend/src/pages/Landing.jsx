@@ -147,15 +147,6 @@ const Landing = ({ onLogin }) => {
               //Set login = true dan redirect to dashboard page
               onLogin();
 
-              if (response.data.role === "student"){
-                // window.location.href = `/`;
-                navigate ('/')
-              }
-              else {
-                // window.location.href = `/dosen`;
-                navigate ('/dosen')
-              }
-
             } else if (response.status === 201) { // REGISTER
               // Redirect to registration page
               window.location.href = `/regisData`;
