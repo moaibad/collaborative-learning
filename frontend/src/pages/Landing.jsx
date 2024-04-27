@@ -147,7 +147,7 @@ const Landing = ({ onLogin }) => {
               //Set login = true dan redirect to dashboard page
               onLogin();
 
-              navigate ('/')
+              navigate('/')
 
             } else if (response.status === 201) { // REGISTER
               // Redirect to registration page
