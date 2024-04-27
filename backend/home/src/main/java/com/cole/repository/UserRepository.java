@@ -84,6 +84,14 @@ public class UserRepository {
 				user.getFirstname(), user.getLastname(), user.getId_user());
 	}
 
+	public int updateUserToken(User user) {
+		String sql = "UPDATE user SET username = ?, tanggal_lahir = ?, location = ?, about = ?, firstname = ?, lastname = ?, token = ? WHERE id_user = ?";
+
+		return jdbcTemplate.update(sql, user.getUsername(),
+				user.getTanggal_lahir(), user.getLocation(), user.getAbout(),
+				user.getFirstname(), user.getLastname(), user.getToken(), user.getId_user());
+	}
+
 	//ADD Personal Info
 	public int addPersonalInfo(User user) {
         String sql = "UPDATE user SET firstname = ?, lastname = ?, username = ?, tanggal_lahir = ?, location = ?, about = ?, role = ?, username_moodle = ?, password_moodle = ? WHERE id_user = ?";

@@ -39,7 +39,20 @@ public class PraktisiService {
     }
 
     public int updateByUserId(Praktisi praktisi) {
-        return praktisiRepository.updateByUserId(praktisi);
+
+        Praktisi result = praktisiRepository.findOne(praktisi.getId_praktisi());
+
+        if(praktisi.getAsal_perusahaan() != null){
+            result.setAsal_perusahaan(praktisi.getAsal_perusahaan());
+        }
+        if(praktisi.getPendidikan_terakhir() != null){
+            result.setPendidikan_terakhir(praktisi.getPendidikan_terakhir());
+        }
+        if(praktisi.getPosisi() != null){
+            result.setPosisi(praktisi.getPosisi());
+        }
+
+        return praktisiRepository.updateByUserId(result);
     }
     
     public int delete(Long id_praktisi) {

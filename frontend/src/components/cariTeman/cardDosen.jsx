@@ -4,6 +4,8 @@ import axios from 'axios';
 
 const CardDosen = ({ dosen }) => {
   const [user, setUser] = useState({});
+  const [tanyajawabData, setTanyajawabData] = useState([]);
+  const [totalUpvote, setTotalUpvote] = useState(0);
 
   useEffect(() => {
     axios.get(`http://localhost:8080/user/${dosen.user_id_user}`)
@@ -16,7 +18,20 @@ const CardDosen = ({ dosen }) => {
     );
   }, [dosen.user_id_user]);
 
-  console.log(user);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const userReputation = await axios.get(`http://localhost:3001/api/user?email=${user.email}`);
+        setTanyajawabData(userReputation.data);
+        setTotalUpvote(userReputation.data.totalUpvotes);
+      } catch (error) {
+        console.error('Error fetching upvote:', error);
+      }
+    }
+  
+    fetchData();
+  }, [totalUpvote]);
+
   return (
     <div className="card w-64">
       <ul className="flex flex-wrap mx-1 overflow-hidden sm:-mx-1 md:justify-center lg:justify-start">
@@ -35,7 +50,7 @@ const CardDosen = ({ dosen }) => {
               <hr className='my-2 mx-2 h-0.5 bg-gradient-to-r from-purple-500 to-white'/>
                 <div className='text-center font-bold'>
                   <p className='text-xs'>Upvote</p>
-                  <p className='text-lg'>120</p>
+                  <p className='text-lg'>{totalUpvote}</p>
                 </div>
               <hr className='my-2 mx-2 h-0.5 bg-gradient-to-r from-purple-500 to-white'/>
               <div className='flex w-full'>

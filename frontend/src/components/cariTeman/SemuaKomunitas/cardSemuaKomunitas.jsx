@@ -6,61 +6,44 @@ import { FaArrowRightFromBracket } from "react-icons/fa6";
 
 const CardSemuaKomunitas = ({ allkomunitas }) => {
   return (
-    <div className="card w-64 h-150">
-      <ul className="flex flex-wrap -mx-1 overflow-hidden sm:-mx-1 md:justify-center lg:justify-start">
-        <li className="my-1 px-1 w-full">
-          <div className='bg-gray-50 border-1 border-gray-200 rounded-xl shadow-sm text-left p-2 w-full h-full relative flex flex-col justify-between'>
-            <div className="flex flex-col items-center h-full">
-              <img
-                className='rounded-lg w-full h-48 object-cover mb-2'
-                src={allkomunitas.imageUrl}
-                alt=""
-              />
-              <div className="tooltip">
-                <p className='font-bold text-m text-center'>{allkomunitas.name}</p>
-                <span className="tooltiptext">
-                  <div class="grid grid-rows-3 grid-flow-col gap-0">
-                    <div class="row-span-3 "><img class="rounded-full w-9 h-9" src={allkomunitas.imageUrl} alt="user-profile" /></div>
-                    <div class="col-span-2 flex items-center">
-                      <p className='font-bold text-xs'>{allkomunitas.name}</p>
-                      <a href={`http://localhost:9191/invite/${allkomunitas.inviteCode}`}><FaArrowRightFromBracket size={14} className="ml-2" /></a>
-                    </div>
-                    <div class="row-span-2 col-span-3">
-                      <div class="row-span-2 col-span-3 flex items-center">
-                        <FaUserAlt size={10} />
-                        <p className='font-bold text-xs ml-2'>{allkomunitas.totalMembers}</p>
-                      </div>
-                    </div>
-                  </div>
-                  <hr />
-                  <p className="text-xs mt-2">{allkomunitas.description}</p>
-                </span>
-              </div>
-              <p className='text-xs text-center text-gray-500'>{allkomunitas.location}</p>
-              <hr className="w-2/3 mx-auto border-gray-400 border-solid border-t-2 mt-2" />
-              <div className="bg-blue-500 text-white px-2 py-1 rounded mt-2 w-2/3 mx-auto">
-                <p className='text-xs text-center'>{allkomunitas.departement}</p>
-              </div>
-              <div className="text-white px-2 rounded mt-2 flex flex-row">
-                {allkomunitas.topics.map((topic) => (
-                  <div key={topic.id} className="bg-pink-400 text-white px-2 py-1 rounded m-1">
-                    <p className='text-xs'>{topic.name}</p>
-                  </div>
-                ))}
-              </div>
+    <div className="card w-64">
+    <ul className="flex flex-wrap -mx-1 overflow-hidden sm:-mx-1 md:justify-center lg:justify-start">
+      <li className="my-1 px-1 w-full">
+        <div className='rounded-lg bg-white shadow-md w-56 pb-2 relative border my-3'>
+          <div className="relative group">
+            <img className='rounded-t-lg w-full h-48 object-cover mb-2' src={allkomunitas.imageUrl} alt={allkomunitas.name} />
+            <button className="absolute inset-0 w-full h-full opacity-0  group-hover:opacity-100 flex items-center justify-center bg-black bg-opacity-80 text-white font-bold rounded-t-lg transition-opacity duration-300" >
+            <a href={`http://localhost:9191/invite/${allkomunitas.inviteCode}`}><span className="text-black font-bold text-xl py-2 px-4 bg-orange-300 rounded-md">Open</span></a>
+            </button>
+          </div>
+          <div>
+            <div className='text-center space-y-0.5'>
+              <p className='font-bold text-xl h-7 truncate'>{allkomunitas.name}</p>
+              <p className='font-semibold text-xs text-slate-500 truncate'>{allkomunitas.description}</p>
             </div>
-            <div className='flex py-1 font-bold'>
-              <p className='text-xs  mr-16 ml-6'>Dibuat</p>
-              <p className='text-xs'>Anggota</p>
+            <div className='flex justify-center gap-1.5 mt-4 mx-2'>
+              {allkomunitas.topics.map((topic) => (
+                <div key={topic.id} className="bg-orange-300 font-semibold rounded-md px-4 py-1 text-xs">{topic.name}</div>
+              ))}
             </div>
-            <div className='flex py-1 font-semibold text-gray-500'>
-              <p className='text-xs mr-16 ml-6'>{new Date(allkomunitas.createdAt).toLocaleDateString()}</p>
-              <p className='text-xs'>{allkomunitas.totalMembers}</p>
+            <hr className='my-2 mx-2 h-0.5 bg-gradient-to-r from-purple-500 to-white' />
+            <div className='flex w-full'>
+              <div className='mx-2 text-xxs space-y-0.5 w-1/2 text-center'>
+                <p className='font-bold'>Dibuat</p>
+                <p>{new Date(allkomunitas.createdAt).getDate()} {new Date(allkomunitas.createdAt).toLocaleString('default', { month: 'long' })} {new Date(allkomunitas.createdAt).getFullYear()}</p>
+              </div>
+              <div className='mx-2 text-xxs space-y-0.5 w-1/2 text-center'>
+                <p className='font-bold'>Anggota</p>
+                <p className='line-clamp-1'>{allkomunitas.totalMembers}</p>
+              </div>
             </div>
           </div>
-        </li>
-      </ul>
-    </div>
+        </div>
+      </li>
+
+
+    </ul>
+  </div>
   );
 };
 

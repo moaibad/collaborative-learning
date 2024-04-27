@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { LuPencilLine } from "react-icons/lu";
 import avatar from "../../data/avatar.jpg";
 import coursePage2 from "../../data/online-course.png";
+import { HOST_MOODLE, TOKEN_MOODLE } from "../../lib/env";
 
 const CourseAllList = () => {
   const [courses, setCourses] = useState([]);
@@ -13,7 +14,7 @@ const CourseAllList = () => {
     const fetchData = async () => {
       try {
         let endpoint =
-          "http://colle.southeastasia.cloudapp.azure.com/moodle/webservice/rest/server.php?moodlewsrestformat=json&wstoken=1f95ee6650d2e1a6aa6e152f6bf4702c&wsfunction=core_course_get_courses";
+          `${HOST_MOODLE}/webservice/rest/server.php?moodlewsrestformat=json&wstoken=${TOKEN_MOODLE}&wsfunction=core_course_get_courses`;
 
         const response = await fetch(endpoint);
         const data = await response.json();
@@ -28,6 +29,10 @@ const CourseAllList = () => {
 
   // Fungsi untuk melakukan pencarian berdasarkan displayname
   const searchCourses = (term) => {
+    if (!Array.isArray(courses)) {
+      console.error("courses is not an array");
+      return [];
+    }
     return courses.filter((course) =>
       course.displayname.toLowerCase().includes(term.toLowerCase())
     );
@@ -96,7 +101,7 @@ const CourseAllList = () => {
               <div className="px-6 py-4">
                 <Link
                   key={course.id}
-                  to={`http://colle.southeastasia.cloudapp.azure.com/moodle/course/view.php?id=${course.id}`}
+                  to={`${HOST_MOODLE}/course/view.php?id=${course.id}`}
                 >
                   <div className="font-bold text-xl mb-2">
                     {course.displayname}

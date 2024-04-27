@@ -5,5 +5,5 @@ export const VITE_BACKEND_CTB_URL = "http://localhost:9191/api"
 export const VITE_BACKEND_TJ_URL = "http://localhost:3001/api"
 
 // ENV MOODLE
-export const HOST_MOODLE = "http://moaibad.southeastasia.cloudapp.azure.com/moodle"
-export const TOKEN_MOODLE = "5aa6c5a9f9e54193407b3dcd6ec9ab4b"
+export const HOST_MOODLE = "http://colle.koreacentral.cloudapp.azure.com/moodle"
+export const TOKEN_MOODLE = "1f95ee6650d2e1a6aa6e152f6bf4702c"

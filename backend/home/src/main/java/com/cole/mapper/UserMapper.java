@@ -28,6 +28,8 @@ public class UserMapper implements RowMapper<User> {
 		user.setTanggal_daftar(rs.getDate("tanggal_daftar"));
 		user.setFirstname(rs.getString("firstname"));
 		user.setLastname(rs.getString("lastname"));
+		user.setUsername_moodle(rs.getString("username_moodle"));
+		user.setPassword_moodle(rs.getString("password_moodle"));
 		
 		return user;
 

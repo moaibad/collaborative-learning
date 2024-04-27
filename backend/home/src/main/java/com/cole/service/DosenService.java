@@ -39,7 +39,20 @@ public class DosenService {
     }
 
     public int updateByUserId(Dosen dosen) {
-        return dosenRepository.updateByUserId(dosen);
+
+        Dosen result = dosenRepository.findOne(dosen.getId_dosen());
+
+        if(dosen.getJurusan() != null){
+            result.setJurusan(dosen.getJurusan());
+        }
+        if(dosen.getPendidikan_terakhir() != null){
+            result.setPendidikan_terakhir(dosen.getPendidikan_terakhir());
+        }
+        if(dosen.getUniversitas() != null){
+            result.setUniversitas(dosen.getUniversitas());
+        }
+
+        return dosenRepository.updateByUserId(result);
     }
     
     public int delete(Long id_dosen) {
