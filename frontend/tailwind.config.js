@@ -10,6 +10,7 @@ module.exports = {
     },
     extend: {
       fontSize: {
+        xxs: ['0.625rem', '0.75rem'],
         14: '14px',
       },
       backgroundColor: {
@@ -18,6 +19,10 @@ module.exports = {
         'secondary-dark-bg': '#33373E',
         'light-gray': '#F7F7F7',
         'half-transparent': 'rgba(0, 0, 0, 0.5)',
+        'brown': '#AB8A5C',
+        'silver': '#BEBEBE',
+        'gold': '#E5BC42',
+        'platinum': '#6DA4AE',
       },
       borderWidth: {
         1: '1px',
@@ -31,7 +36,14 @@ module.exports = {
         '78px': '78px',
       },
       width: {
-        400: '400px',
+        84: '21rem',
+        88: '22rem',
+        120: '30rem',
+        160: '40rem',
+        180: '45rem', 
+        200: '50rem',
+        300: '75rem',
+        400: '100rem',
         760: '760px',
         780: '780px',
         800: '800px',
@@ -39,6 +51,10 @@ module.exports = {
         1000: '1000px',
         1200: '1200px',
         1400: '1400px',
+      },
+      top: {
+        30: '7.5rem',
+        34: '8.5rem'
       },
       height: {
         84: '21rem',

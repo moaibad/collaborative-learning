@@ -11,7 +11,7 @@ class App extends Component {
           id: "basic-bar"
         },
         xaxis: {
-          categories: ["January", "February", "March", "April", "May", "June", "July", "August"]
+          categories: ["4 Jan", "11 Jan", "18 Jan", "25 Jan", "1 Feb", "8 Feb", "15 Feb", "22 Feb"]
         }
       },
       series: [

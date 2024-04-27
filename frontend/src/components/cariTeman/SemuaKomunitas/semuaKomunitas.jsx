@@ -79,7 +79,7 @@ const SemuaKomunitas = () => {
   };
 
   return (
-    <div className="w-1100 overflow-hidden mx-19">
+    <div className="w-300 overflow-hidden">
       <div className="flex items-center">
         <p className='text-xl font-bold text-blue-400'>Filter Berdasarkan: </p>
       <div className="flex items-center mt-2 mb-2 ml-4">
@@ -95,7 +95,7 @@ const SemuaKomunitas = () => {
       </div>
       </div>
 
-      <div className="flex flex-wrap">
+      <div className="grid grid-cols-4 gap-4 mt-5">
         {visibleKomunitasData.map((komunitas) => (
           <CardSemuaKomunitas key={komunitas.id} allkomunitas={komunitas} />
         ))}

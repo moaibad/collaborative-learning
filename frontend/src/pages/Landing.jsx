@@ -49,9 +49,8 @@ const Landing = ({ onLogin }) => {
 
   //LOGIN MOODLE
   const [formData, setFormData] = useState({
-    // user Lecturer
-    username: "cinderella",
-    password: "Bibbidibobbidiboo123.",
+    username: "",
+    password: "",
   });
 
   const formRef = useRef(null); // Ref untuk mengakses form
@@ -76,24 +75,21 @@ const Landing = ({ onLogin }) => {
     }
   };
 
-  // const getDataAccMoodle = async (email)
-  const getDataAccMoodle = async () => {
+  const getDataAccMoodle = async (email) => {
     const params = new URLSearchParams();
     params.append('wstoken', '1f95ee6650d2e1a6aa6e152f6bf4702c');
     params.append('wsfunction', 'core_user_get_users_by_field');
     params.append('moodlewsrestformat', 'json');
     params.append('field', 'email');
-    params.append('values[0]', "lolanjing1122@gmail.com");
-    // params.append('values[0]', email);
+    params.append('values[0]', email);
   
     const apiUrl = `http://colle.koreacentral.cloudapp.azure.com/moodle/webservice/rest/server.php?${params.toString()}`;
   
     try {
       const response = await axios.get(apiUrl);
-  
-      console.log("berhasil GET DATA AKUN API Moodle");
-      console.log(response.data);
-      return response.data;
+
+      cookies.set('userIdMoodle', response.data[0].id, { path: '/', maxAge: 3600 });
+      return response.data[0].id;
 
     } catch (error) {
       console.error('Error fetching data from Moodle API:', error);
@@ -124,24 +120,39 @@ const Landing = ({ onLogin }) => {
             console.log(response.data.email);
             console.log("TOKEN :", codeResponse["access_token"]);
 
-            if (response.status === 200) { // LOGIN 
+            // LOGIN 
+            if (response.status === 200) {  
+              //SET COOKIE FOR USERNAME AND PASSWORD MOODLE
+              cookies.set('userUsernameMoodle', response.data.usernameMoodle, { path: '/', maxAge: 3600 });
+              cookies.set('userPasswordMoodle', response.data.passwordMoodle, { path: '/', maxAge: 3600 });
+
+              setFormData({
+                username: response.data.usernameMoodle,
+                password: response.data.passwordMoodle
+              })
+
               //Kirim data akun ke fitur TJ dan CTB
               setTokenToOther(codeResponse["access_token"]);
 
               //Set data role account ke localStorage
               localStorage.setItem("role", response.data.role);
               console.log("role : ", localStorage.getItem("role"));
-
-              //get data account from moodle
-              const akunMoodle = getDataAccMoodle();
-              console.log("AKU MODLE", akunMoodle);
               
-              //LOGIN MOODLE WITH HIIDEN FORM
+              //get data account from moodle
+              getDataAccMoodle(response.data.email);
+  
+              //LOGIN MOODLE WITH HIDDEN FORM
               handleHiddenFormSubmit();
               
               //Set login = true dan redirect to dashboard page
               onLogin();
-              navigate('/');
+
+              if (response.data.role === "student"){
+                navigate ('/')
+              }
+              else {
+                navigate ('/dosen')
+              }
 
             } else if (response.status === 201) { // REGISTER
               // Redirect to registration page
@@ -268,7 +279,7 @@ const Landing = ({ onLogin }) => {
         className="loginform"
         name="login"
         method="post"
-        action="http://colle.southeastasia.cloudapp.azure.com/moodle/login/index.php"
+        action="http://colle.koreacentral.cloudapp.azure.com/moodle/login/index.php"
         onSubmit={handleSubmit}
         style={{ display: "none" }}
       >

@@ -5,6 +5,8 @@ import { googleLogout, useGoogleLogin } from "@react-oauth/google";
 import { links } from "../data/dummy";
 import Cookies from "universal-cookie";
 import { getUserInfo } from "../lib/fetchData";
+import { HOST_MOODLE, TOKEN_MOODLE } from "../lib/env";
+
 const Sidebar = () => {
   const [profile, setProfile] = useState([]);
   const cookies = new Cookies();
@@ -17,10 +19,14 @@ const Sidebar = () => {
     cookies.remove("user_token");
     cookies.remove("userId");
     cookies.remove("email");
+    cookies.remove("userEmail");
+    cookies.remove("userUsernameMoodle");
+    cookies.remove("userPasswordMoodle");
+    cookies.remove("userIdMoodle");
     localStorage.removeItem("role");
     googleLogout();
     setProfile(null);
-    window.location.href = "/landing";
+    window.location.href = `${HOST_MOODLE}/colle/logout.php`;
   };
 
   useEffect(() => {
@@ -29,13 +35,6 @@ const Sidebar = () => {
       if (user) {
         console.log(user);
         setProfile(user);
-
-        // Tambahkan pengecekan role di sini
-        const username = role === "teacher" ? "anastasia" : "cinderella";
-        setFormData((prevData) => ({
-          ...prevData,
-          username: username,
-        }));
       }
     };
     get_user();
@@ -47,39 +46,12 @@ const Sidebar = () => {
   const normalLink =
     "flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg text-white font-semibold text-md hover:text-orange-300 m-2";
 
-  //LOGIN MOODLE
-  const [formData, setFormData] = useState({
-    // user Lecturer
-    username: "cinderella",
-    password: "Bibbidibobbidiboo123.",
-  });
-
-  const formRef = useRef(null); // Ref untuk mengakses form
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Lakukan proses login atau tindakan lainnya di sini dengan formData
-    console.log("Data yang akan dikirim:", formData);
-  };
-
-  const handleHiddenFormSubmit = () => {
-    if (formRef.current) {
-      formRef.current.submit(); // Mengirimkan form tersembunyi
-    }
-  };
 
   return (
     <div className="pl-3 h-screen md:overflow-hidden overflow-auto md:hover:overflow-auto pb-10 bg-slate-950">
       {activeMenu && (
         <>
+        { role === "student" ?
           <div className="flex justify-between items-center pb-5">
             <Link
               to="/"
@@ -97,6 +69,25 @@ const Sidebar = () => {
               <AiOutlineLeftSquare />
             </button>
           </div>
+          :
+          <div className="flex justify-between items-center pb-5">
+            <Link
+              to="/dosen"
+              onClick={() => {}}
+              className="items-center ml-4 flex text-xl tracking-tight gap-3 mt-8 font-extrabold text-orange-400"
+            >
+              <AiOutlineSlackSquare style={{ fontSize: "40px" }} />
+              <span className="text-white text-2xl">Colle</span>
+            </Link>
+            <button
+              type="button"
+              onClick={() => {}}
+              className="text-2xl p-1 mx-2 hover:bg-light-gray mt-4 block md:hidden"
+            >
+              <AiOutlineLeftSquare />
+            </button>
+          </div>
+          }
           <div className="">
             {links.map((item) => (
               <div key={item.title}>
@@ -104,11 +95,6 @@ const Sidebar = () => {
                   <NavLink
                     to={`/${link.url}`}
                     key={link.name}
-                    onClick={() => {
-                      if (link.url === "course") {
-                        handleHiddenFormSubmit(); // Submit form when "course" is clicked
-                      }
-                    }}
                     className={({ isActive }) =>
                       isActive ? activeLink : normalLink
                     }
@@ -130,39 +116,6 @@ const Sidebar = () => {
           </div>
         </>
       )}
-
-      <form
-        ref={formRef} // Menggunakan ref untuk mengakses form
-        className="loginform"
-        name="login"
-        method="post"
-        action="http://colle.southeastasia.cloudapp.azure.com/moodle/login/index.php"
-        onSubmit={handleSubmit}
-        style={{ display: "none" }}
-      >
-        <p>
-          Username :
-          <input
-            size="10"
-            name="username"
-            value={formData.username}
-            onChange={handleChange}
-          />
-        </p>
-        <p>
-          Password :
-          <input
-            size="10"
-            name="password"
-            type="password"
-            value={formData.password}
-            onChange={handleChange}
-          />
-        </p>
-        <p>
-          <input name="Submit" value="Login" type="submit" />
-        </p>
-      </form>
     </div>
   );
 };
