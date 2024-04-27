@@ -29,7 +29,7 @@ const DashboardQuizList = () => {
     if (!Array.isArray(quizzes) || quizzes.length === 0) {
         return (
           <div className="w-full">
-            <p className='text-xl font-bold mb-6'>Course List</p>
+            <p className='text-xl font-bold mb-6'>Quiz List</p>
             <div className='w-full rounded-lg bg-white text-center h-82 border-4 border-dashed'>
                 {/* <img className='m-0 p-0 w-72 h-36 object-cover rounded-t-lg' src={courseImages[index]} alt="" /> */}
                 <div className='text-slate-400 text-center p-8 gap-4 grid grid-cols-1'>
@@ -48,7 +48,7 @@ const DashboardQuizList = () => {
     return (
       <div className="w-full">
         <div className='flex justify-between'>
-          <p className='text-xl font-bold mb-6'>Your Quiz List</p>
+          <p className='text-xl font-bold mb-6'>Quiz List</p>
           {quizToShow.length > 2 &&
             <Link to="/quiz" className='text-orange-400 font-bold'>Lihat Selengkapnya</Link>
           }
