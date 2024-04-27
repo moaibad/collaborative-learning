@@ -84,69 +84,72 @@ const CourseList = ({ role }) => {
       </div>
       {/* list course  */}
       <div className="grid grid-cols-3 gap-4">
-        {filteredCourses.length > 0 ? (
+        {filteredCourses.length > 1 ? (
           filteredCourses.map((course) => (
-            <div
-              key={course.id}
-              className="max-w-sm rounded overflow-hidden shadow-lg"
-            >
-              <div className="relative">
-                <img
-                  className="w-full object-cover h-48"
-                  src={coursePage2}
-                  alt={coursePage2}
-                />
-                {role === "teacher" && (
-                  <button
-                    onClick={() =>
-                      (window.location.href = `${HOST_MOODLE}/course/edit.php?id=${course.id}`)
-                    }
-                    className="absolute top-0 right-0 text-xl font-bold text-orange-500 p-2 rounded bg-transparent hover:bg-orange-600 hover:text-white"
+            // Check if displayname is not 'Quiz' and not 'Collaborative Learning'
+            course.displayname !== 'Quiz' && course.displayname !== 'Collaborative Learning' && (
+              <div
+                key={course.id}
+                className="max-w-sm rounded overflow-hidden shadow-lg"
+              >
+                <div className="relative">
+                  <img
+                    className="w-full object-cover h-48"
+                    src={coursePage2}
+                    alt={coursePage2}
+                  />
+                  {role === "teacher" && (
+                    <button
+                      onClick={() =>
+                        (window.location.href = `${HOST_MOODLE}/course/edit.php?id=${course.id}`)
+                      }
+                      className="absolute top-0 right-0 text-xl font-bold text-orange-500 p-2 rounded bg-transparent hover:bg-orange-600 hover:text-white"
+                    >
+                      <LuPencilLine />
+                    </button>
+                  )}
+                </div>
+                <div className="px-6 py-4">
+                  <Link
+                    key={course.id}
+                    to={`${HOST_MOODLE}/course/view.php?id=${course.id}`}
                   >
-                    <LuPencilLine />
-                  </button>
-                )}
-              </div>
-              <div className="px-6 py-4">
-                <Link
-                  key={course.id}
-                  to={`${HOST_MOODLE}/course/view.php?id=${course.id}`}
-                >
-                  <div className="font-bold text-xl mb-2">
-                    {course.displayname}
-                  </div>
-                </Link>
-                {role !== "teacher" && (
-                  <>
-                    <hr className="border-1 border-gray-600" />
-                    <div className="flex items-center justify-between gap-2 cursor-pointer p-1 hover:bg-light-gray rounded-lg">
-                      <img
-                        className="rounded-full w-8 h-8"
-                        src={avatar}
-                        alt="user-profile"
-                      />
-                      <div className="w-full ">
-                        <div className="flex w-full justify-between mt-1">
-                          <span className="ml-1 text-14">Lecturer</span>
-                          <p className="">
-                            <span className="inline-block truncate bg-orange-400 rounded-full px-3 py-1 text-xs text-white ml-2">
-                              Topic
-                            </span>
-                          </p>
-                        </div>
-                        <div className="-mt-3">
-                          <span className="ml-1  text-14">Position</span>
+                    <div className="font-bold text-xl mb-2">
+                      {course.displayname}
+                    </div>
+                  </Link>
+                  {role !== "teacher" && (
+                    <>
+                      <hr className="border-1 border-gray-600" />
+                      <div className="flex items-center justify-between gap-2 cursor-pointer p-1 hover:bg-light-gray rounded-lg">
+                        <img
+                          className="rounded-full w-8 h-8"
+                          src={avatar}
+                          alt="user-profile"
+                        />
+                        <div className="w-full ">
+                          <div className="flex w-full justify-between mt-1">
+                            <span className="ml-1 text-14">Lecturer</span>
+                            <p className="">
+                              <span className="inline-block truncate bg-orange-400 rounded-full px-3 py-1 text-xs text-white ml-2">
+                                Topic
+                              </span>
+                            </p>
+                          </div>
+                          <div className="-mt-3">
+                            <span className="ml-1  text-14">Position</span>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </>
-                )}
+                    </>
+                  )}
+                </div>
               </div>
-            </div>
+            )
           ))
         ) : (
           <div className="text-gray-700 text-center py-4 col-span-3">
-            Course not found
+            No courses have been enrolled yet
           </div>
         )}
       </div>
