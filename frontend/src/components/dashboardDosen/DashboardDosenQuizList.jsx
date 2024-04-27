@@ -56,7 +56,7 @@ const DashboardQuizList = () => {
         <div className='flex gap-4'>
           {quizToShow.map((quiz) => (
             <Link key={quiz.id} to={quiz.url}>
-              <div className='rounded-lg bg-white shadow-md h-82 w-72'>
+              <div className='rounded-lg bg-white shadow-md h-full w-60'>
                 <div className="px-6 py-4">
                   <div className="font-bold text-xl mb-2">{quiz.name}</div>
                   <hr className="border-1 border-black" />
