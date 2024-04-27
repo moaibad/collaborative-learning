@@ -122,11 +122,11 @@ const App = () => {
                 <Route path="/materi-course/:id" element={<MateriCourse />} />
                 <Route path="/quiz/histories" element={<HistoryQuiz />} />
                 {/* Add a default route to redirect to Home if no route matches */}
-                { role==='student' ?
+                {role === 'student' ? (
                   <Route path="*" element={<Navigate to="/" />} />
-                  :
+                ) : role === 'teacher' || role === 'practitioner' ? (
                   <Route path="*" element={<Navigate to="/dosen" />} />
-                }   
+                ) : null}
               </Routes>
             </div>
           </div>

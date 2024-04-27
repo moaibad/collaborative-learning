@@ -148,15 +148,18 @@ const Landing = ({ onLogin }) => {
               onLogin();
 
               if (response.data.role === "student"){
-                navigate ('/')
+                window.location.href = `/`;
+                // navigate ('/')
               }
               else {
-                navigate ('/dosen')
+                window.location.href = `/dosen`;
+                // navigate ('/dosen')
               }
 
             } else if (response.status === 201) { // REGISTER
               // Redirect to registration page
-              navigate("/registData");
+              window.location.href = `/regisData`;
+              // navigate("/registData");
             } else {
               message.error('Error bro.');
             }

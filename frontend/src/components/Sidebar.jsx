@@ -9,7 +9,6 @@ import { HOST_MOODLE, TOKEN_MOODLE } from "../lib/env";
 import logo from "../data/logo.png"
 
 const Sidebar = () => {
-  const [profile, setProfile] = useState([]);
   const cookies = new Cookies();
   const navigation = useNavigate();
   // console.log("role : ", JSON.parse(localStorage.getItem("role")));
@@ -26,20 +25,12 @@ const Sidebar = () => {
     cookies.remove("userIdMoodle");
     localStorage.removeItem("role");
     googleLogout();
-    setProfile(null);
     window.location.href = `${HOST_MOODLE}/colle/logout.php`;
   };
 
   useEffect(() => {
-    const get_user = async () => {
-      const user = await getUserInfo();
-      if (user) {
-        console.log(user);
-        setProfile(user);
-      }
-    };
-    get_user();
-  }, [role]); // Pastikan useEffect dipanggil ulang saat role berubah
+
+  }, [role]); 
 
   const activeMenu = true;
   const activeLink =
