@@ -3,14 +3,16 @@ import { Link } from 'react-router-dom';
 import { FaPeopleGroup } from "react-icons/fa6";
 import { MdOutlineAssignmentTurnedIn } from "react-icons/md";
 import { getDataDashboard } from "../../lib/fetchData";
-import badge1 from '../../data/achievement1.png'
-import badge2 from '../../data/achievement2.png'
-import badge3 from '../../data/achievement3.png'
-import badge4 from '../../data/achievement4.png'
+import badge1 from '../../data/achievementCariTeman-1-1.png'
+import badge2 from '../../data/achievementTanyaJawab-1-1.png'
+import badge3 from '../../data/achievementCourse-1-1.png'
+import badge4 from '../../data/achievementQuiz-1-1.png'
+const role = localStorage.getItem("role");
 
 const ProfileDetail = () => {
   return (
     <div>
+        {role === "student" ?
         <Link to={'/profile/achievement'}>
             <div className='bg-white shadow-md rounded-md w-96 m-8 p-4'>
                 <p className='font-bold mb-4'>Achievement</p>
@@ -22,23 +24,25 @@ const ProfileDetail = () => {
                 </div>
             </div>
         </Link>
+        :
         <div className='bg-white shadow-md rounded-md w-96 m-8 p-4'>
             <p className='font-bold mb-4'>Report</p>
             <div className='flex rounded-xl bg-orange-100 p-3 w-full h-16 justify-between text-center mb-3'>
                 <div className='flex text-orange-500 items-center justify-center gap-2'>
-                    <FaPeopleGroup style={{ fontSize: '24px'}} />
+                    <MdOutlineAssignmentTurnedIn style={{ fontSize: '24px'}} />
                     <p className='font-bold text-lg'>8</p>
                 </div>
-                <p className='font-bold items-center justify-center flex text-slate-500'>Komunitas yang diikuti</p>
+                <p className='font-bold items-center justify-center flex text-slate-500'>Quiz Dibuat</p>
             </div>
             <div className='flex text-center rounded-xl bg-blue-100 p-3 w-full h-16 justify-between'>
                 <div className='flex text-blue-500 items-center justify-center gap-2'>
-                    <MdOutlineAssignmentTurnedIn style={{ fontSize: '24px'}} />
+                    <FaPeopleGroup style={{ fontSize: '24px'}} />
                     <p className='font-bold text-lg'>10</p>
                 </div>
-                <p className='font-bold items-center justify-center flex text-slate-500'>Quiz Selesai</p>
+                <p className='font-bold items-center justify-center flex text-slate-500'>Course Dibuat</p>
             </div>
         </div>
+        }
     </div>
   )
 }

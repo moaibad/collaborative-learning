@@ -51,6 +51,7 @@ const Sidebar = () => {
     <div className="pl-3 h-screen md:overflow-hidden overflow-auto md:hover:overflow-auto pb-10 bg-slate-950">
       {activeMenu && (
         <>
+        { role === "student" ?
           <div className="flex justify-between items-center pb-5">
             <Link
               to="/"
@@ -68,6 +69,25 @@ const Sidebar = () => {
               <AiOutlineLeftSquare />
             </button>
           </div>
+          :
+          <div className="flex justify-between items-center pb-5">
+            <Link
+              to="/dosen"
+              onClick={() => {}}
+              className="items-center ml-4 flex text-xl tracking-tight gap-3 mt-8 font-extrabold text-orange-400"
+            >
+              <AiOutlineSlackSquare style={{ fontSize: "40px" }} />
+              <span className="text-white text-2xl">Colle</span>
+            </Link>
+            <button
+              type="button"
+              onClick={() => {}}
+              className="text-2xl p-1 mx-2 hover:bg-light-gray mt-4 block md:hidden"
+            >
+              <AiOutlineLeftSquare />
+            </button>
+          </div>
+          }
           <div className="">
             {links.map((item) => (
               <div key={item.title}>

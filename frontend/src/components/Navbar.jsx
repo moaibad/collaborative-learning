@@ -116,7 +116,7 @@ const Navbar = () => {
       <div className="ml-8 gap-4 flex">
         {/* <p className='font-bold'>Monday</p>
           <p className='text-sm font-semibold'>24 February 2024</p> */}
-        <Link to="/dosen">
+        {/* <Link to="/dosen">
           <button className="p-3 bg-orange-400 text-md font-bold text-white rounded-2xl">
             To Dosen
           </button>
@@ -125,7 +125,7 @@ const Navbar = () => {
           <button className="p-3 bg-orange-400 text-md font-bold text-white rounded-2xl">
             To Mahasiswa
           </button>
-        </Link>
+        </Link> */}
       </div>
       {/* <NavButton title="Menu" icon={<AiOutlineMenu />} /> */}
       <div className="flex rounded-xl h-9">
@@ -140,7 +140,7 @@ const Navbar = () => {
         <NavButton title="Notification" dotColor="rgb(254, 201, 15)" icon={<RiNotification3Line />} /> */}
       {/* <TooltipComponent content="Profile" position="BottomCenter"> */}
       <div className="flex gap-2 items-center justify-center">
-        <div className="relative">
+        {/* <div className="relative">
           <button
             onClick={toggleDropdown}
             className="flex items-center text-gray-600 hover:text-gray-800"
@@ -154,7 +154,7 @@ const Navbar = () => {
             isOpen={showDropdown}
             toggleDropdown={toggleDropdown}
           />
-        </div>
+        </div> */}
         {/* <KnockFeedProvider
                   apiKey={process.env.KNOCK_PUBLIC_API_KEY}
                   feedId={process.env.KNOCK_FEED_ID}
@@ -183,10 +183,10 @@ const Navbar = () => {
             src={user.picture ? user.picture : avatar}
             alt="user-profile"
           />
-          <div className="w-40">
+          <div className="max-w-54">
             <p>
-              <span className="text-gray-400 text-14">Hi,</span>{" "}
-              <span className="text-gray-400 font-bold ml-1 text-14">
+              <span className="text-lg">Hi,</span>{" "}
+              <span className="font-bold ml-1 text-lg">
                 {/* {user.nama
                   ? user.nama.split(" ")[0]
                   : user.username} */}
@@ -195,8 +195,8 @@ const Navbar = () => {
                   : user.username}
               </span>
             </p>
-            <div className="flex w-full">
-              {/* <MdKeyboardArrowDown className="text-gray-400 text-14 items-center" /> */}
+            {/* <div className="flex w-full">
+              <MdKeyboardArrowDown className="text-gray-400 text-14 items-center" />
               <p className="w-1/2 font-semibold">Level 1</p>
               <Progress
                 className="w-1/2"
@@ -206,7 +206,7 @@ const Navbar = () => {
                 size="small"
                 strokeWidth={7}
               />
-            </div>
+            </div> */}
           </div>
         </Link>
       </div>
