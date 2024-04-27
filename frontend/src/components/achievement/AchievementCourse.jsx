@@ -16,6 +16,7 @@ const AchievementCourse = () => {
     useEffect(() => {
         const cookies = new Cookies();
         const userId = cookies.get('userId');
+        const userIdMoodle = cookies.get('userIdMoodle');
 
         const fetchData = async () => {
             try {
@@ -25,7 +26,7 @@ const AchievementCourse = () => {
                 }
 
                 //get list course achievement
-                const courseResponse = await axios.get(`http://colle.koreacentral.cloudapp.azure.com/moodle/webservice/rest/server.php?moodlewsrestformat=json&wstoken=1f95ee6650d2e1a6aa6e152f6bf4702c&wsfunction=core_enrol_get_users_courses&userid=${userId}`);
+                const courseResponse = await axios.get(`http://colle.koreacentral.cloudapp.azure.com/moodle/webservice/rest/server.php?moodlewsrestformat=json&wstoken=1f95ee6650d2e1a6aa6e152f6bf4702c&wsfunction=core_enrol_get_users_courses&userid=${userIdMoodle}`);
                 if (courseResponse){
                     setCourseAchievement(courseResponse.data);
                     setTotalCourse(courseResponse.data.length);
