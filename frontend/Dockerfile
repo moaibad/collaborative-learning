@@ -1,5 +1,5 @@
 # Use the official Node.js image as the base image
-FROM node:14-alpine AS build
+FROM node:14-alpine
 
 # Set the working directory inside the container
 WORKDIR /app
@@ -14,17 +14,12 @@ RUN npm install
 COPY . .
 
 # # Build the React app
-# RUN npm run build
+RUN npm run build
 
-# # Use the official Nginx image as the runtime image
-# FROM nginx:1.21-alpine
-
-# # Copy the built React app from the build stage to the runtime stage
-# COPY --from=build /app/build /usr/share/nginx/html
-
+RUN npm install -g serve
 # Expose the default port for Nginx
-EXPOSE 80
+EXPOSE 3000
 
 # # Command to start Nginx when the container runs
 # CMD ["nginx", "-g", "daemon off;"]
-CMD ["npm", "start"]
+CMD ["npm", "run", "deploy"]

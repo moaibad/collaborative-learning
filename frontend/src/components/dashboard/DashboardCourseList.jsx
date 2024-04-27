@@ -90,12 +90,12 @@ const DashboardCourseList = () => {
                           {/* <img className='m-0 p-0 w-72 h-36 object-cover rounded-t-lg' src={course.courseimage} alt="" /> */}
                           <div className='p-3'>
                               <div className='bottom-2 leading-6'>
-                                  <div className='flex gap-2'>
-                                      {/* <img className='h-6 w-6 rounded-full' src={course.imageLecturer} alt="" /> */}
+                                  {/* <div className='flex gap-2'>
+                                      <img className='h-6 w-6 rounded-full' src={course.imageLecturer} alt="" />
                                       <img className='h-6 w-6 rounded-full' src={dummyLecturePic} alt="" />
-                                      {/* <p>{course.instructor}</p> */}
+                                      <p>{course.instructor}</p>
                                       <p>Dummy Nama Dosen</p>
-                                  </div>
+                                  </div> */}
                                   {/* Menggunakan Link untuk mengelilingi judul kursus */}
                                   <Link to={`${HOST_MOODLE}/course/view.php?id=${course.id}`}>
                                       <p className='font-bold text-xl'>{course.displayname}</p>

@@ -146,7 +146,13 @@ const Landing = ({ onLogin }) => {
               
               //Set login = true dan redirect to dashboard page
               onLogin();
-              navigate('/');
+
+              if (response.data.role === "student"){
+                navigate ('/')
+              }
+              else {
+                navigate ('/dosen')
+              }
 
             } else if (response.status === 201) { // REGISTER
               // Redirect to registration page

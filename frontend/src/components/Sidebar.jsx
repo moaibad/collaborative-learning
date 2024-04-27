@@ -6,6 +6,7 @@ import { links } from "../data/dummy";
 import Cookies from "universal-cookie";
 import { getUserInfo } from "../lib/fetchData";
 import { HOST_MOODLE, TOKEN_MOODLE } from "../lib/env";
+import logo from "../data/logo.png"
 
 const Sidebar = () => {
   const [profile, setProfile] = useState([]);
@@ -51,13 +52,15 @@ const Sidebar = () => {
     <div className="pl-3 h-screen md:overflow-hidden overflow-auto md:hover:overflow-auto pb-10 bg-slate-950">
       {activeMenu && (
         <>
+        { role === "student" ?
           <div className="flex justify-between items-center pb-5">
             <Link
               to="/"
               onClick={() => {}}
               className="items-center ml-4 flex text-xl tracking-tight gap-3 mt-8 font-extrabold text-orange-400"
             >
-              <AiOutlineSlackSquare style={{ fontSize: "40px" }} />
+              <img className="w-10 rounded-full" src={logo} alt="logo-colle" />
+              {/* <AiOutlineSlackSquare style={{ fontSize: "40px" }} /> */}
               <span className="text-white text-2xl">Colle</span>
             </Link>
             <button
@@ -68,6 +71,27 @@ const Sidebar = () => {
               <AiOutlineLeftSquare />
             </button>
           </div>
+          :
+          <div className="flex justify-between items-center pb-5">
+            <Link
+              to="/dosen"
+              onClick={() => {}}
+              className="items-center ml-4 flex text-xl tracking-tight gap-3 mt-8 font-extrabold text-orange-400"
+            >
+              <img className="w-10 rounded-lg" src={logo} alt="logo-colle" />
+              {/* <AiOutlineSlackSquare style={{ fontSize: "40px" }} /> */}
+              <span className="text-white text-2xl">Colle</span>
+            </Link>
+            <button
+              type="button"
+              onClick={() => {}}
+              className="text-2xl p-1 mx-2 hover:bg-light-gray mt-4 block md:hidden"
+            >
+              <AiOutlineLeftSquare />
+            </button>
+          </div>
+          }
+          {role === "student" ?
           <div className="">
             {links.map((item) => (
               <div key={item.title}>
@@ -94,6 +118,34 @@ const Sidebar = () => {
               </button>
             </div>
           </div>
+          :
+          <div className="">
+            {links.map((item) => (
+              <div key={item.title}>
+                {item.links.map((link) => (
+                  <NavLink
+                    to={`/${link.dosen}`}
+                    key={link.name}
+                    className={({ isActive }) =>
+                      isActive ? activeLink : normalLink
+                    }
+                  >
+                    {link.icon}
+                    <span className="capitalize">{link.name}</span>
+                  </NavLink>
+                ))}
+              </div>
+            ))}
+            <div className="">
+              <button
+                onClick={logOut}
+                className="w-11/12 bg-slate-950 text-orange-400 border-2 border-orange-400 font-bold py-2 px-4 ml-1 rounded-2xl hover:bg-orange-400 hover:text-black"
+              >
+                Log Out
+              </button>
+            </div>
+          </div>
+          }
         </>
       )}
     </div>
