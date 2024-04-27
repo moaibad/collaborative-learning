@@ -22,7 +22,7 @@ const DashboardCourseList = () => {
 
     const fetchData = async () => {
       
-      if(userIdMoodle != null){
+      if(userIdMoodle == null){
         userIdMoodle = '4'
       }
 
