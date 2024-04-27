@@ -43,7 +43,7 @@ const AchievementCariTeman = () => {
                 if (levelResponse) {
                     setAchievementFriend(levelResponse.level);
                     //set level
-                    if (levelResponse.level < 50) {
+                    if (levelResponse.level > 0 && levelResponse.level < 50) {
                         setLevel(1);
                     } else if (levelResponse.level >= 50 && levelResponse.level < 150) {
                         setLevel(2);
