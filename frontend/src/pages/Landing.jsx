@@ -147,10 +147,11 @@ const Landing = ({ onLogin }) => {
               //Set login = true dan redirect to dashboard page
               onLogin();
 
+              navigate ('/')
+
             } else if (response.status === 201) { // REGISTER
               // Redirect to registration page
-              window.location.href = `/regisData`;
-              // navigate("/registData");
+              navigate("/registData");
             } else {
               message.error('Error bro.');
             }
