@@ -39,7 +39,7 @@ import Cookies from 'js-cookie';
     });
   
     // Check if courses array is empty
-    if ((!Array.isArray(courses) || courses.length === 0) && (courses.length === 1 && courses[0].displayname === "Quiz")) {
+    if ((!Array.isArray(courses) || courses.length === 0) || (courses.length === 1 && courses[0].displayname === "Quiz")) {
         return (
           <div className="w-full">
             <p className='text-xl font-bold mb-6'>Course List</p>
