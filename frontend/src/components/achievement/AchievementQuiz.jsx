@@ -15,6 +15,7 @@ const AchievementQuiz = () => {
 
     useEffect(() => {
         const cookies = new Cookies();
+        let userIdMoodle = cookies.get('userIdMoodle');
         const userId = cookies.get('userId');
 
         const fetchData = async () => {
@@ -25,18 +26,23 @@ const AchievementQuiz = () => {
                 }
 
                 //get list quiz achievement
-                const quizResponse = await axios.get(`http://colle.koreacentral.cloudapp.azure.com/moodle/webservice/rest/server.php?wstoken=1f95ee6650d2e1a6aa6e152f6bf4702c&wsfunction=local_colle_get_all_user_best_grades&moodlewsrestformat=json&userid=${userId}`);
-                if (quizResponse && quizResponse.data[0].status != "Student has not finished any quiz.") {
+                if(userIdMoodle == null){
+                    userIdMoodle = '4'
+                }
+
+                const quizResponse = await axios.get(`http://colle.koreacentral.cloudapp.azure.com/moodle/webservice/rest/server.php?wstoken=1f95ee6650d2e1a6aa6e152f6bf4702c&wsfunction=local_colle_get_all_user_best_grades&moodlewsrestformat=json&userid=${userIdMoodle}`);
+                console.log('Quiz Response:', quizResponse.data);
+                if (quizResponse && quizResponse.data[0].status !== "Student has not finished any quiz.") {
                   setQuizAchievement(quizResponse.data);
                   setTotalQuiz(quizResponse.data.length);
-                }
+                    }
             } catch (error) {
                 console.error('Error fetching list:', error);
             }
         };
 
         fetchData();
-    }, [totalQuiz, quizAchievement, user]);
+    }, []);
 
 
     const blank = 
